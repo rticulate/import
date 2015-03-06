@@ -45,16 +45,16 @@ them again with `detach("imports")`. One can specify which name to use, and
 use several to group imports:
 
 ```R
-import::from(magrittr, "%>%", "%$%", ns. = "operators") 
-import::from(dplyr, arrange, ns. = "datatools")
+import::from(magrittr, "%>%", "%$%", .into = "operators") 
+import::from(dplyr, arrange, .into = "datatools")
 ```
 
 If using pied-à-terres actively, one might prefer the alternative syntax 
 (which does the same but reverses the argument order):
 
 ```R
-import::into("operators", "%>%", "%$%", from = magrittr)
-import::into("datatools", arrange, from = dplyr)
+import::into("operators", "%>%", "%$%", .from = magrittr)
+import::into("datatools", arrange, .from = dplyr)
 ```
 
 In the examples above most arguments are provided unquoted. A more unambiguous

@@ -5,17 +5,17 @@
 \alias{into}
 \title{Import objects from a package.}
 \usage{
-from(from, ..., ns. = "imports")
+from(.from, ..., .into = "imports")
 
-into(ns., ..., from)
+into(.into, ..., .from)
 }
 \arguments{
-\item{from}{the package from which to import.}
+\item{.from}{the package from which to import.}
 
 \item{...}{names or name-value pairs specifying objects to import.
 If arguments are named, then the imported object will have this new name.}
 
-\item{ns.}{The namespace which is imported to.}
+\item{.into}{The name of the search path entry.}
 }
 \description{
 The \code{import::from} and \code{import::into} functions provide
@@ -29,7 +29,7 @@ it is a more succinct way of importing several objects.
 \details{
 These functions have the intended side-effect of altering
 the search path, as they (by default) imports objects into the "imports"
-namespace rather than the global environment.
+search path entry rather than the global environment.
 
 The \code{import} package is not meant to be loaded with \code{library},
 but rather it is named to make the function calls expressive without the

@@ -19,7 +19,7 @@ NULL
 #'
 #' These functions have the intended side-effect of altering
 #' the search path, as they (by default) imports objects into the "imports"
-#' namespace rather than the global environment.
+#' search path entry rather than the global environment.
 #'
 #' The \code{import} package is not meant to be loaded with \code{library},
 #' but rather it is named to make the function calls expressive without the
@@ -27,33 +27,33 @@ NULL
 #' syntax: \code{import::from(pkg, x, y)}.
 #'
 #' @rdname importfunctions
-#' @param ns. The namespace which is imported to.
+#' @param .from the package from which to import.
 #' @param ... names or name-value pairs specifying objects to import.
 #'   If arguments are named, then the imported object will have this new name.
-#' @param from the package from which to import.
+#' @param .into The name of the search path entry.
 #'
 #' @export
-from <- function(from, ..., ns. = "imports")
+from <- function(.from, ..., .into = "imports")
 {
   symbols <- symbol_list(...)
   parent  <- parent.frame()
-  from    <- symbol_as_character(substitute(from))
-  ms.     <- symbol_as_character(substitute(ns.))
+  from    <- symbol_as_character(substitute(.from))
+  into    <- symbol_as_character(substitute(.into))
 
-  use_ns <- !exists(".packageName", parent) &&
-            !ns. == ""
+  use_into <- !exists(".packageName", parent) &&
+              !into == ""
 
-  ns_exists <- ns. %in% search()
+  into_exists <- into %in% search()
 
-  make_namespace <- attach # Make R CMD check happy.
-  if (use_ns && !ns_exists)
-    make_namespace(NULL, 2L, name = ns.)
+  make_attach <- attach # Make R CMD check happy.
+  if (use_into && !into_exists)
+    make_attach(NULL, 2L, name = into)
 
   for (s in seq_along(symbols)) {
     import_call <-
       make_import_call(symbols[s],
                        from,
-                       if (use_ns) symbol_as_character(ns.),
+                       if (use_into) symbol_as_character(into),
                        names(symbols)[s])
 
     eval(import_call, parent, parent)
@@ -64,11 +64,11 @@ from <- function(from, ..., ns. = "imports")
 
 #' @rdname importfunctions
 #' @export
-into <- function(ns., ..., from)
+into <- function(.into, ..., .from)
 {
   parent <- parent.frame()
   cl <- match.call()
-  cl[[1L]] <- quote(from)
+  cl[[1L]] <- quote(import::from)
   eval(cl, parent, parent)
 }
 
