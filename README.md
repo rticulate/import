@@ -2,18 +2,18 @@
 
 # Motivation
 The "default" way to use functionality from a package in R is to load (and attach) the
-entire package with `library` (or `require`). This can have the *undesirable
-effect of masking objects* in the user's search path and can also make it
-difficult and *confusing* to identify what functionality comes from which package when using
+entire package with `library` (or `require`). This can have the **undesirable
+effect of masking objects** in the user's search path and can also make it
+difficult and **confusing to identify** what functionality comes from which package when using
 several `library` statements.
 
 An alternative is to import a single object from a package, say `object <-
-package::object`. The downside of this approach is that the object is *placed in
-the user's global work space*, rather than being encapsulated somewhere else
+package::object`. The downside of this approach is that the object is **placed in
+the user's global work space**, rather than being encapsulated somewhere else
 in the search path (when using `library` to load `pkg`, a namespace `package:pkg` 
 will be attached in the search path which will contain the exported functions 
-from `pkg`). Another minor point is that one can *only import one object at a 
-time* using this approach.
+from `pkg`). Another minor point is that one can **only import one object at a 
+time** using this approach.
 
 The `import` package provides a simple alternative to importing and is inspired
 in part by Python's `from some_module import some_function` syntax, and will
@@ -27,7 +27,7 @@ To install `import` from GitHub you can use `devtools`:
 devtools::install_github("smbache/import")
 ```
 
-The `import` package is named to *make usage expressive* without having to load
+The `import` package is named to **make usage expressive** without having to load
 the package using `library`. A basic example, which imports a few functions
 from the `dplyr` package is:
 
@@ -41,9 +41,9 @@ avoid name clash with `stats::filter`. The imported objects are placed in a
 separate entity in the search path (@lionel suggests naming them 
 "pied-à-terres", meaning living units some distance away from primary residence), 
 which by default is named "imports". It is therefore also easy to get rid of 
-them again with `detach("imports")`. The main point is that it is *clear* which
-functions will be used and where they come from. It's niteworthy that there 
-is nothing special going on, the `import::from` function is only a convinient 
+them again with `detach("imports")`. The main point is that it is **clear which
+functions will be used and where they come from**. It's noteworthy that there 
+is nothing special going on: the `import::from` function is only a convinient 
 wrapper around `get` (as is `:::`) and `assign`. 
 
 
@@ -77,6 +77,6 @@ import::from("ggplot2", "qplot")
 
 # See also:
 
-For a slightly different idea of Python-like modules for R, see the 
+For an interesting but slightly different idea of Python-like modules for R, see the 
 [modules package](https://github.com/klmr/modules)
 package by @klmr.
