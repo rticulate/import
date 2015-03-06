@@ -9,13 +9,13 @@ several `library` statements.
 
 An alternative is to import a single object from a package, say `object <-
 package::object`. The downside of this approach is that the object is placed in
-the user's global work space, rather than being encapsulated in a namespace
-(when using `library` to load `pkg` a namespace `package:pkg` will be attached
-in the search path which will contain the exported functions from `pkg`). A
-minor point is that one can only import one object at a time using this
-approach.
+the user's global work space, rather than being encapsulated somewhere else
+in the search path (when using `library` to load `pkg` a namespace `package:pkg` 
+will be attached in the search path which will contain the exported functions 
+from `pkg`). Another minor point is that one can only import one object at a 
+time using this approach.
 
-The import package provides a simple alternative to importing and is inspired
+The `import` package provides a simple alternative to importing and is inspired
 in part by Python's `from some_module import some_function` syntax, and will
 solve the two issues raised above.
 
@@ -37,9 +37,12 @@ import::from(dplyr, select, arrange, keep_when = filter)
 
 This does pretty much what it says: three functions are imported from `dplyr`,
 two of which will keep their original name, and one which is renamed, say to
-avoid name clash with `stats::filter`. The imported objects are placed in the
-dedault namespace "imports". It is therefore also easy to get rid of them again
-with `detach("imports")`. One can specify which namespace to use:
+avoid name clash with `stats::filter`. The imported objects are placed in a
+separate entity in the search path (@lionelgit suggests naming them 
+"pied-à-terres", meaning living units some distance away from primary residence), 
+which by default is named "imports". It is therefore also easy to get rid of 
+them again with `detach("imports")`. One can specify which name to use, and 
+use several to group imports:
 
 ```R
 import::from(magrittr, "%>%", "%$%", ns. = "operators") 
