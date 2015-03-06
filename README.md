@@ -49,8 +49,8 @@ import::from(magrittr, "%>%", "%$%", ns. = "operators")
 import::from(dplyr, arrange, ns. = "datatools")
 ```
 
-If using namespaces, one might prefer the alternative syntax (which does the
-same but reverses the argument order):
+If using pied-à-terres actively, one might prefer the alternative syntax 
+(which does the same but reverses the argument order):
 
 ```R
 import::into("operators", "%>%", "%$%", from = magrittr)
