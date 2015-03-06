@@ -51,5 +51,8 @@ alternative is to quote the imputs, e.g.
 
     import::from("ggplot2", "qplot")
 
-When the arguments are unquoted they will be treated as they are written!
+# Notes:
+
+* When the arguments are unquoted they will be treated as they are written!
+* If used in a package `import` will use the package's own namespace.
 
