@@ -38,7 +38,7 @@ import::from(dplyr, select, arrange, keep_when = filter)
 This does pretty much what it says: three functions are imported from `dplyr`,
 two of which will keep their original name, and one which is renamed, say to
 avoid name clash with `stats::filter`. The imported objects are placed in a
-separate entity in the search path (@lionelgit suggests naming them 
+separate entity in the search path (@lionel suggests naming them 
 "pied-à-terres", meaning living units some distance away from primary residence), 
 which by default is named "imports". It is therefore also easy to get rid of 
 them again with `detach("imports")`. One can specify which name to use, and 
