@@ -56,7 +56,7 @@ from <- function(.from, ..., .into = "imports")
                        if (use_into) symbol_as_character(into),
                        names(symbols)[s])
 
-    eval(import_call, parent, parent)
+    eval.parent(import_call)
   }
 
   invisible(NULL)
@@ -66,9 +66,8 @@ from <- function(.from, ..., .into = "imports")
 #' @export
 into <- function(.into, ..., .from)
 {
-  parent <- parent.frame()
   cl <- match.call()
   cl[[1L]] <- quote(import::from)
-  eval(cl, parent, parent)
+  eval.parent(cl)
 }
 
