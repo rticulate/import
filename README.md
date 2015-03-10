@@ -44,7 +44,7 @@ meaning living units some distance away from primary residence), which by
 default is named "imports". It is therefore also easy to get rid of them again 
 with `detach("imports")`. The main point is that it is **clear which functions 
 will be used and where they come from**. It's noteworthy that there is nothing 
-special going on: the `import::from` function is only a convinient wrapper 
+special going on: the `import::from` function is only a convenient wrapper 
 around `get` (as is `:::`) and `assign`. 
 
 One can also specify which names to use in the search path and use several to 
@@ -66,7 +66,7 @@ If it is desired to place imported objects in the current environment,
 then `import::here` is a short-hand function that sets `.into = ""`.
 
 In the examples above most arguments are provided unquoted. A more unambiguous
-alternative is to quote the imputs, e.g. 
+alternative is to quote the inputs, e.g. 
 
 ```R
 import::from("ggplot2", "qplot")

@@ -1,12 +1,21 @@
-#' import
+#' This package is not intended for use with \code{library}. It is named
+#' to make calls like \code{import::from(pkg, fun1, fun2)} expressive.
+#' Using the \code{import} functions complements the standard use of
+#' \code{library(pkg)}(when most objects are needed, and context is clear) and
+#' \code{obj <- pkg::obj} (when only a single object is needed).
 #'
 #' @docType package
 #' @name import
-#' @title An Import Mechanism For R
+#' @title An Import Mechanism for R
 #' @author Stefan Milton Bache
-#' @description The package provides an alternative and expressive
-#' mechanism for importing objects from packages.
-#' @seealso \code{\link{from}}, \code{\link{into}}, \code{\link{here}}.
+#' @description The package provides an alternative mechanism for importing
+#'   objects from packages. The syntax allows for importing mulitple objects
+#'   from a package with a single command in an expressive way. The
+#'   \code{import} package bridges some of the gap between using library (or
+#'   require) and direct (single-object) imports. Furthermore the imported
+#'   objects are not placed in the current workspace.
+#' @seealso For usage instructions and examples, see \code{\link{from}},
+#' \code{\link{into}}, or \code{\link{here}}.
 NULL
 
 #' Import objects from a package.
@@ -30,14 +39,14 @@ NULL
 #' the argument names \code{.into} and \code{.from} are there to avoid name
 #' clash with package objects.
 #'
-#' Note that the \code{import} functions have usually the (intended) side-effect
+#' Note that the \code{import} functions usually have the (intended) side-effect
 #' of altering the search path, as they (by default) imports objects into the
 #' "imports" search path entry rather than the global environment.
 #'
 #' The \code{import} package is not meant to be loaded with \code{library}, but
 #' rather it is named to make the function calls expressive without the need to
-#' preload, i.e. it is designed to be used explicitely with the \code{::} syntax:
-#' \code{import::from(pkg, x, y)}.
+#' preload, i.e. it is designed to be used explicitely with the \code{::} syntax,
+#' e.g. \code{import::from(pkg, x, y)}.
 #'
 #' @rdname importfunctions
 #' @param .from The package from which to import.
@@ -45,8 +54,10 @@ NULL
 #'   If arguments are named, then the imported object will have this new name.
 #' @param .into The name of the search path entry. Use \code{""} to import
 #'   into the current environment.
-#'
 #' @export
+#' @examples
+#' import::from(parallel, makeCluster, parLapply)
+#' import::into("imports:parallel", makeCluster, parLapply, .from = parallel)
 from <- function(.from, ..., .into = "imports")
 {
   symbols <- symbol_list(...)

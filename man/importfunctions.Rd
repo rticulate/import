@@ -19,7 +19,7 @@ here(..., .from)
 If arguments are named, then the imported object will have this new name.}
 
 \item{.into}{The name of the search path entry. Use \code{""} to import
-  into the current environment.}
+into the current environment.}
 }
 \description{
 The \code{import::from} and \code{import::into} functions provide an
@@ -42,13 +42,17 @@ provided (and not the value of objects with matching names). The period in
 the argument names \code{.into} and \code{.from} are there to avoid name
 clash with package objects.
 
-Note that the \code{import} functions have usually the (intended) side-effect
+Note that the \code{import} functions usually have the (intended) side-effect
 of altering the search path, as they (by default) imports objects into the
 "imports" search path entry rather than the global environment.
 
 The \code{import} package is not meant to be loaded with \code{library}, but
 rather it is named to make the function calls expressive without the need to
-preload, i.e. it is designed to be used explicitely with the \code{::} syntax:
-\code{import::from(pkg, x, y)}.
+preload, i.e. it is designed to be used explicitely with the \code{::} syntax,
+e.g. \code{import::from(pkg, x, y)}.
+}
+\examples{
+import::from(parallel, makeCluster, parLapply)
+import::into("imports:parallel", makeCluster, parLapply, .from = parallel)
 }
 
