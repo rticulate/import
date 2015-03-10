@@ -4,10 +4,13 @@
 \name{import}
 \alias{import}
 \alias{import-package}
-\title{import}
+\title{An Import Mechanism for R}
 \description{
 The package provides an alternative mechanism for importing
 objects from packages.
+}
+\details{
+import
 }
 \author{
 Stefan Milton Bache

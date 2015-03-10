@@ -3,23 +3,27 @@
 #' @docType package
 #' @name import
 #' @author Stefan Milton Bache
+#' @title An Import Mechanism for R
 #' @description The package provides an alternative mechanism for importing
 #' objects from packages.
 NULL
 
-#' Import objects from a package.
+#' Import Objects from a Package.
 #'
 #' The \code{import::from} and \code{import::into} functions provide
 #' an alternative way to import objects (e.g. functions) from packages.
-#' It is sometimes preferable compared with \code{library} or \code{require}
+#' It is sometimes preferable compared to \code{library} or \code{require}
 #' which will expose all exported objects from the package.
 #' The benefit over \code{obj <- pkg::obj} is that the imports will be
-#' imported into a namespace rather than into the global environment. Also,
-#' it is a more succinct way of importing several objects.
+#' imported into a separate search-path enry, rather than into the global
+#' environment. Also, it is a more succinct way of importing several objects.
+#' The syntax makes it clear what objects will be used, and where they
+#' come from, and thus avoids confusion arising from several \code{library}
+#' statements.
 #'
 #' These functions have the intended side-effect of altering
 #' the search path, as they (by default) imports objects into the "imports"
-#' search path entry rather than the global environment.
+#' search-path entry rather than the global environment.
 #'
 #' The \code{import} package is not meant to be loaded with \code{library},
 #' but rather it is named to make the function calls expressive without the
