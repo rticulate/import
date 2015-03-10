@@ -6,12 +6,12 @@
 \alias{import-package}
 \title{An Import Mechanism for R}
 \description{
-The package provides an alternative mechanism for importing
-  objects from packages. The syntax allows for importing mulitple objects
+This is an alternative mechanism for importing
+  objects from packages. The syntax allows for importing multiple objects
   from a package with a single command in an expressive way. The
   \code{import} package bridges some of the gap between using library (or
   require) and direct (single-object) imports. Furthermore the imported
-  objects are not placed in the current workspace.
+  objects are not placed in the current environment.
 }
 \details{
 This package is not intended for use with \code{library}. It is named
