@@ -4,15 +4,18 @@
 \name{import}
 \alias{import}
 \alias{import-package}
-\title{An Import Mechanism for R}
+\title{An Import Mechanism For R}
 \description{
-The package provides an alternative mechanism for importing
-objects from packages.
+The package provides an alternative and expressive
+mechanism for importing objects from packages.
 }
 \details{
 import
 }
 \author{
 Stefan Milton Bache
+}
+\seealso{
+\code{\link{from}}, \code{\link{into}}, \code{\link{here}}.
 }
 
