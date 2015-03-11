@@ -1,3 +1,8 @@
+## General
+NB: This is a resubmit, as I forgot to ignore my 
+cran-comments.md file! Version number increased to be able to submit again,
+hope you don't waste time. Nothing else changed.
+
 ## Test environments
 * local Windows installation (R 3.1.2)
 * local Mac OS X (R 3.1.2)

@@ -22,7 +22,12 @@ solve the two issues raised above.
 
 # Installation and usage 
 
-To install `import` from GitHub you can use `devtools`:
+To install `import` from CRAN:
+```R
+install.packages("import")
+```
+
+You can also install `import` from GitHub using `devtools`:
 
 ```R
 devtools::install_github("smbache/import")
