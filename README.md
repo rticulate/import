@@ -1,4 +1,5 @@
-# `import` - An Import Mechanism For R
+![Alt text](./import.png?raw=true "import logo")
+# An Import Mechanism For R
 
 # Motivation
 The typical way of using functionality exposed by a package in R is to load 
