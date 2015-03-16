@@ -2,11 +2,11 @@
 # An Import Mechanism For R
 
 # Motivation
-The typical way of using functionality exposed by a package in R is to load 
-(and attach) the entire package with `library` (or `require`). This can have 
-the **undesirable effect of masking objects** in the user's search path and can 
-also make it difficult and **confusing to identify** what functionality comes 
-from which package when using several `library` statements.
+The typical way of using functionality exposed by a package in R scripts is to 
+load (and attach) the entire package with `library` (or `require`). This can 
+have the **undesirable effect of masking objects** in the user's search path 
+and can also make it difficult and **confusing to identify** what functionality 
+comes from which package when using several `library` statements.
 
 An alternative is to import a single object from a package, say `object <-
 package::object`. The downside of this approach is that the object is **placed 
@@ -18,7 +18,9 @@ time** using this approach.
 
 The `import` package provides a simple alternative to importing and is inspired
 in part by Python's `from some_module import some_function` syntax, and will
-solve the two issues raised above.
+solve the two issues raised above. It is also similar to `roxygen2`s 
+`@importFrom package function1 function2` for packages. While `import` will 
+also work for package development, it is meant for `R` scripts.
 
 
 # Installation and usage 
