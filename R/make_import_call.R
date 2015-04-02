@@ -17,7 +17,7 @@ make_import_call <- function(name, pkg, ns, new_name)
                  new_name = new_name)
 
   substitute(assign(new_name,
-                    get(name, envir = asNamespace(pkg), inherits = FALSE),
+                    get(name, envir = asNamespace(pkg), inherits = TRUE),
                     ns),
              params)
 }

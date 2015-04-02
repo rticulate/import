@@ -60,6 +60,9 @@ NULL
 #' import::into("imports:parallel", makeCluster, parLapply, .from = parallel)
 from <- function(.from, ..., .into = "imports")
 {
+  if (missing(.from))
+    stop("Argument .from must be specified for import::from.", call. = FALSE)
+
   symbols <- symbol_list(...)
   parent  <- parent.frame()
   from    <- symbol_as_character(substitute(.from))
@@ -91,6 +94,10 @@ from <- function(.from, ..., .into = "imports")
 #' @export
 into <- function(.into, ..., .from)
 {
+  if (missing(.into) || missing(.from))
+    stop("Arguments .into and .from must be specified for import::into.",
+         call. = FALSE)
+
   cl <- match.call()
   cl[[1L]] <- quote(import::from)
   eval.parent(cl)
@@ -100,6 +107,9 @@ into <- function(.into, ..., .from)
 #' @export
 here <- function(..., .from)
 {
+  if (missing(.from))
+    stop("Argument .from must be specified for import::here.", call. = FALSE)
+
   cl <- match.call()
   cl[[1L]] <- quote(import::from)
   cl[[".into"]] <- ""
