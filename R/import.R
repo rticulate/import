@@ -54,11 +54,13 @@ NULL
 #'   If arguments are named, then the imported object will have this new name.
 #' @param .into The name of the search path entry. Use \code{""} to import
 #'   into the current environment.
+#' @param .library character specifying the library to use. Defaults to
+#'   the latest specified library.
 #' @export
 #' @examples
 #' import::from(parallel, makeCluster, parLapply)
 #' import::into("imports:parallel", makeCluster, parLapply, .from = parallel)
-from <- function(.from, ..., .into = "imports")
+from <- function(.from, ..., .into = "imports", .library = .libPaths()[1L])
 {
   if (missing(.from))
     stop("Argument .from must be specified for import::from.", call. = FALSE)
@@ -80,11 +82,13 @@ from <- function(.from, ..., .into = "imports")
   for (s in seq_along(symbols)) {
     import_call <-
       make_import_call(symbols[s],
+                       names(symbols)[s],
                        from,
                        if (use_into) symbol_as_character(into),
-                       names(symbols)[s])
+                       .library)
 
-    eval.parent(import_call)
+    tryCatch(eval.parent(import_call),
+             error = function(e) stop(e$message, call. = FALSE))
   }
 
   invisible(NULL)
@@ -92,7 +96,7 @@ from <- function(.from, ..., .into = "imports")
 
 #' @rdname importfunctions
 #' @export
-into <- function(.into, ..., .from)
+into <- function(.into, ..., .from, .library = .libPaths()[1L])
 {
   if (missing(.into) || missing(.from))
     stop("Arguments .into and .from must be specified for import::into.",
@@ -105,7 +109,7 @@ into <- function(.into, ..., .from)
 
 #' @rdname importfunctions
 #' @export
-here <- function(..., .from)
+here <- function(..., .from, .library = .libPaths()[1L])
 {
   if (missing(.from))
     stop("Argument .from must be specified for import::here.", call. = FALSE)

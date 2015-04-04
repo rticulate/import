@@ -4,16 +4,18 @@
 \alias{make_import_call}
 \title{Make an import call object.}
 \usage{
-make_import_call(name, pkg, ns, new_name)
+make_import_call(name, new, pkg, into, lib)
 }
 \arguments{
 \item{name}{character: The name of the object to import.}
 
+\item{new}{character: The new name to use for the imported object.}
+
 \item{pkg}{character: The name of the package to import from.}
 
-\item{ns}{character: The namespace in which to import.}
+\item{into}{character: The namespace in which to import.}
 
-\item{new_name}{character: The new name to use for the imported object.}
+\item{lib}{character: The library in which to find \code{pkg}.}
 }
 \value{
 A call object.

@@ -6,11 +6,11 @@
 \alias{into}
 \title{Import objects from a package.}
 \usage{
-from(.from, ..., .into = "imports")
+from(.from, ..., .into = "imports", .library = .libPaths()[1L])
 
-into(.into, ..., .from)
+into(.into, ..., .from, .library = .libPaths()[1L])
 
-here(..., .from)
+here(..., .from, .library = .libPaths()[1L])
 }
 \arguments{
 \item{.from}{The package from which to import.}
@@ -20,6 +20,9 @@ If arguments are named, then the imported object will have this new name.}
 
 \item{.into}{The name of the search path entry. Use \code{""} to import
 into the current environment.}
+
+\item{.library}{character specifying the library to use. Defaults to
+the latest specified library.}
 }
 \description{
 The \code{import::from} and \code{import::into} functions provide an
