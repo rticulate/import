@@ -3,24 +3,17 @@
 #' The import call constructed by this function can be evaluated with
 #' \code{eval} to perform the actual import.
 #'
-#' @param name character: The name of the object to import.
-#' @param pkg character: The name of the package to import from.
-#' @param into character: The namespace in which to import.
-#' @param new character: The new name to use for the imported object.
-#' @param lib character: The library in which to find \code{pkg}.
+#' @param params list of parameters to substitute in the call.
+#' @param exports_only logical indicating whether only exported objects are
+#'   allowed.
 #'
 #' @return A call object.
-make_import_call <- function(name, new, pkg, into, lib)
+make_import_call <- function(params, exports_only)
 {
-  params <- list(name = name,
-                 new  = new,
-                 pkg  = pkg,
-                 into = if (is.null(into)) -1 else into,
-                 lib  = lib)
-
-  substitute(assign(new,
-                    get(name, envir = loadNamespace(pkg, lib.loc = lib),
-                        inherits = TRUE),
-                    into),
-             params)
+  if (exports_only)
+    substitute(assign(new, getExportedValue(nm, ns = ns), pos = pos),
+               params)
+  else
+    substitute(assign(new, get(nm, envir = ns, inherits = inh), pos = pos),
+               params)
 }

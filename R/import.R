@@ -62,31 +62,55 @@ NULL
 #' import::into("imports:parallel", makeCluster, parLapply, .from = parallel)
 from <- function(.from, ..., .into = "imports", .library = .libPaths()[1L])
 {
-  if (missing(.from))
-    stop("Argument .from must be specified for import::from.", call. = FALSE)
+  # Capture the relevant part of the call to see if
+  # the import function is used as intended.
+  cl <- match.call()[[1L]]
 
+  # Check if only exported objects are considered valid,
+  # i.e. when called as import::from
+  exports_only <- identical(cl, quote(import::from))
+
+  # If not, the only other valid way of calling the function is import:::from
+  # which will allow non-exported values too.
+  if (!exports_only && !identical(cl, quote(import:::from)))
+    stop("Use `import::` or `import:::` when importing objects.", call. = FALSE)
+
+  # Ensure that .from is specified.
+  if (missing(.from))
+    stop("Argument `.from` must be specified for import::from.",  call. = FALSE)
+
+  # Extract the arguments
   symbols <- symbol_list(...)
-  parent  <- parent.frame()
   from    <- symbol_as_character(substitute(.from))
   into    <- symbol_as_character(substitute(.into))
 
-  use_into <- !exists(".packageName", parent) &&
+  # Check whether assignment should be done in a named entry in the search path.
+  use_into <- !exists(".packageName", parent.frame()) &&
               !into == ""
 
+  # Check whether the name already exists in the search path.
   into_exists <- into %in% search()
 
+  # Create the entry if needed.
   make_attach <- attach # Make R CMD check happy.
   if (use_into && !into_exists)
     make_attach(NULL, 2L, name = into)
 
+  # Load the package namespace, which is passed to the import calls.
+  pkg <- loadNamespace(from, lib.loc = .library)
+
+  # import each object specified in the argument list.
   for (s in seq_along(symbols)) {
     import_call <-
-      make_import_call(symbols[s],
-                       names(symbols)[s],
-                       from,
-                       if (use_into) symbol_as_character(into),
-                       .library)
+      make_import_call(
+        list(new = names(symbols)[s],
+             nm  = symbols[s],
+             ns  = pkg,
+             inh = !exports_only,
+             pos = if (use_into) symbol_as_character(into) else -1),
+        exports_only)
 
+    # Evaluate the import call.
     tryCatch(eval.parent(import_call),
              error = function(e) stop(e$message, call. = FALSE))
   }
@@ -98,12 +122,16 @@ from <- function(.from, ..., .into = "imports", .library = .libPaths()[1L])
 #' @export
 into <- function(.into, ..., .from, .library = .libPaths()[1L])
 {
+  cl <- match.call()
+  if (!identical(cl[[1L]], quote(import::into)) &&
+      !identical(cl[[1L]], quote(import:::into)))
+    stop("Use `import::` or `import:::` when importing objects.", call. = FALSE)
+
   if (missing(.into) || missing(.from))
-    stop("Arguments .into and .from must be specified for import::into.",
+    stop("Arguments .into and .from must be specified.",
          call. = FALSE)
 
-  cl <- match.call()
-  cl[[1L]] <- quote(import::from)
+  cl[[1L]][[3L]] <- quote(from)
   eval.parent(cl)
 }
 
@@ -111,11 +139,17 @@ into <- function(.into, ..., .from, .library = .libPaths()[1L])
 #' @export
 here <- function(..., .from, .library = .libPaths()[1L])
 {
+  cl <- match.call()
+  if (!identical(cl[[1L]], quote(import::here)) &&
+      !identical(cl[[1L]], quote(import:::here)))
+    stop("Use `import::` or `import:::` when importing objects.", call. = FALSE)
+
+
   if (missing(.from))
-    stop("Argument .from must be specified for import::here.", call. = FALSE)
+    stop("Argument `.from` must be specified.", call. = FALSE)
 
   cl <- match.call()
-  cl[[1L]] <- quote(import::from)
+  cl[[1L]][[3L]] <- quote(from)
   cl[[".into"]] <- ""
   eval.parent(cl)
 }
