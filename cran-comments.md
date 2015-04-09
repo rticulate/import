@@ -1,7 +1,10 @@
 ## General
-NB: This is a resubmit, as I forgot to ignore my 
-cran-comments.md file! Version number increased to be able to submit again,
-hope you don't waste time. Nothing else changed.
+This is an update with the following features:
+
+* There is a distinction between using double- and triple colon syntax;
+  analalogue to using :: and ::: operators.
+* If the package is attached (e.g. via library) there is a startup message
+  informing the user that the package is not meant to be attached.
 
 ## Test environments
 * local Windows installation (R 3.1.2)

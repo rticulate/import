@@ -6,17 +6,18 @@
 \alias{import-package}
 \title{An Import Mechanism for R}
 \description{
-This is an alternative mechanism for importing
-  objects from packages. The syntax allows for importing multiple objects
-  from a package with a single command in an expressive way. The
-  \code{import} package bridges some of the gap between using library (or
-  require) and direct (single-object) imports. Furthermore the imported
-  objects are not placed in the current environment.
+This is an alternative mechanism for importing objects from
+  packages. The syntax allows for importing multiple objects from a package
+  with a single command in an expressive way. The \code{import} package
+  bridges some of the gap between using \code{library} (or \code{require})
+  and direct (single-object) imports. Furthermore the imported objects are
+  not placed in the current environment (although possible), but in a named
+  entry in the search path.
 }
 \details{
-This package is not intended for use with \code{library}. It is named
-to make calls like \code{import::from(pkg, fun1, fun2)} expressive.
-Using the \code{import} functions complements the standard use of
+This package is not intended for use with \code{library}. It is named to make
+calls like \code{import::from(pkg, fun1, fun2)} expressive. Using the
+\code{import} functions complements the standard use of
 \code{library(pkg)}(when most objects are needed, and context is clear) and
 \code{obj <- pkg::obj} (when only a single object is needed).
 }
@@ -25,6 +26,6 @@ Stefan Milton Bache
 }
 \seealso{
 For usage instructions and examples, see \code{\link{from}},
-\code{\link{into}}, or \code{\link{here}}.
+  \code{\link{into}}, or \code{\link{here}}.
 }
 

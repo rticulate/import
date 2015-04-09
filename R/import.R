@@ -1,6 +1,6 @@
-#' This package is not intended for use with \code{library}. It is named
-#' to make calls like \code{import::from(pkg, fun1, fun2)} expressive.
-#' Using the \code{import} functions complements the standard use of
+#' This package is not intended for use with \code{library}. It is named to make
+#' calls like \code{import::from(pkg, fun1, fun2)} expressive. Using the
+#' \code{import} functions complements the standard use of
 #' \code{library(pkg)}(when most objects are needed, and context is clear) and
 #' \code{obj <- pkg::obj} (when only a single object is needed).
 #'
@@ -8,14 +8,15 @@
 #' @name import
 #' @title An Import Mechanism for R
 #' @author Stefan Milton Bache
-#' @description This is an alternative mechanism for importing
-#'   objects from packages. The syntax allows for importing multiple objects
-#'   from a package with a single command in an expressive way. The
-#'   \code{import} package bridges some of the gap between using library (or
-#'   require) and direct (single-object) imports. Furthermore the imported
-#'   objects are not placed in the current environment.
+#' @description This is an alternative mechanism for importing objects from
+#'   packages. The syntax allows for importing multiple objects from a package
+#'   with a single command in an expressive way. The \code{import} package
+#'   bridges some of the gap between using \code{library} (or \code{require})
+#'   and direct (single-object) imports. Furthermore the imported objects are
+#'   not placed in the current environment (although possible), but in a named
+#'   entry in the search path.
 #' @seealso For usage instructions and examples, see \code{\link{from}},
-#' \code{\link{into}}, or \code{\link{here}}.
+#'   \code{\link{into}}, or \code{\link{here}}.
 NULL
 
 #' Import objects from a package.
@@ -29,7 +30,7 @@ NULL
 #' global/current environment. Also, it is a more succinct way of importing
 #' several objects. Note that the two functions are symmetric, and usage is a
 #' matter of preference and whether specifying the \code{.into} argument is
-#' needed. The function \code{import::here} is short-hand for
+#' desired. The function \code{import::here} is short-hand for
 #' \code{import::from} with \code{.into = ""} which imports into the current
 #' environment.
 #'
@@ -37,16 +38,21 @@ NULL
 #' In any case, the character representation is used when unquoted arguments are
 #' provided (and not the value of objects with matching names). The period in
 #' the argument names \code{.into} and \code{.from} are there to avoid name
-#' clash with package objects.
+#' clash with package objects. The double-colon syntax \code{import::from}
+#' allows for imports of exported objects (and lazy data) only. To import
+#' objects that are not exported, use triple-colon syntax, e.g.
+#' \code{import:::from}. The two ways of calling the \code{import} functions
+#' analogue the \code{::} and \code{:::} operators themselves.
 #'
 #' Note that the \code{import} functions usually have the (intended) side-effect
 #' of altering the search path, as they (by default) imports objects into the
 #' "imports" search path entry rather than the global environment.
 #'
-#' The \code{import} package is not meant to be loaded with \code{library}, but
-#' rather it is named to make the function calls expressive without the need to
-#' preload, i.e. it is designed to be used explicitely with the \code{::} syntax,
-#' e.g. \code{import::from(pkg, x, y)}.
+#' The \code{import} package is not meant to be loaded with \code{library} (and
+#' will output a message about this if attached), but rather it is named to make
+#' the function calls expressive without the need to preload, i.e. it is
+#' designed to be used explicitely with the \code{::} syntax, e.g.
+#' \code{import::from(pkg, x, y)}.
 #'
 #' @rdname importfunctions
 #' @param .from The package from which to import.
@@ -68,11 +74,12 @@ from <- function(.from, ..., .into = "imports", .library = .libPaths()[1L])
 
   # Check if only exported objects are considered valid,
   # i.e. when called as import::from
-  exports_only <- identical(cl, quote(import::from))
+#exports_only <- identical(cl, quote(import::from))
+  exports_only <- identical(cl, call("::", quote(import), quote(from)))
 
   # If not, the only other valid way of calling the function is import:::from
   # which will allow non-exported values too.
-  if (!exports_only && !identical(cl, quote(import:::from)))
+  if (!exports_only && !identical(cl, call(":::", quote(import), quote(from))))
     stop("Use `import::` or `import:::` when importing objects.", call. = FALSE)
 
   # Ensure that .from is specified.
@@ -122,15 +129,18 @@ from <- function(.from, ..., .into = "imports", .library = .libPaths()[1L])
 #' @export
 into <- function(.into, ..., .from, .library = .libPaths()[1L])
 {
+  # Capture the call and check that it is valid.
   cl <- match.call()
-  if (!identical(cl[[1L]], quote(import::into)) &&
-      !identical(cl[[1L]], quote(import:::into)))
+  if (!identical(cl[[1L]], call( "::", quote(import), quote(into))) &&
+      !identical(cl[[1L]], call(":::", quote(import), quote(into))))
     stop("Use `import::` or `import:::` when importing objects.", call. = FALSE)
 
+  # Ensure the needed arguments are provided.
   if (missing(.into) || missing(.from))
     stop("Arguments .into and .from must be specified.",
          call. = FALSE)
 
+  # Rewrite the call to import::from syntax and evaluate in parent frame.
   cl[[1L]][[3L]] <- quote(from)
   eval.parent(cl)
 }
@@ -139,15 +149,17 @@ into <- function(.into, ..., .from, .library = .libPaths()[1L])
 #' @export
 here <- function(..., .from, .library = .libPaths()[1L])
 {
+  # Capture the call and check that it is valid.
   cl <- match.call()
-  if (!identical(cl[[1L]], quote(import::here)) &&
-      !identical(cl[[1L]], quote(import:::here)))
+  if (!identical(cl[[1L]], call( "::", quote(import), quote(here))) &&
+      !identical(cl[[1L]], call(":::", quote(import), quote(here))))
     stop("Use `import::` or `import:::` when importing objects.", call. = FALSE)
 
-
+  # Ensure the needed arguments are provided.
   if (missing(.from))
     stop("Argument `.from` must be specified.", call. = FALSE)
 
+  # Rewrite the call to import::from syntax and evaluate in parent frame.
   cl <- match.call()
   cl[[1L]][[3L]] <- quote(from)
   cl[[".into"]] <- ""

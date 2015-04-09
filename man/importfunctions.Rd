@@ -34,7 +34,7 @@ separate entry in the search path (which can be specified), rather in the
 global/current environment. Also, it is a more succinct way of importing
 several objects. Note that the two functions are symmetric, and usage is a
 matter of preference and whether specifying the \code{.into} argument is
-needed. The function \code{import::here} is short-hand for
+desired. The function \code{import::here} is short-hand for
 \code{import::from} with \code{.into = ""} which imports into the current
 environment.
 }
@@ -43,16 +43,21 @@ The function arguments can be quoted or unquoted as with e.g. \code{library}.
 In any case, the character representation is used when unquoted arguments are
 provided (and not the value of objects with matching names). The period in
 the argument names \code{.into} and \code{.from} are there to avoid name
-clash with package objects.
+clash with package objects. The double-colon syntax \code{import::from}
+allows for imports of exported objects (and lazy data) only. To import
+objects that are not exported, use triple-colon syntax, e.g.
+\code{import:::from}. The two ways of calling the \code{import} functions
+analogue the \code{::} and \code{:::} operators themselves.
 
 Note that the \code{import} functions usually have the (intended) side-effect
 of altering the search path, as they (by default) imports objects into the
 "imports" search path entry rather than the global environment.
 
-The \code{import} package is not meant to be loaded with \code{library}, but
-rather it is named to make the function calls expressive without the need to
-preload, i.e. it is designed to be used explicitely with the \code{::} syntax,
-e.g. \code{import::from(pkg, x, y)}.
+The \code{import} package is not meant to be loaded with \code{library} (and
+will output a message about this if attached), but rather it is named to make
+the function calls expressive without the need to preload, i.e. it is
+designed to be used explicitely with the \code{::} syntax, e.g.
+\code{import::from(pkg, x, y)}.
 }
 \examples{
 import::from(parallel, makeCluster, parLapply)
