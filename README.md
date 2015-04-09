@@ -47,13 +47,17 @@ import::from(dplyr, select, arrange, keep_when = filter)
 This does pretty much what it says: three functions are imported from `dplyr`,
 two of which will keep their original name, and one which is renamed, e.g. to
 avoid name clash with `stats::filter`. The imported objects are placed in a
-separate entity in the search path (@lionel suggests naming them "pied-à-terres", 
+separate entity in the search path (@lionel- suggests naming them "pied-à-terres", 
 meaning living units some distance away from primary residence), which by 
 default is named "imports". It is therefore also easy to get rid of them again 
 with `detach("imports")`. The main point is that it is **clear which functions 
 will be used and where they come from**. It's noteworthy that there is nothing 
 special going on: the `import::from` function is only a convenient wrapper 
-around `get` (as is `:::`) and `assign`. 
+around `getExportedValue` (as is `::` itself) and `assign`. To import 
+non-exported objects one must use triple-colon syntax: `import:::from(pkg, obj)`.
+If any of the `import` functions are called regularly, i.e. without preceding
+`import::` or `import:::`, an error is raised. If `import` is attached, a 
+startup message will inform that `import` *should not* be attached.
 
 One can also specify which names to use in the search path and use several to 
 group imports:

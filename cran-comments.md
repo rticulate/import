@@ -5,6 +5,8 @@ This is an update with the following features:
   analalogue to using :: and ::: operators.
 * If the package is attached (e.g. via library) there is a startup message
   informing the user that the package is not meant to be attached.
+* It is only possible to use the functions with the `import::` / `import:::`
+  syntax.
 
 ## Test environments
 * local Windows installation (R 3.1.2)
