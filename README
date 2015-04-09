@@ -84,6 +84,13 @@ alternative is to quote the inputs, e.g.
 import::from("ggplot2", "qplot")
 ```
 
+# Specifying a library
+The `import` package will by default only use the latest specified library
+(i.e. the result of `.libPaths()[1L]`). It is possible to specify a different
+library using the `.library` argument in any of the `import` functions.
+One import call can only use *one* library so there will not be ambiguity
+as to where imports come from.
+
 # Notes:
 
 * When the arguments are unquoted they will be treated as they are written!

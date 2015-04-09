@@ -1,6 +1,8 @@
 ## General
 This is an update with the following features:
 
+* You can now specify which library to use, and only one library is ever 
+  used in a single call, so there is no ambiguity about where imports come from.
 * There is a distinction between using double- and triple colon syntax;
   analalogue to using :: and ::: operators.
 * If the package is attached (e.g. via library) there is a startup message
@@ -11,7 +13,7 @@ This is an update with the following features:
 ## Test environments
 * local Windows installation (R 3.1.2)
 * local Mac OS X (R 3.1.2)
-* win-builder (devel and release)
+* win-builder (devel and release R 3.1.3)
 
 ## R CMD check results
 There were no ERRORs or WARNINGs.

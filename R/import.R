@@ -45,7 +45,7 @@ NULL
 #' analogue the \code{::} and \code{:::} operators themselves.
 #'
 #' Note that the \code{import} functions usually have the (intended) side-effect
-#' of altering the search path, as they (by default) imports objects into the
+#' of altering the search path, as they (by default) import objects into the
 #' "imports" search path entry rather than the global environment.
 #'
 #' The \code{import} package is not meant to be loaded with \code{library} (and
