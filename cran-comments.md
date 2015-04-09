@@ -13,7 +13,7 @@ This is an update with the following features:
 ## Test environments
 * local Windows installation (R 3.1.2)
 * local Mac OS X (R 3.1.2)
-* win-builder (devel and release R 3.1.3)
+* win-builder (devel R 3.2.0RC and release R 3.1.3)
 
 ## R CMD check results
 There were no ERRORs or WARNINGs.
@@ -28,7 +28,7 @@ There was one NOTE:
 ## Downstream dependencies
 There are no downstream dependencies.
 
-## Other Notes:
+## Other Notes (unchanged since last):
 The package's functionality may alter the search path, but this
 is intended and should be clear for the user, as the main functionality 
 is an alternative to using `library`. For example the call 
