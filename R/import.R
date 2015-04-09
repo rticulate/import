@@ -23,7 +23,7 @@ NULL
 #'
 #' The \code{import::from} and \code{import::into} functions provide an
 #' alternative way to import objects (e.g. functions) from packages. It is
-#' sometimes prefered over using \code{library} (or \code{require}) which will
+#' sometimes preferred over using \code{library} (or \code{require}) which will
 #' import all objects exported by the package. The benefit over \code{obj <-
 #' pkg::obj} is that the imported objects will (by default) be placed in a
 #' separate entry in the search path (which can be specified), rather in the
@@ -51,7 +51,7 @@ NULL
 #' The \code{import} package is not meant to be loaded with \code{library} (and
 #' will output a message about this if attached), but rather it is named to make
 #' the function calls expressive without the need to preload, i.e. it is
-#' designed to be used explicitely with the \code{::} syntax, e.g.
+#' designed to be used explicitly with the \code{::} syntax, e.g.
 #' \code{import::from(pkg, x, y)}.
 #'
 #' @rdname importfunctions
