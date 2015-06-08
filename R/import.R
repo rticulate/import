@@ -19,6 +19,8 @@
 #'   \code{\link{into}}, or \code{\link{here}}.
 NULL
 
+scripts <- new.env()
+
 #' Import objects from a package.
 #'
 #' The \code{import::from} and \code{import::into} functions provide an
@@ -74,7 +76,7 @@ from <- function(.from, ..., .into = "imports", .library = .libPaths()[1L])
 
   # Check if only exported objects are considered valid,
   # i.e. when called as import::from
-#exports_only <- identical(cl, quote(import::from))
+
   exports_only <- identical(cl, call("::", quote(import), quote(from)))
 
   # If not, the only other valid way of calling the function is import:::from
@@ -103,8 +105,24 @@ from <- function(.from, ..., .into = "imports", .library = .libPaths()[1L])
   if (use_into && !into_exists)
     make_attach(NULL, 2L, name = into)
 
-  # Load the package namespace, which is passed to the import calls.
-  pkg <- loadNamespace(from, lib.loc = .library)
+  from_script <- isTRUE(grepl(".+\\.[rR]$", from))
+
+  if (from_script) {
+    if (!from %in% ls(scripts, all.names = TRUE)) {
+      attached <- search()
+      assign(from, new.env(parent = parent.frame()), scripts)
+      suppress_output(sys.source(from, scripts[[from]]))
+      on.exit({
+        to_deattach <- Filter(function(.) !. %in% attached, search())
+        for (d in to_deattach)
+          detach(d, character.only = TRUE)
+      })
+    }
+    pkg <- scripts[[from]]
+  } else {
+    # Load the package namespace, which is passed to the import calls.
+    pkg <- loadNamespace(from, lib.loc = .library)
+  }
 
   # import each object specified in the argument list.
   for (s in seq_along(symbols)) {
@@ -115,7 +133,7 @@ from <- function(.from, ..., .into = "imports", .library = .libPaths()[1L])
              ns  = pkg,
              inh = !exports_only,
              pos = if (use_into) symbol_as_character(into) else -1),
-        exports_only)
+        exports_only && !from_script)
 
     # Evaluate the import call.
     tryCatch(eval.parent(import_call),
