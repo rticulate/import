@@ -91,6 +91,7 @@ import::from("ggplot2", "qplot")
 ```
 
 # Specifying a library
+
 The `import` package will by default only use the latest specified library
 (i.e. the result of `.libPaths()[1L]`). It is possible to specify a different
 library using the `.library` argument in any of the `import` functions.
@@ -98,6 +99,7 @@ One import call can only use *one* library so there will not be ambiguity
 as to where imports come from.
 
 # Using .R scripts as "modules" (currently only in GitHub version)
+
 The `import` package allows for importing objects defined in script files,
 which we will here refer to as "modules".
 The module will be fully evaluated by `import` when an import is requested, 
@@ -154,11 +156,12 @@ a("cool", "import")
 ## The `+` is not affecting anything here, so this won't work:
 # "cool" + "import"
 
-# WOrks:
+# Works:
 b
 p
 
-## Does not work, as ggplot2 is no longer attached:
+## Does not work, as ggplot2 is no longer attached
+## (would work with the import statement!):
 #plot_it()
 ```
 
