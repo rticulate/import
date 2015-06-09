@@ -22,6 +22,12 @@ solve the two issues raised above. It is also similar to `roxygen2`s
 `@importFrom package function1 function2` for packages. While `import` will 
 also work for package development, it is meant for `R` scripts.
 
+In addition to being able to import objects from packages, `import` also allows
+you to import objects in *scripts* (i.e. a kind of *module*). This allows
+a simple way to distribute and use functionality without the need to write
+a full package. One example is a Shiny app, where one can place definitions 
+in a script and import only the needed objects where they are used. This 
+avoids workspace clutter and name clashes. For more details see below.
 
 # Installation and usage 
 
@@ -90,6 +96,71 @@ The `import` package will by default only use the latest specified library
 library using the `.library` argument in any of the `import` functions.
 One import call can only use *one* library so there will not be ambiguity
 as to where imports come from.
+
+# Using .R scripts as "modules" (currently only in GitHub version)
+The `import` package allows for importing objects defined in script files,
+which we will here refer to as "modules".
+The module will be fully evaluated by `import` when an import is requested, 
+after which objects such as functions or data can be imported. 
+Such modules should be side-effect free, but this is
+not enforced. Attachments are detached (e.g. packages attached by `library`)
+but loaded namespaces remain loaded. This means that *values* created 
+by functions in an attached namespace will work with `import`, but 
+functions to be exported *should not* rely on such functions (use function
+importing in the modules instead).
+
+If a module is modified, `import` will
+realize this and reload the script if further imports are executed or 
+re-executed; otherwise additional imports will not cause the script to be 
+reloaded for efficiency. As the script is loaded in its own environment 
+(maintained by `import`) dependencies are kept (except those exposed through
+attachment), as the following small example shows.
+
+**Contents of "some_module.R":**
+```R
+## Possible
+library(ggplot2)
+
+## But would be better:
+#import::here(qplot, .from = ggplot2)
+
+## Note this operator overload is not something you want to `source`!
+`+` <- function(e1, e2)
+  paste(e1, e2)
+
+## Some function relying on the above overload:
+a <- function(s1, s2)
+  s1 + rep(s2, 3)
+
+## Another value.
+b <- head(iris, 10)
+
+## A value created using a function exposed by attachment 
+p <- qplot(Sepal.Length, Sepal.Width, data = iris, color = Species)
+
+## A function relying on a function exposed through attachment:
+plot_it <- function()
+  qplot(Sepal.Length, Sepal.Width, data = iris, color = Species)
+
+```
+
+**Usage:**
+```R
+import::from(some_module.R, a, b, p, plot_it)
+
+## Works:
+a("cool", "import")
+
+## The `+` is not affecting anything here, so this won't work:
+# "cool" + "import"
+
+# WOrks:
+b
+p
+
+## Does not work, as ggplot2 is no longer attached:
+#plot_it()
+```
 
 # Notes:
 
