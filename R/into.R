@@ -1,0 +1,19 @@
+#' @rdname importfunctions
+#' @export
+into <- function(.into, ..., .from, .library = .libPaths()[1L])
+{
+  # Capture the call and check that it is valid.
+  cl <- match.call()
+  if (!identical(cl[[1L]], call( "::", quote(import), quote(into))) &&
+      !identical(cl[[1L]], call(":::", quote(import), quote(into))))
+    stop("Use `import::` or `import:::` when importing objects.", call. = FALSE)
+
+  # Ensure the needed arguments are provided.
+  if (missing(.into) || missing(.from))
+    stop("Arguments .into and .from must be specified.",
+         call. = FALSE)
+
+  # Rewrite the call to import::from syntax and evaluate in parent frame.
+  cl[[1L]][[3L]] <- quote(from)
+  eval.parent(cl)
+}

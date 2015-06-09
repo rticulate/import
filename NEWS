@@ -1,3 +1,10 @@
+Version 1.0.3
+
+* There is now support to import objects from script files, i.e. a kind of
+  "module". Scripts meant to expose objects for import should ideally be
+  side-effect free, but this is not inforced. Any attachments are detached
+  after import, but loaded namespaces remain loaded.
+
 Version 1.0.2
 =============
 

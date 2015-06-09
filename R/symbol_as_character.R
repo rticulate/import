@@ -5,11 +5,11 @@
 symbol_as_character <- function(symbol)
 {
   if (is.symbol(symbol) ||
-     (is.character(symbol) && length(symbol) == 1L))
+     (is.character(symbol) && length(symbol) == 1L)) {
     as.character(symbol)
-  else
+  } else {
     stop(sprintf("%s is not a valid symbol.",
                  paste(as.character(symbol), collapse = " ")),
          call. = FALSE)
+  }
 }
-

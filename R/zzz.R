@@ -4,7 +4,7 @@
 {
   msg <-
     paste0("The import package should not be attached.\n",
-           "Use colon syntax instead, e.g. import::from, or import:::from.")
+           "Use \"colon syntax\" instead, e.g. import::from, or import:::from.")
 
   packageStartupMessage(msg)
 
