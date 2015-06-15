@@ -90,7 +90,7 @@ from <- function(.from, ..., .into = "imports", .library = .libPaths()[1L])
       attached <- search()
       assign(from, new.env(parent = parent.frame()), scripts)
       modified(scripts[[from]]) <- modified(from)
-      suppress_output(sys.source(from, scripts[[from]]))
+      suppress_output(sys.source(from, scripts[[from]], chdir = TRUE))
       on.exit({
         to_deattach <- Filter(function(.) !. %in% attached, search())
         for (d in to_deattach)
