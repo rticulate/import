@@ -1,7 +1,7 @@
 ![Alt text](./import.png?raw=true "import logo")
 # An Import Mechanism For R
 
-# Motivation
+## Motivation
 The typical way of using functionality exposed by a package in R scripts is to 
 load (and attach) the entire package with `library` (or `require`). This can 
 have the **undesirable effect of masking objects** in the user's search path 
@@ -29,7 +29,7 @@ a full package. One example is a Shiny app, where one can place definitions
 in a script and import only the needed objects where they are used. This 
 avoids workspace clutter and name clashes. For more details see below.
 
-# Installation and usage 
+## Installation and usage 
 
 To install `import` from CRAN:
 ```R
@@ -90,7 +90,7 @@ alternative is to quote the inputs, e.g.
 import::from("ggplot2", "qplot")
 ```
 
-# Specifying a library
+## Specifying a library
 
 The `import` package will by default only use the latest specified library
 (i.e. the result of `.libPaths()[1L]`). It is possible to specify a different
@@ -98,7 +98,7 @@ library using the `.library` argument in any of the `import` functions.
 One import call can only use *one* library so there will not be ambiguity
 as to where imports come from.
 
-# Using .R scripts as "modules" (currently only in GitHub version)
+## Using .R scripts as "modules" (currently only in GitHub version)
 
 The `import` package allows for importing objects defined in script files,
 which we will here refer to as "modules".
