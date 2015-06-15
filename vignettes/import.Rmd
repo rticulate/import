@@ -1,0 +1,152 @@
+<!--
+%\VignetteEngine{knitr::rmarkdown}
+%\VignetteIndexEntry{import}
+-->
+
+The import package
+===================
+
+*Stefan Holst Milton Bache. This version: June, 2015.*
+
+![import-logo](import.png)
+
+## Introduction
+One of the most important aspects of the R ecosystem is the ease with which
+extensions and new features can be developed and distributed in the form of
+*packages.* The main distribution channel is through the *Comprehensive R
+Archive Network*, from which packages can be installed directly from within
+R. Another popular option is using GitHub repositories from which packages can
+also be painlessly installed, e.g. using `install_github` from the 
+`devtools` package. 
+
+The most common way to include functionality provided by a package is to use
+the `library` function:
+
+```{r, eval = FALSE}
+library(PackageA)
+library(PackageB)
+
+value1 <- function_a(...) # Supposedly this comes from PackageA, 
+value2 <- function_b(...) # and this from PackageB, but who knows?!
+...
+```
+
+In some situations this is fine; however there are some subtle shortcomings:
+
+1. Packages are *attached* and all of their exported objects are exposed,
+2. When using more packages this way, the *order* in which they are included 
+   can be important,
+3. It quickly becomes *unclear* to the reader of a script what functionality
+   comes from which package, and
+4. the terms "library" and "package" are often used incorrectly 
+   (although a minor point, it seems to confuse somewhat).
+
+The problem with (1) is that the search path is populated with more
+objects than are needed and it is not immediately clear whether name clashes
+will occur. Problem (2) refers to the case where packages export
+different objects with the same names, say if `function_b` is exported in both
+`PackageA` and `PackageB` above. In this case the name will 
+point to the object from the package included *last*. The earlier exposed 
+objects are said to *masked*. Even if this is not a problem
+when *writing* the script, an update of packages may cause this problem
+later on when *executing* the script; and tracking down the resulting 
+errors may be tough and time consuming. Problem (3) may appear unimportant, 
+but it is not to be underestimated. Code snippets are very commonly shared
+and spending time figuring out where functionality comes from is not 
+a very satisfying nor value-adding activity.
+
+To overcome the above, one may import single exported objects, one at a time, 
+using the (double) "colon syntax",
+
+```{r, eval = FALSE}
+function_a <- PackageA::function_a
+function_b <- PackageB::function_b
+```
+
+or functions can be prefixed with `::` when used, but this is often 
+overly verbose and does not provide an easily accessible overview of what
+external functionality is used in a script.
+
+While packages form the backbone of code distribution, another option comes
+in the form of *scripts*, but these are usually task specific and not
+commonly used to "bundle" functionality for use in *other* scripts. In 
+particular, when `source` is used to include contents from one script in 
+another, once again *all* objects produced by the script will be "exposed"
+and may "over populate" the working environment, masking other objects, 
+if not only producing some mental clutter.
+
+The `import` package sets out to improve the way external functionality 
+is *included* in your code by alleviating some of the concerns raised above by
+providing an expressive way of importing object from both packages and
+scripts. The latter provides a bridge between the *package* approach to
+distribtion and simple stand-alone scripts. This allows for the use of scripts
+as *modules*, a collection og related object definitions, each of which
+may be used at different places without exposing more than necessary.
+
+## Usage
+The `import` package itself is not to be attached 
+(don't include it via `library`, you will get a warning). Rather, it is designed
+to be expressive when using the colon syntax. A first pseudo-example is:
+
+```{r, eval = FALSE}
+import::from(magrittr, "%>%")
+import::from(dplyr, mutate, keep_when = filter)
+import::from(tidyr, spread)
+import::from(broom, tidy)
+
+ready_data <-
+  raw_data %>% 
+  mutate(var2 = fun(var1)) %>% 
+  keep_when(var1 > 0) %>% 
+  spread(key, value) 
+
+linear_model <- 
+  lm(var1 ~ ., data = ready_data) %>% 
+  tidy
+  
+# ... and more code below.
+```
+
+In the above, it is clear *which* package provides *which* functions
+(one could e.g. otherwise be tempted to think that `tidy` belonged to
+`tidyr`). Note that ordering is irrelevant, even if `tidyr` at some point
+exposes a function `tidy` after an update, as `import` is *explicit* about
+importing.
+
+It also shows that one can import multiple objects in a single
+statement, and even rename objects if desired; for example, in the above 
+one can imagine that `filter` from `stats` is needed later on, and so
+`dplyr`'s `filter` is renamed to avoid confusion. Sometimes, it is 
+not at all clear what purpose a package has; e.g. the name `magrittr` does
+not immediately reveal that it's main purpose is to provide the pipe 
+operator, `%>%`.
+
+When `import::from` is used to import objects it will place these in an 
+environment attached in the search path under the name "imports". This 
+name is just default, and can be specified:
+
+```{r, eval = FALSE}
+import::from(dplyr, mutate, select, .into = "wrangling")
+
+# or equivalently:
+import::into("wrangling", mutate, select, .from = dplyr)
+
+ls("wrangling") # Also viewable in Rstudio's environment browser!
+# => [1] "mutate" "select"
+```
+
+Note, that the `.from` and `.into` arguments are prefixed by a dot to
+clearly distinguish them from other named arguments. The two 
+alternatives above are equivalent (the choice is a matter of preferece).
+
+If it is desired to import objects directly into the current environment, 
+this can be accomplished by `import::here`. This is particularly 
+useful when importing inside a function definition, or module scripts as
+described below.
+
+## "Module" scripts
+...TODO...
+
+
+
+ 

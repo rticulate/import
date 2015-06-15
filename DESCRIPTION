@@ -14,3 +14,5 @@ License: MIT + file LICENSE
 ByteCompile: TRUE
 URL: https://github.com/smbache/import
 BugReports: https://github.com/smbache/import/issues
+Suggests: knitr
+VignetteBuilder: knitr

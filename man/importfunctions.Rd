@@ -22,7 +22,11 @@ If arguments are named, then the imported object will have this new name.}
 into the current environment.}
 
 \item{.library}{character specifying the library to use. Defaults to
-the latest specified library.}
+  the latest specified library.}
+}
+\value{
+a reference to the environment with the imports or \code{NULL}
+  if \code{into = ""}, invisibly.
 }
 \description{
 The \code{import::from} and \code{import::into} functions provide an

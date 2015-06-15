@@ -1,14 +1,11 @@
 ## General
 This is an update with the following features:
 
-* You can now specify which library to use, and only one library is ever 
-  used in a single call, so there is no ambiguity about where imports come from.
-* There is a distinction between using double- and triple colon syntax;
-  analalogue to using :: and ::: operators.
-* If the package is attached (e.g. via library) there is a startup message
-  informing the user that the package is not meant to be attached.
-* It is only possible to use the functions with the `import::` / `import:::`
-  syntax.
+* One can now import objects defined in .R files (script/modules).
+  When imports are made from a file, this file is sourced into
+  an environment managed by `import`, and only the imported object(s)
+  will be exposed. This allows for flexible scoping without the need
+  to write a full package.
 
 ## Test environments
 * local Windows installation (R 3.1.2)

@@ -41,6 +41,10 @@
 #'   into the current environment.
 #' @param .library character specifying the library to use. Defaults to
 #'   the latest specified library.
+#'
+#' @return a reference to the environment with the imports or \code{NULL}
+#'   if \code{into = ""}, invisibly.
+#'
 #' @export
 #' @examples
 #' import::from(parallel, makeCluster, parLapply)
@@ -82,6 +86,7 @@ from <- function(.from, ..., .into = "imports", .library = .libPaths()[1L])
   if (use_into && !into_exists)
     make_attach(NULL, 2L, name = into)
 
+  # Determine whether the source is a script or package.
   from_is_script <- is_script(from)
 
   if (from_is_script) {
@@ -111,7 +116,7 @@ from <- function(.from, ..., .into = "imports", .library = .libPaths()[1L])
              nm  = symbols[s],
              ns  = pkg,
              inh = !exports_only,
-             pos = if (use_into) symbol_as_character(into) else -1),
+             pos = if (use_into) into else -1),
         exports_only && !from_is_script)
 
     # Evaluate the import call.
@@ -119,5 +124,5 @@ from <- function(.from, ..., .into = "imports", .library = .libPaths()[1L])
              error = function(e) stop(e$message, call. = FALSE))
   }
 
-  invisible(NULL)
+  invisible(if (use_into) as.environment(into) else NULL)
 }
