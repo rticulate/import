@@ -13,13 +13,16 @@ The import package
 ## Introduction
 One of the most important aspects of the R ecosystem is the ease with which
 extensions and new features can be developed and distributed in the form of
-*packages.* The main distribution channel is through the *Comprehensive R
-Archive Network*, from which packages can be installed directly from within
+*packages.* The main distribution channel is the *Comprehensive R
+Archive Network*, from which packages can be installed directly from
 R. Another popular option is using GitHub repositories from which packages can
 also be painlessly installed, e.g. using `install_github` from the 
 `devtools` package. 
 
-The most common way to include functionality provided by a package is to use
+The `import` package provides an alternative approach to using external 
+functionality in R scripts; first however, it is useful to describe the standard 
+approach to clarify how `import` may serve as improvement.
+The most common way to include the functionality provided by a package is to use
 the `library` function:
 
 ```{r, eval = FALSE}
@@ -33,11 +36,11 @@ value2 <- function_b(...) # and this from PackageB, but who knows?!
 
 In some situations this is fine; however there are some subtle shortcomings:
 
-1. Packages are *attached* and all of their exported objects are exposed,
-2. When using more packages this way, the *order* in which they are included 
+1. Packages are *attached* and *all* of their exported objects are exposed,
+2. When using more packages this way, the *order* in which they are attached 
    can be important,
-3. It quickly becomes *unclear* to the reader of a script what functionality
-   comes from which package, and
+3. It quickly becomes *unclear* to the reader of a script which package
+   certain functionality comes from, and
 4. the terms "library" and "package" are often used incorrectly 
    (although a minor point, it seems to confuse somewhat).
 
@@ -46,7 +49,7 @@ objects than are needed and it is not immediately clear whether name clashes
 will occur. Problem (2) refers to the case where packages export
 different objects with the same names, say if `function_b` is exported in both
 `PackageA` and `PackageB` above. In this case the name will 
-point to the object from the package included *last*. The earlier exposed 
+point to the object from the package attached *last*. The earlier exposed 
 objects are said to *masked*. Even if this is not a problem
 when *writing* the script, an update of packages may cause this problem
 later on when *executing* the script; and tracking down the resulting 
@@ -73,18 +76,20 @@ commonly used to "bundle" functionality for use in *other* scripts. In
 particular, when `source` is used to include contents from one script in 
 another, once again *all* objects produced by the script will be "exposed"
 and may "over populate" the working environment, masking other objects, 
-if not only producing some mental clutter.
+if not only producing some mental clutter. Scope management is therefore not too 
+comfortable when splitting functionality across files in a modular way.
+
 
 The `import` package sets out to improve the way external functionality 
 is *included* in your code by alleviating some of the concerns raised above by
 providing an expressive way of importing object from both packages and
 scripts. The latter provides a bridge between the *package* approach to
-distribtion and simple stand-alone scripts. This allows for the use of scripts
+distribtion and simple stand-alone script files. This allows for the use of scripts
 as *modules*, a collection og related object definitions, each of which
 may be used at different places without exposing more than necessary.
 
 ## Usage
-The `import` package itself is not to be attached 
+The `import` package itself should not to be attached 
 (don't include it via `library`, you will get a warning). Rather, it is designed
 to be expressive when using the colon syntax. A first pseudo-example is:
 
@@ -121,7 +126,7 @@ not at all clear what purpose a package has; e.g. the name `magrittr` does
 not immediately reveal that it's main purpose is to provide the pipe 
 operator, `%>%`.
 
-When `import::from` is used to import objects it will place these in an 
+When `import::from` is used to import objects it will place them in an 
 environment attached in the search path under the name "imports". This 
 name is just default, and can be specified:
 
@@ -145,8 +150,52 @@ useful when importing inside a function definition, or module scripts as
 described below.
 
 ## "Module" scripts
-...TODO...
+Suppose that you have some related functionality that you wish to bundle, and
+that authoring a full package seems excessive or inappropriate 
+for the specific task, for example bundling related UI components for a `shiny` 
+application. One option with `import` is to author a module (script), say as outlined
+below:
 
+```{r, eval=FALSE}
+# File: foo.R
+# Desc: Functionality related to foos.
+# Imports from other_resources.R
+import::here(fun_a, fun_b, .from = "other_resources.R")
 
+internal_fun <- function(...) ...
 
- 
+fun_c <- function(...) 
+{
+  ...
+  a <- fun_a(...)
+  i <- internal_fun(...)
+  ...
+}
+
+fun_d <- function(...) ...
+```
+
+Then in another file we need `fun_c`:
+
+```{r, eval = FALSE}
+# File: bar.R
+# Desc: Functionality related to bars. 
+# Imports from foo.R
+import::here(fun_c, .from = "foo.R")
+...
+```
+
+In the above, *only* `fun_c` is visible inside `bar.R`. The 
+functions on which it depends exist, but are not exposed. 
+Also, note that imported scripts may themselves import. To 
+avoid imports becoming global, it is suggested to 
+use `import::here` rather than `import::from`, in which case
+imports are only exposed to the module itself.
+
+When importing from a module, it is sourced into an environment
+managed by `import`, and will not be sourced again upon subsequent 
+imports (unless the file has changed). For example, in a `shiny` 
+application, importing some
+objects in `server.R` and others in `ui.R` from the same module will not
+cause it to be sourced twice.
+
