@@ -63,6 +63,14 @@ the function calls expressive without the need to preload, i.e. it is
 designed to be used explicitly with the \code{::} syntax, e.g.
 \code{import::from(pkg, x, y)}.
 }
+\section{Package Versions}{
+
+With \code{import} you can specify package version requirements. To do this
+add a requirement in parentheses to the package name (which then needs to
+be quoted), e.g \code{import::from("parallel (>= 3.2.0)", ...)}.
+You can use the operators \code{<}, \code{>}, \code{<=}, \code{>=},
+\code{==}, \code{!=}. Whitespace in the specification is irrelevant.
+}
 \examples{
 import::from(parallel, makeCluster, parLapply)
 import::into("imports:parallel", makeCluster, parLapply, .from = parallel)

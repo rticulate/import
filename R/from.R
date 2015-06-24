@@ -33,6 +33,13 @@
 #' designed to be used explicitly with the \code{::} syntax, e.g.
 #' \code{import::from(pkg, x, y)}.
 #'
+#' @section Package Versions:
+#' With \code{import} you can specify package version requirements. To do this
+#' add a requirement in parentheses to the package name (which then needs to
+#' be quoted), e.g \code{import::from("parallel (>= 3.2.0)", ...)}.
+#' You can use the operators \code{<}, \code{>}, \code{<=}, \code{>=},
+#' \code{==}, \code{!=}. Whitespace in the specification is irrelevant.
+#'
 #' @rdname importfunctions
 #' @param .from The package from which to import.
 #' @param ... Names or name-value pairs specifying objects to import.
@@ -105,7 +112,12 @@ from <- function(.from, ..., .into = "imports", .library = .libPaths()[1L])
     pkg <- scripts[[from]]
   } else {
     # Load the package namespace, which is passed to the import calls.
-    pkg <- loadNamespace(from, lib.loc = .library)
+    spec <- package_specs(from)
+    pkg <- tryCatch(
+      loadNamespace(spec$pkg, lib.loc = .library,
+                    versionCheck = spec$version_check),
+      error = function(e) stop(conditionMessage(e), call. = FALSE)
+    )
   }
 
   # import each object specified in the argument list.
