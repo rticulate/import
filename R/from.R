@@ -82,7 +82,7 @@ from <- function(.from, ..., .into = "imports", .library = .libPaths()[1L])
   into    <- symbol_as_character(substitute(.into))
 
   # Check whether assignment should be done in a named entry in the search path.
-  use_into <- !exists(".packageName", parent.frame()) &&
+  use_into <- !exists(".packageName", parent.frame(), inherits = TRUE) &&
     !into == ""
 
   # Check whether the name already exists in the search path.
@@ -99,10 +99,23 @@ from <- function(.from, ..., .into = "imports", .library = .libPaths()[1L])
   if (from_is_script) {
     if (!from %in% ls(scripts, all.names = TRUE) ||
         modified(from) > modified(scripts[[from]])) {
+
+      # Find currently attachments
       attached <- search()
+
+      # Create a new environment to manage the script module
       assign(from, new.env(parent = parent.frame()), scripts)
+
+      # Make modification time stamp
       modified(scripts[[from]]) <- modified(from)
+
+      # Make behaviour match that of a package, i.e. import::from won't use "imports"
+      scripts[[from]][[".packageName"]] <- from
+
+      # Source the file into the new environment.
       suppress_output(sys.source(from, scripts[[from]], chdir = TRUE))
+
+      # Make sure to detach any new attachments.
       on.exit({
         to_deattach <- Filter(function(.) !. %in% attached, search())
         for (d in to_deattach)
