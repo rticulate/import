@@ -48,6 +48,8 @@
 #'   into the current environment.
 #' @param .library character specifying the library to use. Defaults to
 #'   the latest specified library.
+#' @param .character_only A logical indicating whether \code{.from} and
+#'   \code{...} can be assumed to be charater strings.
 #'
 #' @return a reference to the environment with the imports or \code{NULL}
 #'   if \code{into = ""}, invisibly.
@@ -56,7 +58,8 @@
 #' @examples
 #' import::from(parallel, makeCluster, parLapply)
 #' import::into("imports:parallel", makeCluster, parLapply, .from = parallel)
-from <- function(.from, ..., .into = "imports", .library = .libPaths()[1L])
+from <- function(.from, ..., .into = "imports", .library = .libPaths()[1L],
+                 .character_only = FALSE)
 {
   # Capture the relevant part of the call to see if
   # the import function is used as intended.
@@ -77,8 +80,11 @@ from <- function(.from, ..., .into = "imports", .library = .libPaths()[1L])
     stop("Argument `.from` must be specified for import::from.",  call. = FALSE)
 
   # Extract the arguments
-  symbols <- symbol_list(...)
-  from    <- symbol_as_character(substitute(.from))
+  symbols <- symbol_list(..., .character_only = .character_only)
+
+  from    <-
+    `if`(isTRUE(.character_only), .from, symbol_as_character(substitute(.from)))
+
   into    <- symbol_as_character(substitute(.into))
 
   # Check whether assignment should be done in a named entry in the search path.

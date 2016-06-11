@@ -1,6 +1,7 @@
 #' @rdname importfunctions
 #' @export
-here <- function(..., .from, .library = .libPaths()[1L])
+here <- function(..., .from, .library = .libPaths()[1L],
+                 .character_only = FALSE)
 {
   # Capture the call and check that it is valid.
   cl <- match.call()
