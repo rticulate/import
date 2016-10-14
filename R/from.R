@@ -1,4 +1,4 @@
-#' Import objects from a package.
+#' Import Objects From a Package.
 #'
 #' The \code{import::from} and \code{import::into} functions provide an
 #' alternative way to import objects (e.g. functions) from packages. It is
@@ -150,9 +150,17 @@ from <- function(.from, ..., .into = "imports", .library = .libPaths()[1L],
              pos = if (use_into) into else -1),
         exports_only && !from_is_script)
 
+    if (!from_is_script)
+      import_aliases[[names(symbols)[s]]] <-
+        call("::", as.symbol(from), as.symbol(symbols[s]))
+
     # Evaluate the import call.
     tryCatch(eval.parent(import_call),
              error = function(e) stop(e$message, call. = FALSE))
+  }
+
+  if (into != "" && !exists("?", into, mode = "function", inherits = FALSE)) {
+    assign("?", `?redirect`, into)
   }
 
   invisible(if (use_into) as.environment(into) else NULL)

@@ -16,5 +16,6 @@ into <- function(.into, ..., .from, .library = .libPaths()[1L],
 
   # Rewrite the call to import::from syntax and evaluate in parent frame.
   cl[[1L]][[3L]] <- quote(from)
+
   eval.parent(cl)
 }
