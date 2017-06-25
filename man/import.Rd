@@ -21,11 +21,10 @@ calls like \code{import::from(pkg, fun1, fun2)} expressive. Using the
 \code{library(pkg)}(when most objects are needed, and context is clear) and
 \code{obj <- pkg::obj} (when only a single object is needed).
 }
-\author{
-Stefan Milton Bache
-}
 \seealso{
 For usage instructions and examples, see \code{\link{from}},
   \code{\link{into}}, or \code{\link{here}}.
 }
-
+\author{
+Stefan Milton Bache
+}

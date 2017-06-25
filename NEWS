@@ -1,5 +1,13 @@
-Version 1.1
+Version 1.1.1
+=============
 
+* import is now more strict and won't allow an import from a different
+  environment to replace an existing import of that name and location.
+* one can now import directly into an environment (which may not be attached)
+  by wrapping it in braces, e.g. import::from(pkg, symbol, .into = {env})
+
+Version 1.1.0
+=============
 * There is now support to import objects from script files, i.e. a kind of
   "module". Scripts meant to expose objects for import should ideally be
   side-effect free, but this is not inforced. Any attachments are detached

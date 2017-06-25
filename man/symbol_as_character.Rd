@@ -15,4 +15,3 @@ character
 \description{
 Convert a possible symbol to character.
 }
-

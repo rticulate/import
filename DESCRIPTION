@@ -1,7 +1,7 @@
 Package: import
 Type: Package
 Title: An Import Mechanism for R
-Version: 1.1.0
+Version: 1.1.1
 Author: Stefan Milton Bache
 Maintainer: Stefan Milton Bache <stefan@stefanbache.dk>
 Description: This is an alternative mechanism for importing
@@ -17,4 +17,4 @@ BugReports: https://github.com/smbache/import/issues
 Suggests:
     knitr
 VignetteBuilder: knitr
-RoxygenNote: 5.0.1
+RoxygenNote: 6.0.1

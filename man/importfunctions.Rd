@@ -4,7 +4,7 @@
 \alias{from}
 \alias{here}
 \alias{into}
-\title{Import objects from a package.}
+\title{Import Objects From a Package.}
 \usage{
 from(.from, ..., .into = "imports", .library = .libPaths()[1L],
   .character_only = FALSE)
@@ -75,8 +75,8 @@ be quoted), e.g \code{import::from("parallel (>= 3.2.0)", ...)}.
 You can use the operators \code{<}, \code{>}, \code{<=}, \code{>=},
 \code{==}, \code{!=}. Whitespace in the specification is irrelevant.
 }
+
 \examples{
 import::from(parallel, makeCluster, parLapply)
 import::into("imports:parallel", makeCluster, parLapply, .from = parallel)
 }
-

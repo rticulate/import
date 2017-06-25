@@ -85,14 +85,25 @@ from <- function(.from, ..., .into = "imports", .library = .libPaths()[1L],
   from    <-
     `if`(isTRUE(.character_only), .from, symbol_as_character(substitute(.from)))
 
-  into    <- symbol_as_character(substitute(.into))
+  into_expr <- substitute(.into)
+  `{env}` <- identical(into_expr[[1]], quote(`{`))
+
+  # if {env} syntax is used, treat env as explicit env
+  if (`{env}`) {
+    into <- eval.parent(.into)
+    if (!is.environment(.into))
+      stop("into is not an environment, but {env} notation was used.", call. = FALSE)
+  } else {
+    into    <- symbol_as_character(into_expr)
+  }
 
   # Check whether assignment should be done in a named entry in the search path.
   use_into <- !exists(".packageName", parent.frame(), inherits = TRUE) &&
-    !into == ""
+              !`{env}` &&
+              !into == ""
 
   # Check whether the name already exists in the search path.
-  into_exists <- into %in% search()
+  into_exists <- !`{env}` && (into %in% search())
 
   # Create the entry if needed.
   make_attach <- attach # Make R CMD check happy.
@@ -103,14 +114,15 @@ from <- function(.from, ..., .into = "imports", .library = .libPaths()[1L],
   from_is_script <- is_script(from)
 
   if (from_is_script) {
-    if (!from %in% ls(scripts, all.names = TRUE) ||
-        modified(from) > modified(scripts[[from]])) {
+    from_created <- from %in% ls(scripts, all.names = TRUE)
+    if (!from_created || modified(from) > modified(scripts[[from]])) {
 
       # Find currently attachments
       attached <- search()
 
-      # Create a new environment to manage the script module
-      assign(from, new.env(parent = parent.frame()), scripts)
+      # Create a new environment to manage the script module if it does not exist
+      if (!from_created)
+        assign(from, new.env(parent = parent.frame()), scripts)
 
       # Make modification time stamp
       modified(scripts[[from]]) <- modified(from)
@@ -147,7 +159,7 @@ from <- function(.from, ..., .into = "imports", .library = .libPaths()[1L],
              nm  = symbols[s],
              ns  = pkg,
              inh = !exports_only,
-             pos = if (use_into) into else -1),
+             pos = if (use_into || `{env}`) into else -1),
         exports_only && !from_is_script)
 
     if (!from_is_script)
@@ -159,7 +171,7 @@ from <- function(.from, ..., .into = "imports", .library = .libPaths()[1L],
              error = function(e) stop(e$message, call. = FALSE))
   }
 
-  if (into != "" && !exists("?", into, mode = "function", inherits = FALSE)) {
+  if (!`{env}` && into != "" && !exists("?", into, mode = "function", inherits = FALSE)) {
     assign("?", `?redirect`, into)
   }
 

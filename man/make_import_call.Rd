@@ -19,4 +19,3 @@ A call object.
 The import call constructed by this function can be evaluated with
 \code{eval} to perform the actual import.
 }
-
