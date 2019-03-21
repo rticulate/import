@@ -10,3 +10,9 @@
 
   invisible()
 }
+
+.onLoad <- function(libname, pkgname) {
+  options(
+    "import.library" = .libPaths()[1L]
+  )
+}

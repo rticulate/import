@@ -6,12 +6,14 @@
 \alias{into}
 \title{Import Objects From a Package.}
 \usage{
-from(.from, ..., .into = "imports", .library = .libPaths()[1L],
+from(.from, ..., .into = "imports",
+  .library = getOption("import.library"), .character_only = FALSE)
+
+here(..., .from, .library = getOption("import.library"),
   .character_only = FALSE)
 
-here(..., .from, .library = .libPaths()[1L], .character_only = FALSE)
-
-into(.into, ..., .from, .library = .libPaths()[1L], .character_only = FALSE)
+into(.into, ..., .from, .library = getOption("import.library"),
+  .character_only = FALSE)
 }
 \arguments{
 \item{.from}{The package from which to import.}
@@ -23,7 +25,7 @@ If arguments are named, then the imported object will have this new name.}
 into the current environment.}
 
 \item{.library}{character specifying the library to use. Defaults to
-the latest specified library.}
+\code{getOption("import.library")}.}
 
 \item{.character_only}{A logical indicating whether \code{.from} and
 \code{...} can be assumed to be charater strings.}
@@ -74,6 +76,22 @@ add a requirement in parentheses to the package name (which then needs to
 be quoted), e.g \code{import::from("parallel (>= 3.2.0)", ...)}.
 You can use the operators \code{<}, \code{>}, \code{<=}, \code{>=},
 \code{==}, \code{!=}. Whitespace in the specification is irrelevant.
+}
+
+\section{Package Libraries}{
+
+The search path for packages is specified by the \code{.library}
+argument to \code{import::from}. By default, this grabs the
+library location from the \code{import.library} option, which in
+turn defaults to the first entry in \code{.libPaths()}. You can
+customize the default behavior by changing this option. For
+instance, to search all of \code{.libPaths()}, you could do:
+
+\preformatted{
+  options("import.library" = .libPaths())
+}
+
+A convenient place to do this is in a global or directory-specific ".Rprofile".
 }
 
 \examples{

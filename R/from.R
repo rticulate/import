@@ -40,6 +40,20 @@
 #' You can use the operators \code{<}, \code{>}, \code{<=}, \code{>=},
 #' \code{==}, \code{!=}. Whitespace in the specification is irrelevant.
 #'
+#' @section Package Libraries:
+#' The search path for packages is specified by the \code{.library}
+#' argument to \code{import::from}. By default, this grabs the
+#' library location from the \code{import.library} option, which in
+#' turn defaults to the first entry in \code{.libPaths()}. You can
+#' customize the default behavior by changing this option. For
+#' instance, to search all of \code{.libPaths()}, you could do:
+#'
+#' \preformatted{
+#'   options("import.library" = .libPaths())
+#' }
+#'
+#' A convenient place to do this is in a global or directory-specific ".Rprofile".
+#'
 #' @rdname importfunctions
 #' @param .from The package from which to import.
 #' @param ... Names or name-value pairs specifying objects to import.
@@ -47,7 +61,7 @@
 #' @param .into The name of the search path entry. Use \code{""} to import
 #'   into the current environment.
 #' @param .library character specifying the library to use. Defaults to
-#'   the latest specified library.
+#'   \code{getOption("import.library")}.
 #' @param .character_only A logical indicating whether \code{.from} and
 #'   \code{...} can be assumed to be charater strings.
 #'
@@ -58,7 +72,7 @@
 #' @examples
 #' import::from(parallel, makeCluster, parLapply)
 #' import::into("imports:parallel", makeCluster, parLapply, .from = parallel)
-from <- function(.from, ..., .into = "imports", .library = .libPaths()[1L],
+from <- function(.from, ..., .into = "imports", .library = getOption("import.library"),
                  .character_only = FALSE)
 {
   # Capture the relevant part of the call to see if

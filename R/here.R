@@ -1,6 +1,6 @@
 #' @rdname importfunctions
 #' @export
-here <- function(..., .from, .library = .libPaths()[1L],
+here <- function(..., .from, .library = getOption("import.library"),
                  .character_only = FALSE)
 {
   # Capture the call and check that it is valid.
