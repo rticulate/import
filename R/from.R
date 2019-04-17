@@ -141,6 +141,7 @@ from <- function(.from, ..., .into = "imports", .library = .libPaths()[1L],
       })
     }
     pkg <- scripts[[from]]
+    pkg_name <- from
   } else {
     # Load the package namespace, which is passed to the import calls.
     spec <- package_specs(from)
@@ -149,6 +150,7 @@ from <- function(.from, ..., .into = "imports", .library = .libPaths()[1L],
                     versionCheck = spec$version_check),
       error = function(e) stop(conditionMessage(e), call. = FALSE)
     )
+    pkg_name <- spec$pkg
   }
 
   # import each object specified in the argument list.
@@ -164,7 +166,7 @@ from <- function(.from, ..., .into = "imports", .library = .libPaths()[1L],
 
     if (!from_is_script)
       import_aliases[[names(symbols)[s]]] <-
-        call("::", as.symbol(from), as.symbol(symbols[s]))
+        call("::", as.symbol(pkg_name), as.symbol(symbols[s]))
 
     # Evaluate the import call.
     tryCatch(eval.parent(import_call),
