@@ -5,6 +5,9 @@ Version 1.1.1
   environment to replace an existing import of that name and location.
 * one can now import directly into an environment (which may not be attached)
   by wrapping it in braces, e.g. import::from(pkg, symbol, .into = {env})
+* import::from/here/into now include a new option, .character_only, that
+  suppresses non-standard evaluation and thus allows passing object names
+  or locations in variables (character strings).
 
 Version 1.1.0
 =============

@@ -1,4 +1,4 @@
-## ---- eval = FALSE-------------------------------------------------------
+## ---- eval = FALSE------------------------------------------------------------
 #  library(PackageA)
 #  library(PackageB)
 #  
@@ -6,11 +6,11 @@
 #  value2 <- function_b(...) # and this from PackageB, but who knows?!
 #  ...
 
-## ---- eval = FALSE-------------------------------------------------------
+## ---- eval = FALSE------------------------------------------------------------
 #  function_a <- PackageA::function_a
 #  function_b <- PackageB::function_b
 
-## ---- eval = FALSE-------------------------------------------------------
+## ---- eval = FALSE------------------------------------------------------------
 #  import::from(magrittr, "%>%")
 #  import::from(dplyr, mutate, keep_when = filter)
 #  import::from(tidyr, spread)
@@ -28,7 +28,7 @@
 #  
 #  # ... and more code below.
 
-## ---- eval = FALSE-------------------------------------------------------
+## ---- eval = FALSE------------------------------------------------------------
 #  import::from(dplyr, mutate, select, .into = "wrangling")
 #  
 #  # or equivalently:
@@ -37,7 +37,7 @@
 #  ls("wrangling") # Also viewable in Rstudio's environment browser!
 #  # => [1] "mutate" "select"
 
-## ---- eval=FALSE---------------------------------------------------------
+## ---- eval=FALSE--------------------------------------------------------------
 #  # File: foo.R
 #  # Desc: Functionality related to foos.
 #  # Imports from other_resources.R
@@ -55,10 +55,18 @@
 #  
 #  fun_d <- function(...) ...
 
-## ---- eval = FALSE-------------------------------------------------------
+## ---- eval = FALSE------------------------------------------------------------
 #  # File: bar.R
 #  # Desc: Functionality related to bars.
 #  # Imports from foo.R
 #  import::here(fun_c, .from = "foo.R")
 #  ...
+
+## ---- eval = FALSE------------------------------------------------------------
+#  objects <- c("tidy", "glance", "augment")
+#  import::from("broom", objects, .character_only=TRUE)
+
+## ---- eval = FALSE------------------------------------------------------------
+#  objects <- setdiff(getNamespaceExports("dplyr"), c("filter","lag"))
+#  import::from("dplyr", objects, .character_only=TRUE)
 

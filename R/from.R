@@ -49,7 +49,7 @@
 #' @param .library character specifying the library to use. Defaults to
 #'   the latest specified library.
 #' @param .character_only A logical indicating whether \code{.from} and
-#'   \code{...} can be assumed to be charater strings.
+#'   \code{...} can be assumed to be character strings.
 #'
 #' @return a reference to the environment with the imports or \code{NULL}
 #'   if \code{into = ""}, invisibly.

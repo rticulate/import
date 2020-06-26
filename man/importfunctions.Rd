@@ -6,8 +6,13 @@
 \alias{into}
 \title{Import Objects From a Package.}
 \usage{
-from(.from, ..., .into = "imports", .library = .libPaths()[1L],
-  .character_only = FALSE)
+from(
+  .from,
+  ...,
+  .into = "imports",
+  .library = .libPaths()[1L],
+  .character_only = FALSE
+)
 
 here(..., .from, .library = .libPaths()[1L], .character_only = FALSE)
 
@@ -26,7 +31,7 @@ into the current environment.}
 the latest specified library.}
 
 \item{.character_only}{A logical indicating whether \code{.from} and
-\code{...} can be assumed to be charater strings.}
+\code{...} can be assumed to be character strings.}
 }
 \value{
 a reference to the environment with the imports or \code{NULL}
