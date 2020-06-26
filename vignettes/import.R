@@ -70,3 +70,19 @@
 #  objects <- setdiff(getNamespaceExports("dplyr"), c("filter","lag"))
 #  import::from("dplyr", objects, .character_only=TRUE)
 
+## ---- eval = FALSE------------------------------------------------------------
+#  mymodule <- file.path(mypath,"module.R")
+#  import::from(mymodule, "myfunction", .character_only=TRUE)
+
+## ---- eval = FALSE------------------------------------------------------------
+#  import::from(here::here("src/utils/module.R")), "myfunction", .character_only=TRUE)
+
+## ---- eval = FALSE------------------------------------------------------------
+#  url <- "https://gist.githubusercontent.com/noamross/378884a472b5ef58c6cf/raw/1cd3a47158427ef7e2faa897d32821f14fa19bfd/test.R"
+#  import::from(pins::pin(url), "myfunc", .character_only=TRUE)
+#  myfunc(3)
+#  #> [1] 4
+
+## ---- eval = FALSE------------------------------------------------------------
+#  NA
+
