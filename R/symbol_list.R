@@ -10,12 +10,17 @@
 #'
 #' @noRd
 #' @return A named character vector.
-symbol_list <- function(..., .character_only = FALSE)
+symbol_list <- function(..., .character_only = FALSE, .all=FALSE)
 {
   if (isTRUE(.character_only)) {
     dots <- unlist(list(...))
   } else {
     dots    <- eval(substitute(alist(...)), parent.frame(), parent.frame())
+  }
+
+  if (length(dots)==0) {
+    # If .all was true, empty dots should no longer error
+    return(character())
   }
 
   names   <- names(dots)

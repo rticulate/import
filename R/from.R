@@ -48,8 +48,16 @@
 #'   into the current environment.
 #' @param .library character specifying the library to use. Defaults to
 #'   the latest specified library.
+#' @param .all logical specifying whether all available objects in a
+#'   library or module should  be imported
+#' @param .except character vector specifying any objects that should
+#'   not be imported. Any values specified here override both values
+#'   provided in \code{...} and objects included because of the
+#'   \code{.all} parameter
 #' @param .character_only A logical indicating whether \code{.from} and
 #'   \code{...} can be assumed to be character strings.
+#' @param .chdir logical specifying whether to change directories before
+#'   sourcing a module (this parameter is ignored for libraries)
 #'
 #' @return a reference to the environment with the imports or \code{NULL}
 #'   if \code{into = ""}, invisibly.
@@ -59,7 +67,8 @@
 #' import::from(parallel, makeCluster, parLapply)
 #' import::into("imports:parallel", makeCluster, parLapply, .from = parallel)
 from <- function(.from, ..., .into = "imports", .library = .libPaths()[1L],
-                 .character_only = FALSE)
+                 .all=FALSE, .except=character(),
+                 .character_only = FALSE, .chdir = TRUE)
 {
   # Capture the relevant part of the call to see if
   # the import function is used as intended.
@@ -80,7 +89,7 @@ from <- function(.from, ..., .into = "imports", .library = .libPaths()[1L],
     stop("Argument `.from` must be specified for import::from.",  call. = FALSE)
 
   # Extract the arguments
-  symbols <- symbol_list(..., .character_only = .character_only)
+  symbols <- symbol_list(..., .character_only = .character_only, .all = .all)
 
   from    <-
     `if`(isTRUE(.character_only), .from, symbol_as_character(substitute(.from)))
@@ -131,7 +140,7 @@ from <- function(.from, ..., .into = "imports", .library = .libPaths()[1L],
       scripts[[from]][[".packageName"]] <- from
 
       # Source the file into the new environment.
-      suppress_output(sys.source(from, scripts[[from]], chdir = TRUE))
+      suppress_output(sys.source(from, scripts[[from]], chdir = .chdir))
 
       # Make sure to detach any new attachments.
       on.exit({
@@ -142,15 +151,34 @@ from <- function(.from, ..., .into = "imports", .library = .libPaths()[1L],
     }
     pkg <- scripts[[from]]
     pkg_name <- from
+
+    # Create list of all available objects (for use with the .all parameter)
+    all_objects <- ls(scripts[[from]])
   } else {
     # Load the package namespace, which is passed to the import calls.
     spec <- package_specs(from)
+    all_objects <- getNamespaceExports(spec$pkg)
     pkg <- tryCatch(
       loadNamespace(spec$pkg, lib.loc = .library,
                     versionCheck = spec$version_check),
       error = function(e) stop(conditionMessage(e), call. = FALSE)
     )
     pkg_name <- spec$pkg
+  }
+  # If .all parameter was specified, override with list of all objects
+  # (excluding internal variable __last_modified__)
+  # Take care not to lose the names of any manually specified parameters
+  if (.all) {
+    all_objects <- setdiff(all_objects, "__last_modified__")
+    names(all_objects) <- all_objects
+    symbols <- c(symbols,all_objects)
+    symbols <- symbols[!duplicated(symbols)]
+  }
+
+  # If .except parameter was specified, any object specified there
+  # should be omitted from the import
+  if (length(.except)>0) {
+    symbols <- symbols[!(symbols %in% .except)] # Fancy setdiff() to preserve names
   }
 
   # import each object specified in the argument list.

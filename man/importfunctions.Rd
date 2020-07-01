@@ -11,7 +11,10 @@ from(
   ...,
   .into = "imports",
   .library = .libPaths()[1L],
-  .character_only = FALSE
+  .all = FALSE,
+  .except = character(),
+  .character_only = FALSE,
+  .chdir = TRUE
 )
 
 here(..., .from, .library = .libPaths()[1L], .character_only = FALSE)
@@ -30,8 +33,19 @@ into the current environment.}
 \item{.library}{character specifying the library to use. Defaults to
 the latest specified library.}
 
+\item{.all}{logical specifying whether all available objects in a
+library or module should  be imported}
+
+\item{.except}{character vector specifying any objects that should
+not be imported. Any values specified here override both values
+provided in \code{...} and objects included because of the
+\code{.all} parameter}
+
 \item{.character_only}{A logical indicating whether \code{.from} and
 \code{...} can be assumed to be character strings.}
+
+\item{.chdir}{logical specifying whether to change directories before
+sourcing a module (this parameter is ignored for libraries)}
 }
 \value{
 a reference to the environment with the imports or \code{NULL}

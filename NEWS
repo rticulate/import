@@ -8,6 +8,8 @@ Version 1.1.1
 * import::from/here/into now include a new option, .character_only, that
   suppresses non-standard evaluation and thus allows passing object names
   or locations in variables (character strings).
+* import::from now includes new options, .all and .except
+* import::from now includes new option, .chdir
 
 Version 1.1.0
 =============
