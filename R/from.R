@@ -67,7 +67,7 @@
 #' import::from(parallel, makeCluster, parLapply)
 #' import::into("imports:parallel", makeCluster, parLapply, .from = parallel)
 from <- function(.from, ..., .into = "imports", .library = .libPaths()[1L],
-                 .all=FALSE, .except=character(),
+                 .all=(length(.except) > 0), .except=character(),
                  .character_only = FALSE, .chdir = TRUE)
 {
   # Capture the relevant part of the call to see if
