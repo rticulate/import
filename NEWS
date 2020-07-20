@@ -8,8 +8,14 @@ Version 1.1.1
 * import::from/here/into now include a new option, .character_only, that
   suppresses non-standard evaluation and thus allows passing object names
   or locations in variables (character strings).
-* import::from now includes new options, .all and .except
-* import::from now includes new option, .chdir
+* import::from() now includes new options, .all and .except
+* import::from() now includes new option, .chdir
+* import::here() has been fixed to use environment() explicitly to import into
+  the current environment, rather than importing into "" (the empty string),
+  which no longer works because of upstream changes.
+* calling import::from() with .into="" now throws an explicit error rather than
+  failing silentsly. The error instructs users to use here() explicitly to import
+  into the current environment.
 
 Version 1.1.0
 =============

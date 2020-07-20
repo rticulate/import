@@ -11,10 +11,10 @@ from(
   ...,
   .into = "imports",
   .library = .libPaths()[1L],
-  .all = FALSE,
+  .all = (length(.except) > 0),
   .except = character(),
-  .character_only = FALSE,
-  .chdir = TRUE
+  .chdir = TRUE,
+  .character_only = FALSE
 )
 
 here(..., .from, .library = .libPaths()[1L], .character_only = FALSE)
@@ -34,18 +34,19 @@ into the current environment.}
 the latest specified library.}
 
 \item{.all}{logical specifying whether all available objects in a
-library or module should  be imported}
+library or module should  be imported. It defaults to FALSE unless
+.exclude is being used to omit particular functions.}
 
 \item{.except}{character vector specifying any objects that should
 not be imported. Any values specified here override both values
 provided in \code{...} and objects included because of the
 \code{.all} parameter}
 
-\item{.character_only}{A logical indicating whether \code{.from} and
-\code{...} can be assumed to be character strings.}
-
 \item{.chdir}{logical specifying whether to change directories before
 sourcing a module (this parameter is ignored for libraries)}
+
+\item{.character_only}{A logical indicating whether \code{.from} and
+\code{...} can be assumed to be character strings.}
 }
 \value{
 a reference to the environment with the imports or \code{NULL}
@@ -61,9 +62,7 @@ separate entry in the search path (which can be specified), rather in the
 global/current environment. Also, it is a more succinct way of importing
 several objects. Note that the two functions are symmetric, and usage is a
 matter of preference and whether specifying the \code{.into} argument is
-desired. The function \code{import::here} is short-hand for
-\code{import::from} with \code{.into = ""} which imports into the current
-environment.
+desired. The function \code{import::here} imports into the current environment.
 }
 \details{
 The function arguments can be quoted or unquoted as with e.g. \code{library}.

@@ -9,9 +9,7 @@
 #' global/current environment. Also, it is a more succinct way of importing
 #' several objects. Note that the two functions are symmetric, and usage is a
 #' matter of preference and whether specifying the \code{.into} argument is
-#' desired. The function \code{import::here} is short-hand for
-#' \code{import::from} with \code{.into = ""} which imports into the current
-#' environment.
+#' desired. The function \code{import::here} imports into the current environment.
 #'
 #' The function arguments can be quoted or unquoted as with e.g. \code{library}.
 #' In any case, the character representation is used when unquoted arguments are
@@ -49,15 +47,16 @@
 #' @param .library character specifying the library to use. Defaults to
 #'   the latest specified library.
 #' @param .all logical specifying whether all available objects in a
-#'   library or module should  be imported
+#'   library or module should  be imported. It defaults to FALSE unless
+#'   .exclude is being used to omit particular functions.
 #' @param .except character vector specifying any objects that should
 #'   not be imported. Any values specified here override both values
 #'   provided in \code{...} and objects included because of the
 #'   \code{.all} parameter
-#' @param .character_only A logical indicating whether \code{.from} and
-#'   \code{...} can be assumed to be character strings.
 #' @param .chdir logical specifying whether to change directories before
 #'   sourcing a module (this parameter is ignored for libraries)
+#' @param .character_only A logical indicating whether \code{.from} and
+#'   \code{...} can be assumed to be character strings.
 #'
 #' @return a reference to the environment with the imports or \code{NULL}
 #'   if \code{into = ""}, invisibly.
@@ -68,7 +67,7 @@
 #' import::into("imports:parallel", makeCluster, parLapply, .from = parallel)
 from <- function(.from, ..., .into = "imports", .library = .libPaths()[1L],
                  .all=(length(.except) > 0), .except=character(),
-                 .character_only = FALSE, .chdir = TRUE)
+                 .chdir = TRUE, .character_only = FALSE)
 {
   # Capture the relevant part of the call to see if
   # the import function is used as intended.
@@ -87,6 +86,11 @@ from <- function(.from, ..., .into = "imports", .library = .libPaths()[1L],
   # Ensure that .from is specified.
   if (missing(.from))
     stop("Argument `.from` must be specified for import::from.",  call. = FALSE)
+
+  # Importing into unnamed environment no longer works, so this should fail explicitly
+  if (.into == "")
+    stop("Argument `.from` must not be an empty string (use `here()` to import into current environment).",
+         call. = FALSE)
 
   # Extract the arguments
   symbols <- symbol_list(..., .character_only = .character_only, .all = .all)
