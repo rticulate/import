@@ -96,6 +96,64 @@ test_that("The .into paremeter is honored", {
   cleanup_environment("custom_env")
 })
 
+test_that("Imports from specific version work",{
+
+  # Base case, no version
+  expect_silent( import::from(magrittr, "%>%") )# no version, quotes are unnecessary.
+
+  # Variable spacing before parenthesis or around comparator operator
+  expect_silent( import::from("magrittr (>=1.5)", "%>%")      )
+  expect_silent( import::from("magrittr(>= 1.5)", "%>%")      )
+  expect_silent( import::from("magrittr( >=1.5)", "%>%")      )
+  expect_silent( import::from("magrittr  (  >=1.5  )", "%>%")      )
+
+  # Variable specificity
+  expect_silent( import::from("magrittr(>=1)", "%>%")   )
+  expect_silent( import::from("magrittr(>=1.5)", "%>%")      )
+  expect_silent( import::from("magrittr(>=1.5.0)", "%>%")      )
+
+  # Maximum version
+  expect_silent( import::from("magrittr(<= 100.0.1)", "%>%") )
+
+  # Non-equality
+  expect_silent( import::from("magrittr(!= 1.0.1)", "%>%")    )
+  expect_silent( import::from("magrittr(!= 1.0.1)", "%>%")   )
+
+  # Cleanup before testing failures
+  cleanup_environment()
+
+  # If the version is not available, the import should fail with erro
+  # Variable spacing before parenthesis or around comparator operator
+  expect_error( import::from("magrittr (>=100.5)", "%>%")      )
+  expect_error( import::from("magrittr(>= 100.5)", "%>%")      )
+  expect_error( import::from("magrittr( >=100.5)", "%>%")      )
+  expect_error( import::from("magrittr  (  >=100.5  )", "%>%")      )
+
+  # Variable specificity
+  expect_error( import::from("magrittr(>=100)", "%>%")   )
+  expect_error( import::from("magrittr(>=100.5)", "%>%")      )
+  expect_error( import::from("magrittr(>=100.5.0)", "%>%")      )
+
+  # Maximum version
+  expect_error( import::from("magrittr(<= 0.0.1)", "%>%") )
+
+
+  # Test equality/non-equality with the version currently installed
+  # (1.5.0 at time of writing. The test could be updated to choose an
+  # available version automatically, but we'll put that on the backburner
+  # for now. So we skip these tests when running automatically.)
+  skip("It is too fragile to test specific versions")
+
+  # Non-equality
+  expect_error( import::from("magrittr(!= 1.5)", "%>%")    )
+  expect_error( import::from("magrittr(!= 1.5.0)", "%>%")   )
+
+  # Equality
+  expect_silent( import::from("magrittr(== 1.5)", "%>%") )
+  expect_silent( import::from("magrittr(== 1.5.0)", "%>%") )
+  expect_silent( import::from("magrittr(1.5)", "%>%")    )  # same as (==1.5)
+  expect_silent( import::from("magrittr(1.5.0)", "%>%")    )
+})
 
 ## .chdir parameter is tested in a separate file (test_param_chdir.R)
 

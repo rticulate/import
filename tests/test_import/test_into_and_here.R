@@ -41,17 +41,14 @@ test_that("Imports from modules work with into()", {
 
 ## here()
 
-test_that("Imports from libraries  work with here() (they don't)", {
-  #skip("import::here() does not seem to work, is this a bug or incorrect usage?")
+test_that("Imports from libraries  work with here()", {
   expect_error ( normal_print("OK") )
-  expect_silent( import::here(normal_print, .from=knitr) )
   expect_silent( import::here(normal_print, .from=knitr) )
   expect_output( normal_print("OK"), "OK" )
   cleanup_environment(cleanup_here=TRUE)
 })
 
 test_that("Imports from modules work with here()", {
-  skip("import::here() does not seem to work, is this a bug or incorrect usage?")
   expect_error ( fun1() )
   expect_silent( import::here(fun1, .from=module_base.R) )
   expect_equal ( fun1(), "fun1" )
@@ -60,8 +57,6 @@ test_that("Imports from modules work with here()", {
 
 ## Tests end
 
-import::from(knitr, normal_print, .into="environment()")
-quote({environment()})
 ## IMPORTANT:
 ## The following line must be printed exactly as is,
 ## it is used by the custom harness to check if the tests worked:

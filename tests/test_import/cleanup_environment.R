@@ -8,7 +8,8 @@
 cleanup_environment <- function(environments=c("imports"),
                                 cleanup_here=FALSE, exclude_self=TRUE) {
   for (env_name in environments) {
-   rm(list=ls(pos=env_name), pos=env_name)
+    if(env_name %in% search())
+      rm(list=ls(n=env_name), pos=env_name)
   }
   # Cleanup the local environment, if applicable
   if (cleanup_here) {
