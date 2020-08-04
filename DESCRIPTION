@@ -17,6 +17,8 @@ BugReports: https://github.com/smbache/import/issues
 Suggests:
     knitr,
     rmarkdown,
+    magrittr,
+    dplyr,
     testthat
 VignetteBuilder: knitr
 RoxygenNote: 7.1.1
