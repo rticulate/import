@@ -30,11 +30,11 @@ If arguments are named, then the imported object will have this new name.}
 \item{.into}{The name of the search path entry. Use \code{""} to import
 into the current environment.}
 
-\item{.library}{character specifying the library to use. Defaults to
-the latest specified library.}
+\item{.library}{character specifying the library to use when importing from
+packages. Defaults to the latest specified library.}
 
 \item{.all}{logical specifying whether all available objects in a
-library or module should  be imported. It defaults to FALSE unless
+package or module should  be imported. It defaults to FALSE unless
 .exclude is being used to omit particular functions.}
 
 \item{.except}{character vector specifying any objects that should
@@ -88,6 +88,14 @@ the function calls expressive without the need to preload, i.e. it is
 designed to be used explicitly with the \code{::} syntax, e.g.
 \code{import::from(pkg, x, y)}.
 }
+\section{Packages vs. modules}{
+
+\code{import} can either be used to import objects either from R packages or
+from \code{R} source files. If the \code{.from} parameter ends with '.R' or
+'.r', \code{import} will look for a source file to import from. A source file
+in this context is referred to as a \code{module} in the documentation.
+}
+
 \section{Package Versions}{
 
 With \code{import} you can specify package version requirements. To do this

@@ -14,7 +14,7 @@ Version 1.1.9000
   the current environment, rather than importing into "" (the empty string),
   which no longer works because of upstream changes.
 * calling import::from() with .into="" now throws an explicit error rather than
-  failing silentsly. The error instructs users to use here() explicitly to import
+  failing silently. The error instructs users to use here() explicitly to import
   into the current environment.
 
 Version 1.1.0
