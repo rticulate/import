@@ -51,5 +51,12 @@ for ( test_file in test_files ) {
   })
 }
 
+# Skipped tests in the test_import directory are not automatically reported.
+# Any skipped tests can be noted here
+context("List any skipped tests")
+test_that("Recursive imports work (they do not)",{
+  skip("Skipping this, implementation is not working")
+})
+
 # Switch back to the original directory, just to be safe
 setwd(testthat_dir)
