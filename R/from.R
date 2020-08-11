@@ -218,5 +218,5 @@ from <- function(.from, ..., .into = "imports",
     assign("?", `?redirect`, into)
   }
 
-  invisible(if (use_into) as.environment(into) else NULL)
+  invisible(as.environment(into))
 }
