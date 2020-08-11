@@ -21,13 +21,33 @@ source("cleanup_environment.R")
 
 ## Tests begin
 
+# The .directory parameter should be respected, default should be "."
+test_that("The .directory parameter is respected", {
+  expect_error ( fun_chdir_report() )
+  expect_error ( import::from(module_chdir.R, fun_chdir_report) )
+  expect_error ( fun_chdir_report() ) # Nothing should have been imported
+  expect_silent( import::from(module_chdir.R, fun_chdir_report, .directory="module_chdir") )
+  expect_match ( fun_chdir_report(), "module_chdir$" )
+  expect_error ( import::from(module_chdir.R, fun_chdir_report, .directory="nonexisting_directory") )
+  cleanup_environment()
+})
+
+
 
 # The .chdir parameter should be respected, default should be true
 # fun_chdir_report() returns the directory where its definition was originally sourced
 test_that("The .chdir parameter is respected (defaulting to TRUE)", {
   expect_error ( fun_chdir_report() )
-  expect_silent( import::from("module_chdir/module_chdir.R", fun_chdir_report) )
-  expect_match ( fun_chdir_report(), "test_import/module_chdir$" )
+  expect_silent( import::from(module_chdir.R, fun_chdir_report, .directory="module_chdir") )
+  expect_match ( fun_chdir_report(), "module_chdir$" )
+  cleanup_environment()
+})
+
+# The .chdir parameter should be respecte, if TRUE is explicitly passed
+test_that("The .chdir parameter is respected when passed TRUE", {
+  expect_error ( fun_chdir_report() )
+  expect_silent( import::from(module_chdir.R, fun_chdir_report, .directory="module_chdir", .chdir=TRUE) )
+  expect_match ( fun_chdir_report(), "module_chdir$" )
   cleanup_environment()
 })
 
@@ -35,8 +55,8 @@ test_that("The .chdir parameter is respected (defaulting to TRUE)", {
 # so the report should NOT match the name of the module_chdir directory
 test_that("The .chdir parameter is respected when passed FALSE", {
   expect_error  ( fun_chdir_report() )
-  expect_silent ( import::from("module_chdir/module_chdir.R", fun_chdir_report, .chdir=FALSE) )
-  expect_failure( expect_match(fun_chdir_report(),"test_import/module_chdir$") )
+  expect_silent ( import::from(module_chdir.R, fun_chdir_report, .directory="module_chdir", .chdir=FALSE) )
+  expect_failure( expect_match(fun_chdir_report(),"module_chdir$") )
   cleanup_environment()
 })
 

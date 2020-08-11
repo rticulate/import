@@ -96,6 +96,27 @@ test_that("The .into paremeter is honored", {
   cleanup_environment("custom_env")
 })
 
+test_that("Importing .into={....} (curly brackets) works", {
+  expect_error ( normal_print("OK") )
+  expect_false ( "normal_print" %in% ls() )
+  expect_silent( import::from(knitr, normal_print, .into={environment()}) )
+  expect_output( normal_print("OK"), "OK" )
+  expect_true  ("normal_print" %in% ls() )
+  cleanup_environment(cleanup_here=TRUE)
+})
+
+
+test_that("Importing .into=\"\" (empty string) works", {
+  expect_error ( normal_print("OK") )
+  expect_false ( "normal_print" %in% ls() )
+  expect_silent( import::from(knitr, normal_print, .into="") )
+  expect_output( normal_print("OK"), "OK" )
+  expect_true  ("normal_print" %in% ls() )
+  cleanup_environment(cleanup_here=TRUE)
+})
+
+
+
 test_that("Imports from specific version work",{
 
   # Base case, no version

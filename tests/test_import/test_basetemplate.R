@@ -24,10 +24,12 @@ source("cleanup_environment.R")
 
 # Test a very basic scenario. The first test in a test sequence should test
 # that relevant functions have not been imported before the sequence starts.
-expect_error ( normal_print("OK")                )
-expect_silent( import::from(knitr, normal_print) )
-expect_output( normal_print("OK"), "OK"          )
-cleanup_environment()
+test_that("Basic scenario works", {
+  expect_error ( normal_print("OK")                )
+  expect_silent( import::from(knitr, normal_print) )
+  expect_output( normal_print("OK"), "OK"          )
+  cleanup_environment()
+})
 
 
 ## Tests end
