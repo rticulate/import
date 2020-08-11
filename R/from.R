@@ -96,10 +96,9 @@ from <- function(.from, ..., .into = "imports",
   if (missing(.from))
     stop("Argument `.from` must be specified for import::from.",  call. = FALSE)
 
-  # Importing into unnamed environment no longer works, so this should fail explicitly
+  # .into="" is a short-hand for .into={environment()}
   if (!missing(.into) && is.character(.into) && .into == "")
-    stop("Argument `.into` must not be an empty string (use `here()` to import into current environment).",
-         call. = FALSE)
+    .into = quote({environment()})
 
   # Extract the arguments
   symbols <- symbol_list(..., .character_only = .character_only, .all = .all)
@@ -113,7 +112,7 @@ from <- function(.from, ..., .into = "imports",
   # if {env} syntax is used, treat env as explicit env
   if (`{env}`) {
     into <- eval.parent(.into)
-    if (!is.environment(.into))
+    if (!is.environment(into))
       stop("into is not an environment, but {env} notation was used.", call. = FALSE)
   } else {
     into    <- symbol_as_character(into_expr)
