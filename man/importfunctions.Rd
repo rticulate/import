@@ -11,6 +11,7 @@ from(
   ...,
   .into = "imports",
   .library = .libPaths()[1L],
+  .directory = ".",
   .all = (length(.except) > 0),
   .except = character(),
   .chdir = TRUE,
@@ -28,10 +29,15 @@ into(.into, ..., .from, .library = .libPaths()[1L], .character_only = FALSE)
 If arguments are named, then the imported object will have this new name.}
 
 \item{.into}{The name of the search path entry. Use \code{""} to import
-into the current environment.}
+into the current environment. Enclosing the value in curly brackets causes
+the parameter to be treated as an actual environment value, rather than the
+name of an environment.}
 
 \item{.library}{character specifying the library to use when importing from
 packages. Defaults to the latest specified library.}
+
+\item{.directory}{character specifying the directory to use when importing
+from modules. Defaults to the current working directory.}
 
 \item{.all}{logical specifying whether all available objects in a
 package or module should  be imported. It defaults to FALSE unless
@@ -46,10 +52,8 @@ provided in \code{...} and objects included because of the
 sourcing a module (this parameter is ignored for libraries)}
 
 \item{.character_only}{A logical indicating whether \code{.from} and
-\code{...} can be assumed to be character strings.}
-
-\item{.directory}{character specifying the directory to use when importing
-from modules. Defaults to the current working directory.}
+\code{...} can be assumed to be character strings. (Note that this
+parameter does not apply to how the \code{.into} parameter is handled).}
 }
 \value{
 a reference to the environment with the imports or \code{NULL}

@@ -49,7 +49,9 @@
 #' @param ... Names or name-value pairs specifying objects to import.
 #'   If arguments are named, then the imported object will have this new name.
 #' @param .into The name of the search path entry. Use \code{""} to import
-#'   into the current environment.
+#'   into the current environment. Enclosing the value in curly brackets causes
+#'   the parameter to be treated as an actual environment value, rather than the
+#'   name of an environment.
 #' @param .library character specifying the library to use when importing from
 #'   packages. Defaults to the latest specified library.
 #' @param .directory character specifying the directory to use when importing
@@ -64,7 +66,8 @@
 #' @param .chdir logical specifying whether to change directories before
 #'   sourcing a module (this parameter is ignored for libraries)
 #' @param .character_only A logical indicating whether \code{.from} and
-#'   \code{...} can be assumed to be character strings.
+#'   \code{...} can be assumed to be character strings. (Note that this
+#'   parameter does not apply to how the \code{.into} parameter is handled).
 #'
 #' @return a reference to the environment with the imports or \code{NULL}
 #'   if \code{into = ""}, invisibly.
