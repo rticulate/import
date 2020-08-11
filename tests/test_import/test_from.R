@@ -89,6 +89,13 @@ test_that("The .all parmeter is smart about whether .except is being used", {
   cleanup_environment()
 })
 
+test_that("Using .all or .except with import::: should throw an error", {
+  expect_error( import:::from(module_base.R, .all=TRUE) )
+  expect_error( import:::from(module_base.R, .except=c("fun1","fun4")) )
+  expect_error( import:::from(module_base.R, .all=TRUE, .except=c("fun2","fun3")) )
+  cleanup_environment()
+})
+
 test_that("The .into paremeter is honored", {
   expect_error ( normal_print("OK") )
   expect_silent( import::from(knitr, normal_print, .into="custom_env") )

@@ -99,6 +99,11 @@ from <- function(.from, ..., .into = "imports",
   if (missing(.from))
     stop("Argument `.from` must be specified for import::from.",  call. = FALSE)
 
+  # .all or .except must not be used in conjunction with ::: notation
+  if (identical(cl, call(":::", quote(import), quote(from))) &&
+            (.all!=FALSE || length(.except)!=0))
+    stop("`import:::` must not be used in conjunction with .all or .except", call. = FALSE)
+
   # .into="" is a short-hand for .into={environment()}
   if (!missing(.into) && is.character(.into) && .into == "")
     .into = quote({environment()})
