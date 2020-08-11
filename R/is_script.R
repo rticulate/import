@@ -7,10 +7,11 @@
 #' @param file_name character: the name of a possible R script file.
 #' @return logical
 #' @noRd
-is_script <- function(file_name)
+is_script <- function(file_name, .directory)
 {
   is.character(file_name) &&
+  is.character(.directory) &&
   length(file_name) == 1L &&
   isTRUE(grepl(".+\\.[rR]$", file_name)) &&
-  file.exists(file_name)
+  file.exists(file.path(.directory,file_name))
 }

@@ -47,6 +47,9 @@ sourcing a module (this parameter is ignored for libraries)}
 
 \item{.character_only}{A logical indicating whether \code{.from} and
 \code{...} can be assumed to be character strings.}
+
+\item{.directory}{character specifying the directory to use when importing
+from modules. Defaults to the current working directory.}
 }
 \value{
 a reference to the environment with the imports or \code{NULL}

@@ -46,6 +46,8 @@
 #'   into the current environment.
 #' @param .library character specifying the library to use. Defaults to
 #'   the latest specified library.
+#' @param .directory character specifying the directory to use when importing
+#'   from modules. Defaults to the current working directory.
 #' @param .all logical specifying whether all available objects in a
 #'   library or module should  be imported. It defaults to FALSE unless
 #'   .exclude is being used to omit particular functions.
@@ -65,7 +67,8 @@
 #' @examples
 #' import::from(parallel, makeCluster, parLapply)
 #' import::into("imports:parallel", makeCluster, parLapply, .from = parallel)
-from <- function(.from, ..., .into = "imports", .library = .libPaths()[1L],
+from <- function(.from, ..., .into = "imports",
+                 .library = .libPaths()[1L], .directory=".",
                  .all=(length(.except) > 0), .except=character(),
                  .chdir = TRUE, .character_only = FALSE)
 {
@@ -88,8 +91,8 @@ from <- function(.from, ..., .into = "imports", .library = .libPaths()[1L],
     stop("Argument `.from` must be specified for import::from.",  call. = FALSE)
 
   # Importing into unnamed environment no longer works, so this should fail explicitly
-  if (.into == "")
-    stop("Argument `.from` must not be an empty string (use `here()` to import into current environment).",
+  if (!missing(.into) && is.character(.into) && .into == "")
+    stop("Argument `.into` must not be an empty string (use `here()` to import into current environment).",
          call. = FALSE)
 
   # Extract the arguments
@@ -124,11 +127,11 @@ from <- function(.from, ..., .into = "imports", .library = .libPaths()[1L],
     make_attach(NULL, 2L, name = into)
 
   # Determine whether the source is a script or package.
-  from_is_script <- is_script(from)
+  from_is_script <- is_script(from, .directory)
 
   if (from_is_script) {
     from_created <- from %in% ls(scripts, all.names = TRUE)
-    if (!from_created || modified(from) > modified(scripts[[from]])) {
+    if (!from_created || modified(from, .directory) > modified(scripts[[from]])) {
 
       # Find currently attachments
       attached <- search()
@@ -138,13 +141,13 @@ from <- function(.from, ..., .into = "imports", .library = .libPaths()[1L],
         assign(from, new.env(parent = parent.frame()), scripts)
 
       # Make modification time stamp
-      modified(scripts[[from]]) <- modified(from)
+      modified(scripts[[from]]) <- modified(from, .directory)
 
       # Make behaviour match that of a package, i.e. import::from won't use "imports"
       scripts[[from]][[".packageName"]] <- from
 
       # Source the file into the new environment.
-      suppress_output(sys.source(from, scripts[[from]], chdir = .chdir))
+      suppress_output(sys.source(file.path(.directory, from), scripts[[from]], chdir = .chdir))
 
       # Make sure to detach any new attachments.
       on.exit({
