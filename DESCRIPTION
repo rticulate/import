@@ -1,7 +1,7 @@
 Package: import
 Type: Package
 Title: An Import Mechanism for R
-Version: 1.1.1
+Version: 1.1.9000
 Author: Stefan Milton Bache
 Maintainer: Stefan Milton Bache <stefan@stefanbache.dk>
 Description: This is an alternative mechanism for importing
@@ -15,6 +15,10 @@ ByteCompile: TRUE
 URL: https://github.com/smbache/import
 BugReports: https://github.com/smbache/import/issues
 Suggests:
-    knitr
+    knitr,
+    rmarkdown,
+    magrittr,
+    dplyr,
+    testthat
 VignetteBuilder: knitr
-RoxygenNote: 6.0.1
+RoxygenNote: 7.1.1

@@ -9,9 +9,7 @@
 #' global/current environment. Also, it is a more succinct way of importing
 #' several objects. Note that the two functions are symmetric, and usage is a
 #' matter of preference and whether specifying the \code{.into} argument is
-#' desired. The function \code{import::here} is short-hand for
-#' \code{import::from} with \code{.into = ""} which imports into the current
-#' environment.
+#' desired. The function \code{import::here} imports into the current environment.
 #'
 #' The function arguments can be quoted or unquoted as with e.g. \code{library}.
 #' In any case, the character representation is used when unquoted arguments are
@@ -33,6 +31,12 @@
 #' designed to be used explicitly with the \code{::} syntax, e.g.
 #' \code{import::from(pkg, x, y)}.
 #'
+#' @section Packages vs. modules:
+#' \code{import} can either be used to import objects either from R packages or
+#' from \code{R} source files. If the \code{.from} parameter ends with '.R' or
+#' '.r', \code{import} will look for a source file to import from. A source file
+#' in this context is referred to as a \code{module} in the documentation.
+#'
 #' @section Package Versions:
 #' With \code{import} you can specify package version requirements. To do this
 #' add a requirement in parentheses to the package name (which then needs to
@@ -45,11 +49,25 @@
 #' @param ... Names or name-value pairs specifying objects to import.
 #'   If arguments are named, then the imported object will have this new name.
 #' @param .into The name of the search path entry. Use \code{""} to import
-#'   into the current environment.
-#' @param .library character specifying the library to use. Defaults to
-#'   the latest specified library.
+#'   into the current environment. Enclosing the value in curly brackets causes
+#'   the parameter to be treated as an actual environment value, rather than the
+#'   name of an environment.
+#' @param .library character specifying the library to use when importing from
+#'   packages. Defaults to the latest specified library.
+#' @param .directory character specifying the directory to use when importing
+#'   from modules. Defaults to the current working directory.
+#' @param .all logical specifying whether all available objects in a
+#'   package or module should  be imported. It defaults to FALSE unless
+#'   .exclude is being used to omit particular functions.
+#' @param .except character vector specifying any objects that should
+#'   not be imported. Any values specified here override both values
+#'   provided in \code{...} and objects included because of the
+#'   \code{.all} parameter
+#' @param .chdir logical specifying whether to change directories before
+#'   sourcing a module (this parameter is ignored for libraries)
 #' @param .character_only A logical indicating whether \code{.from} and
-#'   \code{...} can be assumed to be charater strings.
+#'   \code{...} can be assumed to be character strings. (Note that this
+#'   parameter does not apply to how the \code{.into} parameter is handled).
 #'
 #' @return a reference to the environment with the imports or \code{NULL}
 #'   if \code{into = ""}, invisibly.
@@ -58,8 +76,10 @@
 #' @examples
 #' import::from(parallel, makeCluster, parLapply)
 #' import::into("imports:parallel", makeCluster, parLapply, .from = parallel)
-from <- function(.from, ..., .into = "imports", .library = .libPaths()[1L],
-                 .character_only = FALSE)
+from <- function(.from, ..., .into = "imports",
+                 .library = .libPaths()[1L], .directory=".",
+                 .all=(length(.except) > 0), .except=character(),
+                 .chdir = TRUE, .character_only = FALSE)
 {
   # Capture the relevant part of the call to see if
   # the import function is used as intended.
@@ -79,8 +99,17 @@ from <- function(.from, ..., .into = "imports", .library = .libPaths()[1L],
   if (missing(.from))
     stop("Argument `.from` must be specified for import::from.",  call. = FALSE)
 
+  # .all or .except must not be used in conjunction with ::: notation
+  if (identical(cl, call(":::", quote(import), quote(from))) &&
+            (.all!=FALSE || length(.except)!=0))
+    stop("`import:::` must not be used in conjunction with .all or .except", call. = FALSE)
+
+  # .into="" is a short-hand for .into={environment()}
+  if (!missing(.into) && is.character(.into) && .into == "")
+    .into = quote({environment()})
+
   # Extract the arguments
-  symbols <- symbol_list(..., .character_only = .character_only)
+  symbols <- symbol_list(..., .character_only = .character_only, .all = .all)
 
   from    <-
     `if`(isTRUE(.character_only), .from, symbol_as_character(substitute(.from)))
@@ -91,7 +120,7 @@ from <- function(.from, ..., .into = "imports", .library = .libPaths()[1L],
   # if {env} syntax is used, treat env as explicit env
   if (`{env}`) {
     into <- eval.parent(.into)
-    if (!is.environment(.into))
+    if (!is.environment(into))
       stop("into is not an environment, but {env} notation was used.", call. = FALSE)
   } else {
     into    <- symbol_as_character(into_expr)
@@ -111,11 +140,11 @@ from <- function(.from, ..., .into = "imports", .library = .libPaths()[1L],
     make_attach(NULL, 2L, name = into)
 
   # Determine whether the source is a script or package.
-  from_is_script <- is_script(from)
+  from_is_script <- is_script(from, .directory)
 
   if (from_is_script) {
     from_created <- from %in% ls(scripts, all.names = TRUE)
-    if (!from_created || modified(from) > modified(scripts[[from]])) {
+    if (!from_created || modified(from, .directory) > modified(scripts[[from]])) {
 
       # Find currently attachments
       attached <- search()
@@ -125,13 +154,13 @@ from <- function(.from, ..., .into = "imports", .library = .libPaths()[1L],
         assign(from, new.env(parent = parent.frame()), scripts)
 
       # Make modification time stamp
-      modified(scripts[[from]]) <- modified(from)
+      modified(scripts[[from]]) <- modified(from, .directory)
 
       # Make behaviour match that of a package, i.e. import::from won't use "imports"
       scripts[[from]][[".packageName"]] <- from
 
       # Source the file into the new environment.
-      suppress_output(sys.source(from, scripts[[from]], chdir = TRUE))
+      suppress_output(sys.source(file.path(.directory, from), scripts[[from]], chdir = .chdir))
 
       # Make sure to detach any new attachments.
       on.exit({
@@ -142,15 +171,34 @@ from <- function(.from, ..., .into = "imports", .library = .libPaths()[1L],
     }
     pkg <- scripts[[from]]
     pkg_name <- from
+
+    # Create list of all available objects (for use with the .all parameter)
+    all_objects <- ls(scripts[[from]])
   } else {
     # Load the package namespace, which is passed to the import calls.
     spec <- package_specs(from)
+    all_objects <- getNamespaceExports(spec$pkg)
     pkg <- tryCatch(
       loadNamespace(spec$pkg, lib.loc = .library,
                     versionCheck = spec$version_check),
       error = function(e) stop(conditionMessage(e), call. = FALSE)
     )
     pkg_name <- spec$pkg
+  }
+  # If .all parameter was specified, override with list of all objects
+  # (excluding internal variable __last_modified__)
+  # Take care not to lose the names of any manually specified parameters
+  if (.all) {
+    all_objects <- setdiff(all_objects, "__last_modified__")
+    names(all_objects) <- all_objects
+    symbols <- c(symbols,all_objects)
+    symbols <- symbols[!duplicated(symbols)]
+  }
+
+  # If .except parameter was specified, any object specified there
+  # should be omitted from the import
+  if (length(.except)>0) {
+    symbols <- symbols[!(symbols %in% .except)] # Fancy setdiff() to preserve names
   }
 
   # import each object specified in the argument list.
@@ -177,5 +225,5 @@ from <- function(.from, ..., .into = "imports", .library = .libPaths()[1L],
     assign("?", `?redirect`, into)
   }
 
-  invisible(if (use_into) as.environment(into) else NULL)
+  invisible(as.environment(into))
 }

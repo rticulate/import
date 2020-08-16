@@ -3,7 +3,6 @@
 \docType{package}
 \name{import}
 \alias{import}
-\alias{import-package}
 \title{An Import Mechanism for R}
 \description{
 This is an alternative mechanism for importing objects from

@@ -1,12 +1,13 @@
-<!--
-%\VignetteEngine{knitr::rmarkdown}
-%\VignetteIndexEntry{import}
--->
+---
+title: "The import package"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{The import package}
+  %\VignetteEngine{knitr::rmarkdown}
+  \usepackage[utf8]{inputenc}
+---
 
-The import package
-===================
-
-*Stefan Holst Milton Bache. This version: June, 2015.*
+*Stefan Holst Milton Bache. This version: June, 2020.*
 
 ![import-logo](import.png)
 
@@ -199,3 +200,83 @@ application, importing some
 objects in `server.R` and others in `ui.R` from the same module will not
 cause it to be sourced twice.
 
+## Advanced usage and the `.character_only` parameter
+The `import` package uses non-standard evaluation (NSE) in order to allow the 
+names of packages and functions to be listed without quoting them. This
+makes some common use-cases very straightforward, but can get in the 
+way of more programmatic usages.
+
+This is where the `.character_only` parameter comes in handy. By setting
+`.character_only=TRUE`, all NSE of the `.from`, 
+`.into` and the `...` parameters is disabled (other parameters are 
+always evaluated in a standard way). Instead, the parameters are processed
+as character vectors containing the relevant values. It is useful to 
+examine some examples of how this can be helpful.
+
+### Programmatically selecting the objects to import
+It is not always know in advance which objects to import from a given
+package. For example, assume we have a list of objects from the 
+`broom` package that we need to import, we can do it as follows:
+
+```{r, eval = FALSE}
+objects <- c("tidy", "glance", "augment")
+import::from("broom", objects, .character_only=TRUE)
+```
+
+This will import the three functions specified in the `objects` vector.
+It is worth noting that because `.character_only` disables NSE on *all*
+parameters, the name of the package must now be quoted.
+
+One common use case is when one wants to import all objects except one
+or a few, because of conflicts with other packages. Should one, for 
+example, want to use the `stats` versions of the `filter()` and `lag()`
+functions, but import all the other functions in the `dplyr` package,
+one could do it like this:
+
+```{r, eval = FALSE}
+objects <- setdiff(getNamespaceExports("dplyr"), c("filter","lag"))
+import::from("dplyr", objects, .character_only=TRUE)
+```
+
+## Programmatically selecting the location of a module
+The same approach can be used when the directory of the source
+file for a module is not known in advance. This can be useful
+when the original source file is not always run with the original
+working directory, but one still does not want to specify a 
+hard-coded absolute path, but to determine it at run time:
+
+```{r, eval = FALSE}
+mymodule <- file.path(mypath,"module.R")
+import::from(mymodule, "myfunction", .character_only=TRUE)
+```
+
+Again, note that now the name of the function must be quoted because
+NSE is disabled on all parameters.
+
+The `here` package is useful in many circumstances like this; it 
+allows the setting of a "root" directory for a project and by using
+the `here::here()` function to figure out the correct directory, 
+regardless of the working directory.
+
+```{r, eval = FALSE}
+import::from(here::here("src/utils/module.R")), "myfunction", .character_only=TRUE)
+```
+
+Note that `here::here()` has no relation to `import::here()` despite
+the similarity in names.
+
+## Importing from a URL
+Another case where `.character_only` comes in handy is when one
+wants to import some functions from a URL. While `import` does 
+not allow direct importing from a URL (because of difficult 
+questions about when a URL target has changes, whether to 
+download a file and other things), it easy to achieve the desired
+result by using the `pins` package (whose raison d'etre is to 
+resolve such difficult questions). A simple example follows:
+
+```{r, eval = FALSE}
+url <- "https://gist.githubusercontent.com/noamross/378884a472b5ef58c6cf/raw/1cd3a47158427ef7e2faa897d32821f14fa19bfd/test.R"
+import::from(pins::pin(url), "myfunc", .character_only=TRUE)
+myfunc(3)
+#> [1] 4
+```{r, eval = FALSE}

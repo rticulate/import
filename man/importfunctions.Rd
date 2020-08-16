@@ -6,8 +6,17 @@
 \alias{into}
 \title{Import Objects From a Package.}
 \usage{
-from(.from, ..., .into = "imports", .library = .libPaths()[1L],
-  .character_only = FALSE)
+from(
+  .from,
+  ...,
+  .into = "imports",
+  .library = .libPaths()[1L],
+  .directory = ".",
+  .all = (length(.except) > 0),
+  .except = character(),
+  .chdir = TRUE,
+  .character_only = FALSE
+)
 
 here(..., .from, .library = .libPaths()[1L], .character_only = FALSE)
 
@@ -20,13 +29,31 @@ into(.into, ..., .from, .library = .libPaths()[1L], .character_only = FALSE)
 If arguments are named, then the imported object will have this new name.}
 
 \item{.into}{The name of the search path entry. Use \code{""} to import
-into the current environment.}
+into the current environment. Enclosing the value in curly brackets causes
+the parameter to be treated as an actual environment value, rather than the
+name of an environment.}
 
-\item{.library}{character specifying the library to use. Defaults to
-the latest specified library.}
+\item{.library}{character specifying the library to use when importing from
+packages. Defaults to the latest specified library.}
+
+\item{.directory}{character specifying the directory to use when importing
+from modules. Defaults to the current working directory.}
+
+\item{.all}{logical specifying whether all available objects in a
+package or module should  be imported. It defaults to FALSE unless
+.exclude is being used to omit particular functions.}
+
+\item{.except}{character vector specifying any objects that should
+not be imported. Any values specified here override both values
+provided in \code{...} and objects included because of the
+\code{.all} parameter}
+
+\item{.chdir}{logical specifying whether to change directories before
+sourcing a module (this parameter is ignored for libraries)}
 
 \item{.character_only}{A logical indicating whether \code{.from} and
-\code{...} can be assumed to be charater strings.}
+\code{...} can be assumed to be character strings. (Note that this
+parameter does not apply to how the \code{.into} parameter is handled).}
 }
 \value{
 a reference to the environment with the imports or \code{NULL}
@@ -42,9 +69,7 @@ separate entry in the search path (which can be specified), rather in the
 global/current environment. Also, it is a more succinct way of importing
 several objects. Note that the two functions are symmetric, and usage is a
 matter of preference and whether specifying the \code{.into} argument is
-desired. The function \code{import::here} is short-hand for
-\code{import::from} with \code{.into = ""} which imports into the current
-environment.
+desired. The function \code{import::here} imports into the current environment.
 }
 \details{
 The function arguments can be quoted or unquoted as with e.g. \code{library}.
@@ -67,6 +92,14 @@ the function calls expressive without the need to preload, i.e. it is
 designed to be used explicitly with the \code{::} syntax, e.g.
 \code{import::from(pkg, x, y)}.
 }
+\section{Packages vs. modules}{
+
+\code{import} can either be used to import objects either from R packages or
+from \code{R} source files. If the \code{.from} parameter ends with '.R' or
+'.r', \code{import} will look for a source file to import from. A source file
+in this context is referred to as a \code{module} in the documentation.
+}
+
 \section{Package Versions}{
 
 With \code{import} you can specify package version requirements. To do this
