@@ -37,10 +37,17 @@ for ( test_file in test_files ) {
   # Setup a test sequence
   test_that(paste(test_file," works"), {
 
+    # Skip on windows CI for now
+    if ( isTRUE(as.logical(Sys.getenv("CI"))) &
+         tolower(Sys.info()[["sysname"]]) == "windows" ) {
+      skip("Skipping on CI Windows Action")
+    }
+
     # Set up a new Rscript process to source the manual tests,
     # then check the output to examine if they ran correctly.
-    rscript_exe <- paste0("'",file.path(R.home(),"bin","Rscript"),"'")
-    test_output <- system(paste(rscript_exe, test_file), intern=TRUE)
+    rscript_file <- ifelse(Sys.info()['sysname']=="Windows","Rscript.exe","Rscript")
+    rscript_path <- paste0("\"",file.path(R.home(),"bin",rscript_file),"\"")
+    test_output <- system(paste(rscript_path, test_file), intern=TRUE)
     expect_match(
       test_output,
       "Import tests completed successfully ...",

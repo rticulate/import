@@ -1,4 +1,8 @@
 ![Alt text](./import.png?raw=true "import logo")
+<!-- badges: start -->
+[![R build status](https://github.com/smbache/import/workflows/R-CMD-check/badge.svg)](https://github.com/smbache/import/actions)
+<!-- badges: end -->
+
 # An Import Mechanism For R
 
 ## Motivation
