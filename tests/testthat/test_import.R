@@ -37,6 +37,12 @@ for ( test_file in test_files ) {
   # Setup a test sequence
   test_that(paste(test_file," works"), {
 
+    # Skip on windows CI for now
+    if ( isTRUE(as.logical(Sys.getenv("CI"))) &
+         tolower(Sys.info()[["sysname"]]) == "windows" ) {
+      skip("Skipping on CI Windows Action")
+    }
+
     # Set up a new Rscript process to source the manual tests,
     # then check the output to examine if they ran correctly.
     rscript_file <- ifelse(Sys.info()['sysname']=="Windows","Rscript.exe","Rscript")
