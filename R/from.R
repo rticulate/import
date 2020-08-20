@@ -55,7 +55,9 @@
 #' @param .library character specifying the library to use when importing from
 #'   packages. Defaults to the latest specified library.
 #' @param .directory character specifying the directory to use when importing
-#'   from modules. Defaults to the current working directory.
+#'   from modules. Defaults to the current working directory. If .from is a
+#'   module specified using an absolute path (i.e. starting with \code{/}),
+#'   this parameter is ignored.
 #' @param .all logical specifying whether all available objects in a
 #'   package or module should  be imported. It defaults to FALSE unless
 #'   .exclude is being used to omit particular functions.
