@@ -1,4 +1,5 @@
-![Alt text](./import.png?raw=true "import logo")
+![Alt text](vignettes/import.png?raw=true "import logo")
+
 <!-- badges: start -->
 [![R build status](https://github.com/smbache/import/workflows/R-CMD-check/badge.svg)](https://github.com/smbache/import/actions)
 <!-- badges: end -->
