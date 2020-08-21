@@ -2,11 +2,11 @@
 #'
 #' Given a directory and a file name (path), return the combined path.
 #' For relative file names, this is identical to \code{file.path()},
-#' for absolute file names, it simply returns the absolute file nema
+#' for absolute file names, it simply returns the absolute file name.
 #'
 #' @param working_directory character: the working directory to use
 #' @param file_name character: the name of a possible R script file.
-#' @return logical
+#' @return character: the resulting file name of the file.
 #' @noRd
 file_path <- function(working_directory, file_name) {
 
