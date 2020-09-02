@@ -87,7 +87,6 @@ from <- function(.from, ..., .into = "imports",
 
   # Check if only exported objects are considered valid,
   # i.e. when called as import::from
-
   exports_only <- identical(cl, call("::", quote(import), quote(from)))
 
   # If not, the only other valid way of calling the function is import:::from
@@ -107,6 +106,17 @@ from <- function(.from, ..., .into = "imports",
   # .into="" is a short-hand for .into={environment()}
   if (!missing(.into) && is.character(.into) && .into == "")
     .into = quote({environment()})
+
+  # If we are inside a bad recursion call, warn and set .into to the only
+  # acceptable value for an inner recursive call, which is quote({environment()})
+  assign("stack_trace",.traceback(0),.GlobalEnv)
+  if (detect_bad_recursion(.traceback(0))) {
+     .into = quote({environment()})
+     warning(paste0("import::from() or import::into() was used recursively, to import \n",
+                    "    a module from within a module.  Please rely on import::here() \n",
+                    "    when using the import package in this way.\n",
+                    "    See vignette(import) for further details."))
+  }
 
   # Extract the arguments
   symbols <- symbol_list(..., .character_only = .character_only, .all = .all)
