@@ -109,7 +109,6 @@ from <- function(.from, ..., .into = "imports",
 
   # If we are inside a bad recursion call, warn and set .into to the only
   # acceptable value for an inner recursive call, which is quote({environment()})
-  assign("stack_trace",.traceback(0),.GlobalEnv)
   if (detect_bad_recursion(.traceback(0))) {
      .into = quote({environment()})
      warning(paste0("import::from() or import::into() was used recursively, to import \n",
