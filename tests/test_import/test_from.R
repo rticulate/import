@@ -46,6 +46,15 @@ test_that("Passing values as characters works", {
   cleanup_environment()
 })
 
+test_that("Importing modules by absolute path works", {
+  abs_module <- file.path(tempdir(),"module_base.R")
+  file.copy("module_base.R",abs_module)
+  expect_error ( fun1() )
+  expect_silent( import::from(abs_module, "fun1", .character_only=TRUE) )
+  expect_equal ( fun1(), "fun1" )
+  cleanup_environment()
+})
+
 test_that("The .all parameter works", {
   expect_error ( fun1() )
   expect_silent( import::from(module_base.R, .all=TRUE) )

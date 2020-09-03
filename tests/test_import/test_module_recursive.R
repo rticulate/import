@@ -22,8 +22,6 @@ source("cleanup_environment.R")
 ## Tests begin
 
 
-# Test a very basic scenario. The first test in a test sequence should test
-# that relevant functions have not been imported before the sequence starts.
 test_that("Recursive module imports work (they do not)", {
   skip("Recursive module imports do not work")
   skip_on_os("windows") # Test relies on using forward slashes in paths
@@ -37,6 +35,17 @@ test_that("Recursive module imports work (they do not)", {
   expect_output(print_title_text(text), text_title_case)
 })
 
+
+test_that("Recursive module imports work with here()", {
+  text = "hi friend, how are you"
+  text_title_case = "Hi Friend, How are you"
+  expect_error(print_text(text))
+  expect_error(print_title_text(text))
+  expect_silent(import::from("module_recursive/src/text.R", print_text))
+  expect_output(print_text(text), text)
+  expect_silent(import::from("module_recursive/src/title_text_here.R", print_title_text))
+  expect_output(print_title_text(text), text_title_case)
+})
 
 
 ## Tests end
