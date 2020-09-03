@@ -18,7 +18,7 @@ from(
   .character_only = FALSE
 )
 
-here(..., .from, .library = .libPaths()[1L], .character_only = FALSE)
+here(.from, ..., .library = .libPaths()[1L], .character_only = FALSE)
 
 into(.into, ..., .from, .library = .libPaths()[1L], .character_only = FALSE)
 }
