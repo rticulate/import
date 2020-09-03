@@ -17,7 +17,7 @@
 detect_bad_recursion <- function(stack_trace) {
 
   # Extract all lines correxponding to calls to import::*
-  x <- grep("^import::",unlist(stack_trace), value=TRUE)
+  x <- grep("^import::", unlist(stack_trace), value = TRUE)
 
   # If more than one line starts with import:::?from, we are inside
   # a recursive call. That is OK, as long as the last call originates+
