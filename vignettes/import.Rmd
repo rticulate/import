@@ -1,6 +1,8 @@
 ---
 title: "The import package"
-output: rmarkdown::html_vignette
+output: 
+  rmarkdown::html_vignette:
+    toc: true
 vignette: >
   %\VignetteIndexEntry{The import package}
   %\VignetteEngine{knitr::rmarkdown}
@@ -11,7 +13,7 @@ vignette: >
 
 ![import-logo](import.png)
 
-## Introduction
+# Introduction
 One of the most important aspects of the R ecosystem is the ease with which
 extensions and new features can be developed and distributed in the form of
 *packages.* The main distribution channel is the *Comprehensive R
@@ -89,7 +91,9 @@ distribtion and simple stand-alone script files. This allows for the use of scri
 as *modules*, a collection og related object definitions, each of which
 may be used at different places without exposing more than necessary.
 
-## Usage
+# Basic usage
+
+## Importing from packages
 The `import` package itself should not to be attached 
 (don't include it via `library`, you will get a warning). Rather, it is designed
 to be expressive when using the colon syntax. A first pseudo-example is:
@@ -150,7 +154,7 @@ this can be accomplished by `import::here`. This is particularly
 useful when importing inside a function definition, or module scripts as
 described below.
 
-## "Module" scripts
+## Importing from "Module" scripts
 Suppose that you have some related functionality that you wish to bundle, and
 that authoring a full package seems excessive or inappropriate 
 for the specific task, for example bundling related UI components for a `shiny` 
@@ -200,7 +204,9 @@ application, importing some
 objects in `server.R` and others in `ui.R` from the same module will not
 cause it to be sourced twice.
 
-## Advanced usage and the `.character_only` parameter
+# Advanced usage
+
+## Advanced usage and the .character_only parameter
 The `import` package uses non-standard evaluation (NSE) in order to allow the 
 names of packages and functions to be listed without quoting them. This
 makes some common use-cases very straightforward, but can get in the 
@@ -213,7 +219,7 @@ always evaluated in a standard way). Instead, the parameters are processed
 as character vectors containing the relevant values. It is useful to 
 examine some examples of how this can be helpful.
 
-### Programmatically selecting the objects to import
+## Programmatically selecting the objects to import
 It is not always know in advance which objects to import from a given
 package. For example, assume we have a list of objects from the 
 `broom` package that we need to import, we can do it as follows:
@@ -279,4 +285,35 @@ url <- "https://gist.githubusercontent.com/noamross/378884a472b5ef58c6cf/raw/1cd
 import::from(pins::pin(url), "myfunc", .character_only=TRUE)
 myfunc(3)
 #> [1] 4
-```{r, eval = FALSE}
+```
+
+## Python-like imports
+A frequent pattern in python imports packages under an alias; all subsequent use of the imported objects then explitly includes the alias:
+```python
+import pandas as pd
+import numpy as np
+import math as m
+
+print(m.pi)
+print(m.e)
+```
+
+In order to achieve this functionality with the import package, use `.into={new.env()}` which assign to a new environment without attachihng it. `import::from()` returns this environment, so it can be assigned toa variable:
+
+``` r
+# Import into a new namespace, use $ to access
+td <- import::from(tidyr, spread, pivot_wider, .into={new.env()})
+dp <- import::from(dplyr, .all=TRUE, .into={new.env()})
+dp$select(head(cars),dist)
+#>   dist
+#> 1    2
+#> 2   10
+#> 3    4
+#> 4   22
+#> 5   16
+#> 6   10
+
+# Note that functions are not visible without dp$ prefix
+select(head(cars),dist)
+#> Error in select(head(cars), dist): could not find function "select"
+```
