@@ -21,7 +21,6 @@ source("cleanup_environment.R")
 
 ## Tests begin
 
-
 test_that("Recursive import::here() works with modules", {
   text = "hi friend, how are you"
   text_title_case = "Hi Friend, How are you"
@@ -75,7 +74,7 @@ test_that("Recursive import::from() works with modules and packages (with warnin
 })
 
 # Combines recursive tests with chdir functionality
-test_that("Recursive module imports in subdirs work", {
+test_that("Recursive module imports in subdirs work (with warning)", {
   skip_on_os("windows") # Test relies on using forward slashes in paths
   text = "hi friend, how are you"
   text_title_case = "Hi Friend, How are you"
@@ -87,6 +86,18 @@ test_that("Recursive module imports in subdirs work", {
   expect_warning(import::from("module_recursive/src/title_text.R", print_title_text))
   expect_output(print_title_text(text), text_title_case)
   cleanup_environment()
+})
+
+test_that("Recursive module imports in subdirs work with here()", {
+  skip_on_os("windows") # Test relies on using forward slashes in paths
+  text = "hi friend, how are you"
+  text_title_case = "Hi Friend, How are you"
+  expect_error(print_text(text))
+  expect_error(print_title_text(text))
+  expect_silent(import::from("module_recursive/src/text.R", print_text))
+  expect_output(print_text(text), text)
+  expect_silent(import::from("module_recursive/src/title_text_here.R", print_title_text))
+  expect_output(print_title_text(text), text_title_case)
 })
 
 

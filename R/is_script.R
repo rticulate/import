@@ -13,5 +13,5 @@ is_script <- function(file_name, .directory)
   is.character(.directory) &&
   length(file_name) == 1L &&
   isTRUE(grepl(".+\\.[rR]$", file_name)) &&
-  file.exists(file.path(.directory,file_name))
+  file.exists(file_path(.directory,file_name))
 }

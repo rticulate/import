@@ -15,8 +15,8 @@ modified <- function(e, .directory=NULL)
   if (is.environment(e)) {
     e[["__last_modified__"]]
   } else if (is.character(e) && is.character(.directory) &&
-             file.exists(file.path(.directory,e)) ) {
-    file.info(file.path(.directory,e))[["mtime"]]
+             file.exists(file_path(.directory,e)) ) {
+    file.info(file_path(.directory,e))[["mtime"]]
   } else {
     NULL
   }
