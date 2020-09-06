@@ -10,7 +10,7 @@ Authors@R:
       person(given = "Magnus Thor",
              family = "Torfason",
              role = "aut",
-             email = "torfason@hi.is"))
+             email = "m@zulutime.net"))
 Description: Alternative mechanism for importing objects from packages
     and R modules. The syntax allows for importing multiple objects with a single
     command in an expressive way. The import package bridges some of the gap
