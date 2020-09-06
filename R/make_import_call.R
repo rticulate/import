@@ -8,6 +8,8 @@
 #'   allowed.
 #'
 #' @return A call object.
+#'
+#' @noRd
 make_import_call <- function(params, exports_only)
 {
   cl <-
