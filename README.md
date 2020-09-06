@@ -1,7 +1,7 @@
 ![Alt text](vignettes/import.png?raw=true "import logo")
 
 <!-- badges: start -->
-[![R build status](https://github.com/smbache/import/workflows/R-CMD-check/badge.svg)](https://github.com/smbache/import/actions)
+[![R build status](https://github.com/rticulate/import/workflows/R-CMD-check/badge.svg)](https://github.com/rticulate/import/actions)
 <!-- badges: end -->
 
 # An Import Mechanism For R
@@ -44,7 +44,7 @@ install.packages("import")
 You can also install `import` from GitHub using `devtools`:
 
 ```R
-devtools::install_github("smbache/import")
+devtools::install_github("rticulate/import")
 ```
 
 The `import` package is named to **make usage expressive** without having to 
