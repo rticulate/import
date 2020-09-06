@@ -12,12 +12,11 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous">
 <!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- pkgdown --><link href="pkgdown.css" rel="stylesheet">
 <script src="pkgdown.js"></script><meta property="og:title" content="An Import Mechanism for R">
-<meta property="og:description" content="This is an alternative mechanism for importing
-    objects from packages. The syntax allows for importing multiple objects
-    from a package with a single command in an expressive way. The import
-    package bridges some of the gap between using library (or require) and
-    direct (single-object) imports. Furthermore the imported objects are not
-    placed in the current environment.">
+<meta property="og:description" content="Alternative mechanism for importing objects from packages
+    and R modules. The syntax allows for importing multiple objects with a single
+    command in an expressive way. The import package bridges some of the gap
+    between using library (or require) and direct (single-object) imports.
+    Furthermore the imported objects are not placed in the current environment.">
 <!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script><!--[if lt IE 9]>
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
 <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
@@ -57,7 +56,7 @@
       </ul>
 <ul class="nav navbar-nav navbar-right">
 <li>
-  <a href="https://github.com/smbache/import/">
+  <a href="https://github.com/rticulate/import/">
     <span class="fab fa fab fa-github fa-lg"></span>
      
   </a>
@@ -77,7 +76,7 @@
 
 <p><img src="articles/import.png?raw=true" title="import logo" alt="Alt text"></p>
 <!-- badges: start -->
-<p><a href="https://github.com/smbache/import/actions"><img src="https://github.com/smbache/import/workflows/R-CMD-check/badge.svg" alt="R build status"></a> <!-- badges: end --></p>
+<p><a href="https://github.com/rticulate/import/actions"><img src="https://github.com/rticulate/import/workflows/R-CMD-check/badge.svg" alt="R build status"></a> <!-- badges: end --></p>
 <div id="an-import-mechanism-for-r" class="section level1">
 <div class="page-header"><h1 class="hasAnchor">
 <a href="#an-import-mechanism-for-r" class="anchor"></a>An Import Mechanism For R</h1></div>
@@ -95,7 +94,7 @@
 <p>To install <code>import</code> from CRAN:</p>
 <div class="sourceCode" id="cb1"><pre class="r"><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span>(<span class="st">"import"</span>)</pre></div>
 <p>You can also install <code>import</code> from GitHub using <code>devtools</code>:</p>
-<div class="sourceCode" id="cb2"><pre class="r"><span class="kw pkg">devtools</span><span class="kw ns">::</span><span class="fu">install_github</span>(<span class="st">"smbache/import"</span>)</pre></div>
+<div class="sourceCode" id="cb2"><pre class="r"><span class="kw pkg">devtools</span><span class="kw ns">::</span><span class="fu">install_github</span>(<span class="st">"rticulate/import"</span>)</pre></div>
 <p>The <code>import</code> package is named to <strong>make usage expressive</strong> without having to load the package using <code>library</code>. A basic example, which imports a few functions from the <code>dplyr</code> package is:</p>
 <div class="sourceCode" id="cb3"><pre class="r"><span class="kw pkg">import</span><span class="kw ns">::</span><span class="fu"><a href="reference/importfunctions.html">from</a></span>(<span class="no">dplyr</span>, <span class="no">select</span>, <span class="no">arrange</span>, <span class="kw">keep_when</span> <span class="kw">=</span> <span class="no">filter</span>)</pre></div>
 <p>This does pretty much what it says: three functions are imported from <code>dplyr</code>, two of which will keep their original name, and one which is renamed, e.g. to avoid name clash with <code><a href="https://rdrr.io/r/stats/filter.html">stats::filter</a></code>. The imported objects are placed in a separate entity in the search path (@lionel- suggests naming them “pied-à-terres”, meaning living units some distance away from primary residence), which by default is named “imports”. It is therefore also easy to get rid of them again with <code><a href="https://rdrr.io/r/base/detach.html">detach("imports")</a></code>. The main point is that it is <strong>clear which functions will be used and where they come from</strong>. It’s noteworthy that there is nothing special going on: the <code><a href="reference/importfunctions.html">import::from</a></code> function is only a convenient wrapper around <code>getExportedValue</code> (as is <code>::</code> itself) and <code>assign</code>. To import non-exported objects one must use triple-colon syntax: <code>import:::from(pkg, obj)</code>. If any of the <code>import</code> functions are called regularly, i.e. without preceding <code>import::</code> or <code>import:::</code>, an error is raised. If <code>import</code> is attached, a startup message will inform that <code>import</code> <em>should not</em> be attached.</p>
@@ -183,9 +182,9 @@
 <ul class="list-unstyled">
 <li>Download from CRAN at <br><a href="https://cloud.r-project.org/package=import">https://​cloud.r-project.org/​package=import</a>
 </li>
-<li>Browse source code at <br><a href="https://github.com/smbache/import/">https://​github.com/​smbache/​import/​</a>
+<li>Browse source code at <br><a href="https://github.com/rticulate/import/">https://​github.com/​rticulate/​import/​</a>
 </li>
-<li>Report a bug at <br><a href="https://github.com/smbache/import/issues">https://​github.com/​smbache/​import/​issues</a>
+<li>Report a bug at <br><a href="https://github.com/rticulate/import/issues">https://​github.com/​rticulate/​import/​issues</a>
 </li>
 </ul>
 </div>
@@ -200,7 +199,8 @@
 <div class="developers">
 <h2>Developers</h2>
 <ul class="list-unstyled">
-<li>Stefan Milton Bache <br><small class="roles"> Maintainer </small>  </li>
+<li>Stefan Milton Bache <br><small class="roles"> Author, maintainer </small>  </li>
+<li>Magnus Thor Torfason <br><small class="roles"> Author </small>  </li>
 </ul>
 </div>
 
@@ -209,7 +209,7 @@
 
 
       <footer><div class="copyright">
-  <p>Developed by Stefan Milton Bache.</p>
+  <p>Developed by Stefan Milton Bache, Magnus Thor Torfason.</p>
 </div>
 
 <div class="pkgdown">
