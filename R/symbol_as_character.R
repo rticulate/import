@@ -2,6 +2,8 @@
 #'
 #' @param symbol A symbol or character (of length one)
 #' @return character
+#'
+#' @noRd
 symbol_as_character <- function(symbol)
 {
   if (is.symbol(symbol) ||
