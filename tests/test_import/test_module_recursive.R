@@ -98,7 +98,16 @@ test_that("Recursive module imports in subdirs work with here()", {
   expect_output(print_text(text), text)
   expect_silent(import::from("module_recursive/src/title_text_here.R", print_title_text))
   expect_output(print_title_text(text), text_title_case)
+  cleanup_environment()
 })
+
+
+# Using library() inside a module does not work and should throw an error
+test_that("Using library() inside a module throws an error", {
+  expect_error(import::from(module_recursive_library.R, print_title_text))
+  cleanup_environment()
+})
+
 
 
 ## Tests end
