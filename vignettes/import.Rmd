@@ -9,11 +9,12 @@ vignette: >
   \usepackage[utf8]{inputenc}
 ---
 
-*Stefan Holst Milton Bache. This version: June, 2020.*
-
-![import-logo](import.png)
+* This version: September, 2020. 
+* Latest version at: https://import.rticulate.org/articles/import.html
+* A briefer intro at: https://import.rticulate.org/
 
 # Introduction
+
 One of the most important aspects of the R ecosystem is the ease with which
 extensions and new features can be developed and distributed in the form of
 *packages.* The main distribution channel is the *Comprehensive R
@@ -61,17 +62,23 @@ but it is not to be underestimated. Code snippets are very commonly shared
 and spending time figuring out where functionality comes from is not 
 a very satisfying nor value-adding activity.
 
-To overcome the above, one may import single exported objects, one at a time, 
-using the (double) "colon syntax",
+It is possible to unambiguously specify where a function comes from by 
+prefixing it with `::` every time it used, but this is often 
+overly verbose and does not provide an easily accessible overview of what
+external functionality is used in a script.  One may also import single 
+exported objects, one at a time,  using the (double) "colon syntax",
 
 ```{r, eval = FALSE}
 function_a <- PackageA::function_a
 function_b <- PackageB::function_b
 ```
 
-or functions can be prefixed with `::` when used, but this is often 
-overly verbose and does not provide an easily accessible overview of what
-external functionality is used in a script.
+The downside of this approach is that the object is **placed 
+in the user's global work space**, rather than being encapsulated somewhere else
+in the search path (when using `library` to load `pkg`, a namespace `package:pkg` 
+will be attached in the search path which will contain the exported functions 
+from `pkg`). Another minor point is that one can **only import one object at a 
+time** using this approach.
 
 While packages form the backbone of code distribution, another option comes
 in the form of *scripts*, but these are usually task specific and not
@@ -82,39 +89,105 @@ and may "over populate" the working environment, masking other objects,
 if not only producing some mental clutter. Scope management is therefore not too 
 comfortable when splitting functionality across files in a modular way.
 
-
 The `import` package sets out to improve the way external functionality 
-is *included* in your code by alleviating some of the concerns raised above by
+is included in your code by alleviating some of the concerns raised above by
 providing an expressive way of importing object from both packages and
 scripts. The latter provides a bridge between the *package* approach to
 distribtion and simple stand-alone script files. This allows for the use of scripts
 as *modules*, a collection og related object definitions, each of which
 may be used at different places without exposing more than necessary.
 
-# Basic usage
+The package is inspired in part by Python's 
+`from some_module import some_function` syntax, and solves
+the two issues raised above. It is also similar to `roxygen2`s 
+`@importFrom package function1 function2` for packages. While `import` will 
+also work for package development, the intended use case is when using
+external functions `R` scripts.
 
-## Importing from packages
+In addition to being able to import objects from packages, `import` also allows
+you to import objects from other *scripts* (i.e. a kind of *module*). This allows
+a simple way to distribute and use functionality without the need to write
+a full package. One example is a Shiny app, where one can place definitions 
+in a script and import only the needed objects where they are used. This 
+avoids workspace clutter and name clashes. For more details see below.
+
+
+# Basic Usage
+
+## Importing from Packages
+
+The most basic use case is to import a few functions from package 
+(here the `psych` package):
+
+```{r, eval=FALSE}
+import::from(psych, geometric.mean, harmonic.mean)
+geometric.mean(trees$Volume)
+```
+
+The imported objects are placed in a
+separate entity in the search path (@lionel- suggests naming them "pied-à-terres", 
+meaning living units some distance away from primary residence), which by 
+default is named "imports". It is therefore also easy to get rid of them again 
+with `detach("imports")`. The main point is that it is **clear which functions 
+will be used and where they come from**.  It's noteworthy that there is nothing 
+special going on: the `import::from` function is only a convenient wrapper 
+around `getExportedValue` (as is `::` itself) and `assign`. 
+
 The `import` package itself should not to be attached 
 (don't include it via `library`, you will get a warning). Rather, it is designed
-to be expressive when using the colon syntax. A first pseudo-example is:
+to be expressive when using the colon syntax.   To import  non-exported objects 
+one must use triple-colon syntax: `import:::from(pkg, obj)`.
+If any of the `import` functions are called regularly, i.e. without preceding
+`import::` or `import:::`, an error is raised. If `import` is attached, a 
+startup message will inform that `import` *should not* be attached.
+
+If one of the function names conflicts with an existing function (such as `filter` 
+from the `dplyr` package) it is simple to rename it:
+
+```{r, eval=FALSE}
+import::from(dplyr, select, arrange, keep_when = filter)
+keep_when(mtcars, hp>250)
+```
+
+This does pretty much what it says: three functions are imported from `dplyr`,
+two of which will keep their original name, and one which is renamed, e.g. to
+avoid name clash with `stats::filter`. 
+
+You can use `.all=TRUE` to import all functions from a package, but rename one of them:
+
+```{r, eval=FALSE}
+import::from(dplyr, keep_when = filter, .all=TRUE)
+```
+
+To omit a function from the import, use `.except` (which takes a character vector):
+
+```{r, eval=FALSE}
+import::from(dplyr, .except=c("filter", "lag"))
+```
+
+Note that `import` tries to be smart about this and assumes that if you are using the 
+`.except` parameter, you probably want to import everything you are _not_ explicitly omitting,
+and sets the `.all` parameter to `TRUE`. You can override this in exceptional cases, but you
+seldom need to.
+
+Finally, a more complex example, combining a few different import statements:
 
 ```{r, eval = FALSE}
 import::from(magrittr, "%>%")
-import::from(dplyr, mutate, keep_when = filter)
-import::from(tidyr, spread)
+import::from(dplyr, starwars, select, mutate, keep_when = filter)
+import::from(tidyr, unnest)
 import::from(broom, tidy)
 
 ready_data <-
-  raw_data %>% 
-  mutate(var2 = fun(var1)) %>% 
-  keep_when(var1 > 0) %>% 
-  spread(key, value) 
+  starwars %>% 
+  keep_when(mass < 100) %>% 
+  select(name, height, mass, films) %>%
+  unnest(films) %>%
+  mutate( log_mass = log(mass), films=factor(films))
 
 linear_model <- 
-  lm(var1 ~ ., data = ready_data) %>% 
+  lm(log_mass ~ height + films, data = ready_data) %>% 
   tidy
-  
-# ... and more code below.
 ```
 
 In the above, it is clear *which* package provides *which* functions
@@ -131,30 +204,94 @@ not at all clear what purpose a package has; e.g. the name `magrittr` does
 not immediately reveal that it's main purpose is to provide the pipe 
 operator, `%>%`.
 
-When `import::from` is used to import objects it will place them in an 
-environment attached in the search path under the name "imports". This 
-name is just default, and can be specified:
 
-```{r, eval = FALSE}
-import::from(dplyr, mutate, select, .into = "wrangling")
+### Importing Functions from "Module" Scripts
 
-# or equivalently:
-import::into("wrangling", mutate, select, .from = dplyr)
 
-ls("wrangling") # Also viewable in Rstudio's environment browser!
-# => [1] "mutate" "select"
+The `import` package allows for importing objects defined in script files,
+which we will here refer to as "modules".
+The module will be fully evaluated by `import` when an import is requested, 
+after which objects such as functions or data can be imported. 
+Such modules should be side-effect free, but this is
+not enforced. 
+
+Attachments are detached (e.g. packages attached by `library`)
+but loaded namespaces remain loaded. This means that *values* created 
+by functions in an attached namespace will work with `import`, but 
+functions to be exported *should not* rely on such functions (use function
+importing in the modules instead).
+
+For example, the file [sequence_module.R](articles/sequence_module.R) contains several
+functions calculating terms of mathematical sequences. It is possible to import from such
+files, just as one imports from packages:
+
+```{r, eval=FALSE}
+import::from(sequence_module.R, fibonacci, square, triangular)
 ```
 
-Note, that the `.from` and `.into` arguments are prefixed by a dot to
-clearly distinguish them from other named arguments. The two 
-alternatives above are equivalent (the choice is a matter of preferece).
+Renaming, the `.all`, and the `.except` parameters work in the same way as for packages:
 
-If it is desired to import objects directly into the current environment, 
-this can be accomplished by `import::here`. This is particularly 
-useful when importing inside a function definition, or module scripts as
-described below.
+```{r, eval=FALSE}
+import::from(sequence_module.R, fib=fibonacci, .except="square")
+```
 
-## Importing from "Module" scripts
+If a module is modified, `import` will
+realize this and reload the script if further imports are executed or 
+re-executed; otherwise additional imports will not cause the script to be 
+reloaded for efficiency. As the script is loaded in its own environment 
+(maintained by `import`) dependencies are kept (except those exposed through
+attachment), as the following small example shows.
+
+**Contents of "some_module.R":**
+```{r, eval=FALSE}
+## Do not use library() inside a module. This results in a warning, 
+## and functions relying on ggplot2 will not work.
+#library(ggplot2)
+
+## This is also not recommended, because it is not clear wether recursively 
+## imported functions should be available after the module is imported
+#import::here(qplot, .from = ggplot2)
+
+## This is the recommended way to recursively import functions on which
+## module functions depend. The qplot function will be available to 
+## module functions, but will not itself be available after import
+import::here(qplot, .from = ggplot2)
+
+## Note this operator overload is not something you want to `source`!
+`+` <- function(e1, e2)
+  paste(e1, e2)
+
+## Some function relying on the above overload:
+a <- function(s1, s2)
+  s1 + rep(s2, 3)
+
+## Another value.
+b <- head(iris, 10)
+
+## A value created using a recursively imported function
+p <- qplot(Sepal.Length, Sepal.Width, data = iris, color = Species)
+
+## A function relying on a function exposed through attachment:
+plot_it <- function()
+  qplot(Sepal.Length, Sepal.Width, data = iris, color = Species)
+```
+
+**Usage:**
+```{r, eval=FALSE}
+import::from(some_module.R, a, b, p, plot_it)
+
+## Works:
+a("cool", "import")
+
+## The `+` is not affecting anything here, so this won't work:
+# "cool" + "import"
+
+# Works:
+b
+p
+plot_it()
+```
+
 Suppose that you have some related functionality that you wish to bundle, and
 that authoring a full package seems excessive or inappropriate 
 for the specific task, for example bundling related UI components for a `shiny` 
@@ -165,6 +302,9 @@ below:
 # File: foo.R
 # Desc: Functionality related to foos.
 # Imports from other_resources.R
+# When recursively importing from another module or package for use by 
+# your module functions, you should always use import::here() rather 
+# than import::from() or library()
 import::here(fun_a, fun_b, .from = "other_resources.R")
 
 internal_fun <- function(...) ...
@@ -192,10 +332,13 @@ import::here(fun_c, .from = "foo.R")
 
 In the above, *only* `fun_c` is visible inside `bar.R`. The 
 functions on which it depends exist, but are not exposed. 
-Also, note that imported scripts may themselves import. To 
-avoid imports becoming global, it is suggested to 
-use `import::here` rather than `import::from`, in which case
-imports are only exposed to the module itself.
+Also, note that imported scripts may themselves import. 
+
+Since the desired effect of `import::from` inside a module script
+is ambiguous, this results in a warning (but the functions will 
+still be imported into the local environment of the script, just
+as with `import::here` which only imports are only exposed to 
+the module itself.
 
 When importing from a module, it is sourced into an environment
 managed by `import`, and will not be sourced again upon subsequent 
@@ -204,9 +347,73 @@ application, importing some
 objects in `server.R` and others in `ui.R` from the same module will not
 cause it to be sourced twice.
 
+
+### Choosing where import looks for packages or modules
+
+The `import` package will by default only use the latest specified library
+(i.e. the result of `.libPaths()[1L]`). It is possible to specify a different
+library using the `.library` argument in any of the `import` functions.
+One import call can only use *one* library so there will not be ambiguity
+as to where imports come from.
+
+When importing from a module (.R file), the directory where `import` looks for
+the module script can be speecified with the with `.directory` paremeter. 
+The default is `.` (the current working directory).
+
+### Choosing where the imported functions are placed
+
+One can also specify which names to use in the search path and use several to 
+group imports:
+
+```{r, eval = FALSE}
+import::from(magrittr, "%>%", "%$%", .into = "operators") 
+import::from(dplyr, arrange, .into = "datatools")
+```
+
+If using pied-à-terres actively, one might prefer the alternative syntax 
+(which does the same but reverses the argument order):
+
+```{r, eval = FALSE}
+import::into("operators", "%>%", "%$%", .from = magrittr)
+import::into("datatools", arrange, .from = dplyr)
+```
+
+Note, that the `.from` and `.into` arguments are prefixed by a dot to
+clearly distinguish them from other named arguments. The `import::into`
+and `import::from` accept the same parameters and achieve the same
+result. The the choice between them a matter of preferece).
+
+If it is desired to import objects directly into the current environment, 
+this can be accomplished by `import::here`. This is particularly 
+useful when importing inside a function definition, or module scripts as
+described below.
+
+```{r, eval = FALSE}
+import::into("operators", "%>%", "%$%", .from = magrittr)
+import::into("datatools", arrange, .from = dplyr)
+```
+
+The `.into` parameter can be surrounded with `{}`, which leads it to be
+interpreted as a variable or function, instead of as the name of an
+environment in the search path. Examples include:
+
+```{r, eval = FALSE}
+# Import into the local environment
+import::into({environment()}, "%>%", .from = magrittr)
+
+# Import ihnto the global environment
+import::into({.GlobalEnv}, "%>%", "%$%", .from = magrittr)
+
+# Import into a new environment, mainly useful for python-style imports
+# (see below)
+x = import::into({new.env()}, "%<>%", .from = magrittr)
+```
+
+
 # Advanced usage
 
 ## Advanced usage and the .character_only parameter
+
 The `import` package uses non-standard evaluation (NSE) in order to allow the 
 names of packages and functions to be listed without quoting them. This
 makes some common use-cases very straightforward, but can get in the 
@@ -219,7 +426,9 @@ always evaluated in a standard way). Instead, the parameters are processed
 as character vectors containing the relevant values. It is useful to 
 examine some examples of how this can be helpful.
 
+
 ## Programmatically selecting the objects to import
+
 It is not always know in advance which objects to import from a given
 package. For example, assume we have a list of objects from the 
 `broom` package that we need to import, we can do it as follows:
@@ -244,7 +453,9 @@ objects <- setdiff(getNamespaceExports("dplyr"), c("filter","lag"))
 import::from("dplyr", objects, .character_only=TRUE)
 ```
 
+
 ## Programmatically selecting the location of a module
+
 The same approach can be used when the directory of the source
 file for a module is not known in advance. This can be useful
 when the original source file is not always run with the original
@@ -268,10 +479,20 @@ regardless of the working directory.
 import::from(here::here("src/utils/module.R")), "myfunction", .character_only=TRUE)
 ```
 
+Alternatively, if the file name is always the same and it is only the directory
+that differs, you could use the `.directory` parameter, which always expects standard
+evaluation arguments.
+
+```{r, eval = FALSE}
+import::from(module.R, "myfunction", here::here("src/utils"))
+```
+
 Note that `here::here()` has no relation to `import::here()` despite
 the similarity in names.
 
+
 ## Importing from a URL
+
 Another case where `.character_only` comes in handy is when one
 wants to import some functions from a URL. While `import` does 
 not allow direct importing from a URL (because of difficult 
@@ -287,8 +508,12 @@ myfunc(3)
 #> [1] 4
 ```
 
+
+
 ## Python-like imports
+
 A frequent pattern in python imports packages under an alias; all subsequent use of the imported objects then explitly includes the alias:
+
 ```python
 import pandas as pd
 import numpy as np
@@ -300,7 +525,7 @@ print(m.e)
 
 In order to achieve this functionality with the import package, use `.into={new.env()}` which assign to a new environment without attachihng it. `import::from()` returns this environment, so it can be assigned toa variable:
 
-``` r
+```{r, eval = FALSE}
 # Import into a new namespace, use $ to access
 td <- import::from(tidyr, spread, pivot_wider, .into={new.env()})
 dp <- import::from(dplyr, .all=TRUE, .into={new.env()})
@@ -317,3 +542,4 @@ dp$select(head(cars),dist)
 select(head(cars),dist)
 #> Error in select(head(cars), dist): could not find function "select"
 ```
+

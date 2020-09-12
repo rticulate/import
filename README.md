@@ -1,4 +1,4 @@
-![Alt text](vignettes/import.png?raw=true "import logo")
+<img src="vignettes/import.png?raw=true" align="right" alt="" width="120" />
 
 <!-- badges: start -->
 [![R build status](https://github.com/rticulate/import/workflows/R-CMD-check/badge.svg)](https://github.com/rticulate/import/actions)
@@ -6,69 +6,122 @@
 
 # An Import Mechanism For R
 
-## Motivation
+The import package is intended to simplify the way in which functions from external 
+packages or modules are made available for use in R scripts. Learn more on 
+the [package website](https://import.rticulate.org/), by reading  
+[`vignette("import")`](https://import.rticulate.org/articles/import.html),
+or using the help (`?import::from`).
+
+## Introduction
+
 The typical way of using functionality exposed by a package in R scripts is to 
-load (and attach) the entire package with `library` (or `require`). This can 
+load (and attach) the entire package with `library()` (or `require()`). This can 
 have the **undesirable effect of masking objects** in the user's search path 
 and can also make it difficult and **confusing to identify** what functionality 
 comes from which package when using several `library` statements.
 
-An alternative is to import a single object from a package, say `object <-
-package::object`. The downside of this approach is that the object is **placed 
-in the user's global work space**, rather than being encapsulated somewhere else
-in the search path (when using `library` to load `pkg`, a namespace `package:pkg` 
-will be attached in the search path which will contain the exported functions 
-from `pkg`). Another minor point is that one can **only import one object at a 
-time** using this approach.
+The `import` package provides a simple alternative, allowing the user specify in
+a concise way exactly which objects. For example, the `Hmisc` package exposes over
+four hundred functions. Instead of exposing all of those functions, someone who only needs 
+access to, say the `impute()` and the `nomiss()` functions, can import those functions only:
 
-The `import` package provides a simple alternative to importing and is inspired
-in part by Python's `from some_module import some_function` syntax, and will
-solve the two issues raised above. It is also similar to `roxygen2`s 
-`@importFrom package function1 function2` for packages. While `import` will 
-also work for package development, it is meant for `R` scripts.
+```R
+import::from(Hmisc, impute, nomiss)
+```
 
-In addition to being able to import objects from packages, `import` also allows
-you to import objects in *scripts* (i.e. a kind of *module*). This allows
-a simple way to distribute and use functionality without the need to write
-a full package. One example is a Shiny app, where one can place definitions 
-in a script and import only the needed objects where they are used. This 
-avoids workspace clutter and name clashes. For more details see below.
+For more on the motivation behind the package, see 
+[vignette("import")](https://import.rticulate.org/articles/import.html)
 
-## Installation and usage 
+
+## Installation
 
 To install `import` from CRAN:
+
 ```R
 install.packages("import")
 ```
 
-You can also install `import` from GitHub using `devtools`:
+You can also install the development version of  `import` from GitHub using `devtools`:
 
 ```R
 devtools::install_github("rticulate/import")
 ```
 
-The `import` package is named to **make usage expressive** without having to 
-load the package using `library`. A basic example, which imports a few functions
-from the `dplyr` package is:
+## Usage
+
+### Importing functions from R packages
+
+The most basic use case is to import a few functions from package 
+(here the `psych` package):
+
+```R
+import::from(psych, geometric.mean, harmonic.mean)
+geometric.mean(trees$Volume)
+```
+
+If one of the function names conflicts with an existing function (such as `filter` 
+from the `dplyr` package) it is simple to rename it:
 
 ```R
 import::from(dplyr, select, arrange, keep_when = filter)
+keep_when(mtcars, hp>250)
 ```
 
-This does pretty much what it says: three functions are imported from `dplyr`,
-two of which will keep their original name, and one which is renamed, e.g. to
-avoid name clash with `stats::filter`. The imported objects are placed in a
-separate entity in the search path (@lionel- suggests naming them "pied-à-terres", 
-meaning living units some distance away from primary residence), which by 
-default is named "imports". It is therefore also easy to get rid of them again 
-with `detach("imports")`. The main point is that it is **clear which functions 
-will be used and where they come from**. It's noteworthy that there is nothing 
-special going on: the `import::from` function is only a convenient wrapper 
-around `getExportedValue` (as is `::` itself) and `assign`. To import 
-non-exported objects one must use triple-colon syntax: `import:::from(pkg, obj)`.
-If any of the `import` functions are called regularly, i.e. without preceding
-`import::` or `import:::`, an error is raised. If `import` is attached, a 
-startup message will inform that `import` *should not* be attached.
+Use `.all=TRUE` to import all functions from a package. If you want to rename one 
+of them, you can still do that:
+
+```R
+import::from(dplyr, keep_when = filter, .all=TRUE)
+```
+
+To omit a function from the import, use `.except` (which takes a character vector): 
+```R
+import::from(dplyr, .except=c("filter", "lag"))
+```
+
+Note that `import` tries to be smart about this and assumes that if you are using the 
+`.except` parameter, you probably want to import everything you are _not_ explicitly omitting,
+and sets the `.all` parameter to `TRUE`. You can still override this in exceptional cases, 
+but you seldom need to.
+
+These and other examples are discussed in more detail in the 
+[Importing from Packages](articles/import.html#importing-from-packages) section of the
+package vignette.
+
+### Importing Functions from "Module" Scripts
+
+The `import` package allows R files to be used as "modules" from which functions are loaded.
+For example, the file [sequence_module.R](articles/sequence_module.R) contains several
+functions calculating terms of mathematical sequences. It is possible to import from such
+files, just as one imports from packages:
+
+```R
+import::from(sequence_module.R, fibonacci, square, triangular)
+```
+
+Renaming, as well as the `.all` and `.except` parameters, work in the same way as for packages:
+
+```R
+import::from(sequence_module.R, fib=fibonacci, .except="square")
+```
+
+These and other examples are discussed in more detail in the 
+[Importing from Modules](articles/import.html#importing-functions-from-module-scripts) 
+section of the package vignette.
+
+### Choosing where import looks for packages or modules
+
+The `import` package will by default only use the latest specified library
+(i.e. the result of `.libPaths()[1L]`). It is possible to specify a different
+library using the `.library` argument in any of the `import` functions.
+One import call can only use *one* library so there will not be ambiguity
+as to where imports come from.
+
+When importing from a module (.R file), the directory where `import` looks for
+the module script can be speecified with the with `.directory` paremeter. 
+The default is `.` (the current working directory).
+
+### Choosing where the imported functions are placed
 
 One can also specify which names to use in the search path and use several to 
 group imports:
@@ -86,97 +139,38 @@ import::into("operators", "%>%", "%$%", .from = magrittr)
 import::into("datatools", arrange, .from = dplyr)
 ```
 If it is desired to place imported objects in the current environment, 
-then `import::here` is a short-hand function that sets `.into = ""`.
+use `import::here()`:
 
-In the examples above most arguments are provided unquoted. A more unambiguous
-alternative is to quote the inputs, e.g. 
+### More advanced usage
+
+The `import` package is designed to be simple to use for basic cases, so it uses
+symbolic evaluation to allow the names of packages, modules and functions to be
+entered without quotes (except for operators, such as `"%>%"` which must be quoted).
+However, this means that it calling a variable containing the name of a module, or a 
+vector of functions to import, will not work. For this use case, you can use the
+`.character_only` parameter:
 
 ```R
-import::from("ggplot2", "qplot")
+module_name <- "../utils/my_module.R"
+
+# Will not work (import will look for a package called "module_name")
+import::from(module_name, foo, bar)
+
+# This will correctly import the foo() and bar() functions from "../utils/my_module.R"
+import::from(module_name, foo, bar)
 ```
 
-## Specifying a library
+The `.character_only` parameter is covered in more detail in the 
+[Advanced Usage](articles/import.html#advanced-usage) section of the package vignette, 
+which also describes how you can import from module scripts stored online with the
+help of the `pins` package, or achieve python-like imports with the help of `{}` 
+notation for environments in the `.into` pareter.
 
-The `import` package will by default only use the latest specified library
-(i.e. the result of `.libPaths()[1L]`). It is possible to specify a different
-library using the `.library` argument in any of the `import` functions.
-One import call can only use *one* library so there will not be ambiguity
-as to where imports come from.
-
-## Using .R scripts as "modules" (currently only in GitHub version)
-
-The `import` package allows for importing objects defined in script files,
-which we will here refer to as "modules".
-The module will be fully evaluated by `import` when an import is requested, 
-after which objects such as functions or data can be imported. 
-Such modules should be side-effect free, but this is
-not enforced. Attachments are detached (e.g. packages attached by `library`)
-but loaded namespaces remain loaded. This means that *values* created 
-by functions in an attached namespace will work with `import`, but 
-functions to be exported *should not* rely on such functions (use function
-importing in the modules instead).
-
-If a module is modified, `import` will
-realize this and reload the script if further imports are executed or 
-re-executed; otherwise additional imports will not cause the script to be 
-reloaded for efficiency. As the script is loaded in its own environment 
-(maintained by `import`) dependencies are kept (except those exposed through
-attachment), as the following small example shows.
-
-**Contents of "some_module.R":**
-```R
-## Possible
-library(ggplot2)
-
-## But would be better:
-#import::here(qplot, .from = ggplot2)
-
-## Note this operator overload is not something you want to `source`!
-`+` <- function(e1, e2)
-  paste(e1, e2)
-
-## Some function relying on the above overload:
-a <- function(s1, s2)
-  s1 + rep(s2, 3)
-
-## Another value.
-b <- head(iris, 10)
-
-## A value created using a function exposed by attachment 
-p <- qplot(Sepal.Length, Sepal.Width, data = iris, color = Species)
-
-## A function relying on a function exposed through attachment:
-plot_it <- function()
-  qplot(Sepal.Length, Sepal.Width, data = iris, color = Species)
-
-```
-
-**Usage:**
-```R
-import::from(some_module.R, a, b, p, plot_it)
-
-## Works:
-a("cool", "import")
-
-## The `+` is not affecting anything here, so this won't work:
-# "cool" + "import"
-
-# Works:
-b
-p
-
-## Does not work, as ggplot2 is no longer attached
-## (would work with the import statement!):
-#plot_it()
-```
-
-# Notes:
-
-* When the arguments are unquoted they will be treated as they are written!
-* If used in a package `import` will use the package's own namespace.
 
 # See also:
 
-For an interesting but slightly different idea of Python-like modules for R, see the 
-[modules package](https://github.com/klmr/modules)
-package by @klmr.
+* For an interesting but slightly different idea of Python-like modules for R, see the 
+  [modules](https://github.com/klmr/modules) package by @klmr.
+* Another approach, focused on treating the use of functions with naming conflicts as
+  explicit errors is the [conflicted](https://github.com/r-lib/conflicted) 
+  package by @hadley.
