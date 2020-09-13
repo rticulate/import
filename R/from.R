@@ -72,13 +72,21 @@
 #'   \code{...} can be assumed to be character strings. (Note that this
 #'   parameter does not apply to how the \code{.into} parameter is handled).
 #'
-#' @return a reference to the environment with the imports or \code{NULL}
-#'   if \code{into = ""}, invisibly.
+#' @return a reference to the environment containing the imported objects.
 #'
 #' @export
 #' @examples
 #' import::from(parallel, makeCluster, parLapply)
 #' import::into("imports:parallel", makeCluster, parLapply, .from = parallel)
+#'
+#' @seealso
+#'   Helpful links:
+#'     \itemize{
+#'       \item{[https://import.rticulate.org](https://import.rticulate.org)}
+#'       \item{[https://github.com/rticulate/import](https://github.com/rticulate/import)}
+#'       \item{[https://github.com/rticulate/import/issues](https://github.com/rticulate/import/issues)}
+#'     }
+#' @md
 from <- function(.from, ..., .into = "imports",
                  .library = .libPaths()[1L], .directory=".",
                  .all=(length(.except) > 0), .except=character(),

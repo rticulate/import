@@ -26,7 +26,7 @@ For usage instructions and examples, see \code{\link{from}},
 
 Helpful links:
 \itemize{
-\item{\url{https://import.rticulate.org/}}
+\item{\url{https://import.rticulate.org}}
 \item{\url{https://github.com/rticulate/import}}
 \item{\url{https://github.com/rticulate/import/issues}}
 }

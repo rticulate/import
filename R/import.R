@@ -20,7 +20,7 @@
 #'
 #'   Helpful links:
 #'     \itemize{
-#'       \item{[https://import.rticulate.org/](https://import.rticulate.org/)}
+#'       \item{[https://import.rticulate.org](https://import.rticulate.org)}
 #'       \item{[https://github.com/rticulate/import](https://github.com/rticulate/import)}
 #'       \item{[https://github.com/rticulate/import/issues](https://github.com/rticulate/import/issues)}
 #'     }

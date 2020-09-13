@@ -78,8 +78,7 @@ sourcing a module (this parameter is ignored for libraries)}
 parameter does not apply to how the \code{.into} parameter is handled).}
 }
 \value{
-a reference to the environment with the imports or \code{NULL}
-  if \code{into = ""}, invisibly.
+a reference to the environment containing the imported objects.
 }
 \description{
 The \code{import::from} and \code{import::into} functions provide an
@@ -134,4 +133,13 @@ You can use the operators \code{<}, \code{>}, \code{<=}, \code{>=},
 \examples{
 import::from(parallel, makeCluster, parLapply)
 import::into("imports:parallel", makeCluster, parLapply, .from = parallel)
+
+}
+\seealso{
+Helpful links:
+\itemize{
+\item{\url{https://import.rticulate.org}}
+\item{\url{https://github.com/rticulate/import}}
+\item{\url{https://github.com/rticulate/import/issues}}
+}
 }
