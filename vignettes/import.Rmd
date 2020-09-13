@@ -221,9 +221,10 @@ by functions in an attached namespace will work with `import`, but
 functions to be exported *should not* rely on such functions (use function
 importing in the modules instead).
 
-For example, the file [sequence_module.R](articles/sequence_module.R) contains several
-functions calculating terms of mathematical sequences. It is possible to import from such
-files, just as one imports from packages:
+For example, the file 
+[sequence_module.R](https://raw.githubusercontent.com/torfason/import/docs/man/examples/sequence_module.R) 
+contains several functions calculating terms of mathematical sequences. 
+It is possible to import from such files, just as one imports from packages:
 
 ```{r, eval=FALSE}
 import::from(sequence_module.R, fibonacci, square, triangular)
