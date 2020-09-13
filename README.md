@@ -91,9 +91,10 @@ package vignette.
 ### Importing Functions from "Module" Scripts
 
 The `import` package allows R files to be used as "modules" from which functions are loaded.
-For example, the file [sequence_module.R](articles/sequence_module.R) contains several
-functions calculating terms of mathematical sequences. It is possible to import from such
-files, just as one imports from packages:
+For example, the file 
+[sequence_module.R](https://raw.githubusercontent.com/torfason/import/docs/man/examples/sequence_module.R) 
+contains several functions calculating terms of mathematical sequences. It is 
+possible to import from such files, just as one imports from packages:
 
 ```R
 import::from(sequence_module.R, fibonacci, square, triangular)
@@ -157,7 +158,7 @@ module_name <- "../utils/my_module.R"
 import::from(module_name, foo, bar)
 
 # This will correctly import the foo() and bar() functions from "../utils/my_module.R"
-import::from(module_name, foo, bar)
+import::from(module_name, foo, bar, .character_only=TRUE)
 ```
 
 The `.character_only` parameter is covered in more detail in the 

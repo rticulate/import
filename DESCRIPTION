@@ -1,7 +1,7 @@
 Package: import
 Type: Package
 Title: An Import Mechanism for R
-Version: 1.1.9001
+Version: 1.1.9005
 Authors@R:
     c(person(given = "Stefan Milton",
              family = "Bache",
