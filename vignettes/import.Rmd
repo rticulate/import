@@ -222,7 +222,7 @@ functions to be exported *should not* rely on such functions (use function
 importing in the modules instead).
 
 For example, the file 
-[sequence_module.R](https://raw.githubusercontent.com/torfason/import/docs/man/examples/sequence_module.R) 
+[sequence_module.R](https://raw.githubusercontent.com/rticulate/import/master/man/examples/sequence_module.R) 
 contains several functions calculating terms of mathematical sequences. 
 It is possible to import from such files, just as one imports from packages:
 
@@ -243,7 +243,7 @@ reloaded for efficiency. As the script is loaded in its own environment
 (maintained by `import`) dependencies are kept (except those exposed through
 attachment), as the following small example shows.
 
-**Contents of "[some_module.R](https://raw.githubusercontent.com/torfason/import/docs/man/examples/some_module.R)":**
+**Contents of "[some_module.R](https://raw.githubusercontent.com/rticulate/import/master/man/examples/some_module.R)":**
 ```{r, eval=FALSE}
 ## Do not use library() inside a module. This results in a warning, 
 ## and functions relying on ggplot2 will not work.
@@ -502,10 +502,10 @@ download a file and other things), it easy to achieve the desired
 result by using the `pins` package (whose raison d'etre is to 
 resolve such difficult questions). A simple example follows, which 
 directly imports the `myfunc()` function,  which is defined in the 
-[plusone_module.R](https://raw.githubusercontent.com/torfason/import/docs/man/examples/plusone_module.R):
+[plusone_module.R](https://raw.githubusercontent.com/rticulate/import/master/man/examples/plusone_module.R):
 
 ```{r, eval = FALSE}
-url <- "https://raw.githubusercontent.com/torfason/import/docs/man/examples/plusone_module.R"
+url <- "https://raw.githubusercontent.com/rticulate/import/master/man/examples/plusone_module.R"
 import::from(pins::pin(url), "myfunc", .character_only=TRUE)
 myfunc(3)
 #> [1] 4

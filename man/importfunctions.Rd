@@ -47,10 +47,11 @@ into(
 \item{...}{Names or name-value pairs specifying objects to import.
 If arguments are named, then the imported object will have this new name.}
 
-\item{.into}{The name of the search path entry. Use \code{""} to import
-into the current environment. Enclosing the value in curly brackets causes
-the parameter to be treated as an actual environment value, rather than the
-name of an environment.}
+\item{.into}{The name of the search path entry. Enclosing the value in curly
+brackets causes the parameter to be treated as an actual
+environment value, rather than the name of an environment. Using
+\code{.into={environment()}} causes imports to be made into the current
+environment; \code{.into=""} is an equivalent shorthand value.}
 
 \item{.library}{character specifying the library to use when importing from
 packages. Defaults to the latest specified library.}

@@ -17,4 +17,12 @@
 #'   entry in the search path.
 #' @seealso For usage instructions and examples, see \code{\link{from}},
 #'   \code{\link{into}}, or \code{\link{here}}.
+#'
+#'   Helpful links:
+#'     \itemize{
+#'       \item{[https://import.rticulate.org/](https://import.rticulate.org/)}
+#'       \item{[https://github.com/rticulate/import](https://github.com/rticulate/import)}
+#'       \item{[https://github.com/rticulate/import/issues](https://github.com/rticulate/import/issues)}
+#'     }
+#' @md
 NULL

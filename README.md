@@ -92,7 +92,7 @@ package vignette.
 
 The `import` package allows R files to be used as "modules" from which functions are loaded.
 For example, the file 
-[sequence_module.R](https://raw.githubusercontent.com/torfason/import/docs/man/examples/sequence_module.R) 
+[sequence_module.R](https://raw.githubusercontent.com/rticulate/import/master/man/examples/sequence_module.R) 
 contains several functions calculating terms of mathematical sequences. It is 
 possible to import from such files, just as one imports from packages:
 
@@ -124,6 +124,9 @@ The default is `.` (the current working directory).
 
 ### Choosing where the imported functions are placed
 
+By default, imported objects are placed in a
+separate entity in the search path called "imports" (@lionel- suggests naming such entities  "pied-à-terres", 
+meaning living units some distance away from primary residence).
 One can also specify which names to use in the search path and use several to 
 group imports:
 
