@@ -102,9 +102,10 @@ test_that("Recursive module imports in subdirs work with here()", {
 })
 
 
-# Using library() inside a module is not recommended and should throw an error
-# (standalone functions will work, but functions dependent on the library will not)
-test_that("Using library() inside a module throws an error", {
+# Using library() inside a module is not recommended and should throw a warning.
+# The reason is that although imported standalone functions will work,
+# imported functions that rely on the library will not.
+test_that("Using library() inside a module throws a warning", {
   text = "hi friend, how are you"
   expect_error(standalone_fun(text))
   expect_error(dependent_fun(text))
