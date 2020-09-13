@@ -98,7 +98,23 @@ test_that("Recursive module imports in subdirs work with here()", {
   expect_output(print_text(text), text)
   expect_silent(import::from("module_recursive/src/title_text_here.R", print_title_text))
   expect_output(print_title_text(text), text_title_case)
+  cleanup_environment()
 })
+
+
+# Using library() inside a module is not recommended and should throw a warning.
+# The reason is that although imported standalone functions will work,
+# imported functions that rely on the library will not.
+test_that("Using library() inside a module throws a warning", {
+  text = "hi friend, how are you"
+  expect_error(standalone_fun(text))
+  expect_error(dependent_fun(text))
+  expect_warning(import::from(module_recursive_library.R, standalone_fun, dependent_fun))
+  expect_output(standalone_fun(text), text)
+  expect_error(dependent_fun(text))
+  cleanup_environment()
+})
+
 
 
 ## Tests end

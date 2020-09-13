@@ -39,6 +39,18 @@ test_that("Imports from modules work with into()", {
 })
 
 
+test_that("The .all parmeter with into() is smart about whether .except is being used", {
+  expect_error ( fun1() )
+  expect_silent( import::into("custom_env", .from=module_base.R, .except=c("fun1","fun4")) )
+  expect_error ( fun1()         )
+  expect_equal ( fun2(), "fun2" )
+  expect_equal ( fun3(), "fun3" )
+  expect_error ( fun4()         )
+  expect_equal ( fun5(), "fun5" )
+  expect_equal ( fun6(), "fun6" )
+  cleanup_environment("custom_env")
+})
+
 ## here()
 
 test_that("Imports from libraries  work with here()", {
@@ -54,6 +66,17 @@ test_that("Imports from modules work with here()", {
   expect_equal ( fun1(), "fun1" )
   cleanup_environment(cleanup_here=TRUE)
 })
+
+test_that("Importing modules with here() by absolute path works", {
+  abs_module <- file.path(tempdir(),"module_base.R")
+  file.copy("module_base.R",abs_module)
+  expect_error ( fun1() )
+  expect_silent( import::here(abs_module, "fun1", .character_only=TRUE) )
+  expect_equal ( fun1(), "fun1" )
+  cleanup_environment(cleanup_here=TRUE)
+})
+
+
 
 ## Tests end
 
