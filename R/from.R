@@ -177,7 +177,7 @@ from <- function(.from, ..., .into = "imports",
       # If sourcing the script loaded new packages, raise error
       packages_after <- .packages()
       if ( !identical(packages_before,packages_after) ) {
-        stop("A package was loaded using 'library(...)' from within an import::*() module.\n",
+        warning("A package was loaded using 'library(...)' from within an import::*() module.\n",
              "    Please rely on import::here() to load objects from packages within an \n",
              "    import::*() module.  See vignette(import) for further details." )
       }

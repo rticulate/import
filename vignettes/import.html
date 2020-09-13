@@ -27,6 +27,22 @@ document.addEventListener('DOMContentLoaded', function(e) {
   }
 });
 </script>
+<script>// Hide empty <a> tag within highlighted CodeBlock for screen reader accessibility (see https://github.com/jgm/pandoc/issues/6352#issuecomment-626106786) -->
+// v0.0.1
+// Written by JooYoung Seo (jooyoung@psu.edu) and Atsushi Yasumoto on June 1st, 2020.
+
+document.addEventListener('DOMContentLoaded', function() {
+  const codeList = document.getElementsByClassName("sourceCode");
+  for (var i = 0; i < codeList.length; i++) {
+    var linkList = codeList[i].getElementsByTagName('a');
+    for (var j = 0; j < linkList.length; j++) {
+      if (linkList[j].innerHTML === "") {
+        linkList[j].setAttribute('aria-hidden', 'true');
+      }
+    }
+  }
+});
+</script>
 
 
 <style type="text/css">code{white-space: pre;}</style>
@@ -342,12 +358,12 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 <h1>Introduction</h1>
 <p>One of the most important aspects of the R ecosystem is the ease with which extensions and new features can be developed and distributed in the form of <em>packages.</em> The main distribution channel is the <em>Comprehensive R Archive Network</em>, from which packages can be installed directly from R. Another popular option is using GitHub repositories from which packages can also be painlessly installed, e.g. using <code>install_github</code> from the <code>devtools</code> package.</p>
 <p>The <code>import</code> package provides an alternative approach to using external functionality in R scripts; first however, it is useful to describe the standard approach to clarify how <code>import</code> may serve as improvement. The most common way to include the functionality provided by a package is to use the <code>library</code> function:</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true"></a><span class="kw">library</span>(PackageA)</span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true"></a><span class="kw">library</span>(PackageB)</span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true"></a></span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true"></a>value1 &lt;-<span class="st"> </span><span class="kw">function_a</span>(...) <span class="co"># Supposedly this comes from PackageA, </span></span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true"></a>value2 &lt;-<span class="st"> </span><span class="kw">function_b</span>(...) <span class="co"># and this from PackageB, but who knows?!</span></span>
-<span id="cb1-6"><a href="#cb1-6" aria-hidden="true"></a>...</span></code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1"></a><span class="kw">library</span>(PackageA)</span>
+<span id="cb1-2"><a href="#cb1-2"></a><span class="kw">library</span>(PackageB)</span>
+<span id="cb1-3"><a href="#cb1-3"></a></span>
+<span id="cb1-4"><a href="#cb1-4"></a>value1 &lt;-<span class="st"> </span><span class="kw">function_a</span>(...) <span class="co"># Supposedly this comes from PackageA, </span></span>
+<span id="cb1-5"><a href="#cb1-5"></a>value2 &lt;-<span class="st"> </span><span class="kw">function_b</span>(...) <span class="co"># and this from PackageB, but who knows?!</span></span>
+<span id="cb1-6"><a href="#cb1-6"></a>...</span></code></pre></div>
 <p>In some situations this is fine; however there are some subtle shortcomings:</p>
 <ol style="list-style-type: decimal">
 <li>Packages are <em>attached</em> and <em>all</em> of their exported objects are exposed,</li>
@@ -357,8 +373,8 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 </ol>
 <p>The problem with (1) is that the search path is populated with more objects than are needed and it is not immediately clear whether name clashes will occur. Problem (2) refers to the case where packages export different objects with the same names, say if <code>function_b</code> is exported in both <code>PackageA</code> and <code>PackageB</code> above. In this case the name will point to the object from the package attached <em>last</em>. The earlier exposed objects are said to <em>masked</em>. Even if this is not a problem when <em>writing</em> the script, an update of packages may cause this problem later on when <em>executing</em> the script; and tracking down the resulting errors may be tough and time consuming. Problem (3) may appear unimportant, but it is not to be underestimated. Code snippets are very commonly shared and spending time figuring out where functionality comes from is not a very satisfying nor value-adding activity.</p>
 <p>To overcome the above, one may import single exported objects, one at a time, using the (double) “colon syntax”,</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true"></a>function_a &lt;-<span class="st"> </span>PackageA<span class="op">::</span>function_a</span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true"></a>function_b &lt;-<span class="st"> </span>PackageB<span class="op">::</span>function_b</span></code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1"></a>function_a &lt;-<span class="st"> </span>PackageA<span class="op">::</span>function_a</span>
+<span id="cb2-2"><a href="#cb2-2"></a>function_b &lt;-<span class="st"> </span>PackageB<span class="op">::</span>function_b</span></code></pre></div>
 <p>or functions can be prefixed with <code>::</code> when used, but this is often overly verbose and does not provide an easily accessible overview of what external functionality is used in a script.</p>
 <p>While packages form the backbone of code distribution, another option comes in the form of <em>scripts</em>, but these are usually task specific and not commonly used to “bundle” functionality for use in <em>other</em> scripts. In particular, when <code>source</code> is used to include contents from one script in another, once again <em>all</em> objects produced by the script will be “exposed” and may “over populate” the working environment, masking other objects, if not only producing some mental clutter. Scope management is therefore not too comfortable when splitting functionality across files in a modular way.</p>
 <p>The <code>import</code> package sets out to improve the way external functionality is <em>included</em> in your code by alleviating some of the concerns raised above by providing an expressive way of importing object from both packages and scripts. The latter provides a bridge between the <em>package</em> approach to distribtion and simple stand-alone script files. This allows for the use of scripts as <em>modules</em>, a collection og related object definitions, each of which may be used at different places without exposing more than necessary.</p>
@@ -368,60 +384,60 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 <div id="importing-from-packages" class="section level2">
 <h2>Importing from packages</h2>
 <p>The <code>import</code> package itself should not to be attached (don’t include it via <code>library</code>, you will get a warning). Rather, it is designed to be expressive when using the colon syntax. A first pseudo-example is:</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true"></a>import<span class="op">::</span><span class="kw">from</span>(magrittr, <span class="st">&quot;%&gt;%&quot;</span>)</span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true"></a>import<span class="op">::</span><span class="kw">from</span>(dplyr, mutate, <span class="dt">keep_when =</span> filter)</span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true"></a>import<span class="op">::</span><span class="kw">from</span>(tidyr, spread)</span>
-<span id="cb3-4"><a href="#cb3-4" aria-hidden="true"></a>import<span class="op">::</span><span class="kw">from</span>(broom, tidy)</span>
-<span id="cb3-5"><a href="#cb3-5" aria-hidden="true"></a></span>
-<span id="cb3-6"><a href="#cb3-6" aria-hidden="true"></a>ready_data &lt;-</span>
-<span id="cb3-7"><a href="#cb3-7" aria-hidden="true"></a><span class="st">  </span>raw_data <span class="op">%&gt;%</span><span class="st"> </span></span>
-<span id="cb3-8"><a href="#cb3-8" aria-hidden="true"></a><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">var2 =</span> <span class="kw">fun</span>(var1)) <span class="op">%&gt;%</span><span class="st"> </span></span>
-<span id="cb3-9"><a href="#cb3-9" aria-hidden="true"></a><span class="st">  </span><span class="kw">keep_when</span>(var1 <span class="op">&gt;</span><span class="st"> </span><span class="dv">0</span>) <span class="op">%&gt;%</span><span class="st"> </span></span>
-<span id="cb3-10"><a href="#cb3-10" aria-hidden="true"></a><span class="st">  </span><span class="kw">spread</span>(key, value) </span>
-<span id="cb3-11"><a href="#cb3-11" aria-hidden="true"></a></span>
-<span id="cb3-12"><a href="#cb3-12" aria-hidden="true"></a>linear_model &lt;-<span class="st"> </span></span>
-<span id="cb3-13"><a href="#cb3-13" aria-hidden="true"></a><span class="st">  </span><span class="kw">lm</span>(var1 <span class="op">~</span><span class="st"> </span>., <span class="dt">data =</span> ready_data) <span class="op">%&gt;%</span><span class="st"> </span></span>
-<span id="cb3-14"><a href="#cb3-14" aria-hidden="true"></a><span class="st">  </span>tidy</span>
-<span id="cb3-15"><a href="#cb3-15" aria-hidden="true"></a>  </span>
-<span id="cb3-16"><a href="#cb3-16" aria-hidden="true"></a><span class="co"># ... and more code below.</span></span></code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1"></a>import<span class="op">::</span><span class="kw">from</span>(magrittr, <span class="st">&quot;%&gt;%&quot;</span>)</span>
+<span id="cb3-2"><a href="#cb3-2"></a>import<span class="op">::</span><span class="kw">from</span>(dplyr, mutate, <span class="dt">keep_when =</span> filter)</span>
+<span id="cb3-3"><a href="#cb3-3"></a>import<span class="op">::</span><span class="kw">from</span>(tidyr, spread)</span>
+<span id="cb3-4"><a href="#cb3-4"></a>import<span class="op">::</span><span class="kw">from</span>(broom, tidy)</span>
+<span id="cb3-5"><a href="#cb3-5"></a></span>
+<span id="cb3-6"><a href="#cb3-6"></a>ready_data &lt;-</span>
+<span id="cb3-7"><a href="#cb3-7"></a><span class="st">  </span>raw_data <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb3-8"><a href="#cb3-8"></a><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">var2 =</span> <span class="kw">fun</span>(var1)) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb3-9"><a href="#cb3-9"></a><span class="st">  </span><span class="kw">keep_when</span>(var1 <span class="op">&gt;</span><span class="st"> </span><span class="dv">0</span>) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb3-10"><a href="#cb3-10"></a><span class="st">  </span><span class="kw">spread</span>(key, value) </span>
+<span id="cb3-11"><a href="#cb3-11"></a></span>
+<span id="cb3-12"><a href="#cb3-12"></a>linear_model &lt;-<span class="st"> </span></span>
+<span id="cb3-13"><a href="#cb3-13"></a><span class="st">  </span><span class="kw">lm</span>(var1 <span class="op">~</span><span class="st"> </span>., <span class="dt">data =</span> ready_data) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb3-14"><a href="#cb3-14"></a><span class="st">  </span>tidy</span>
+<span id="cb3-15"><a href="#cb3-15"></a>  </span>
+<span id="cb3-16"><a href="#cb3-16"></a><span class="co"># ... and more code below.</span></span></code></pre></div>
 <p>In the above, it is clear <em>which</em> package provides <em>which</em> functions (one could e.g. otherwise be tempted to think that <code>tidy</code> belonged to <code>tidyr</code>). Note that ordering is irrelevant, even if <code>tidyr</code> at some point exposes a function <code>tidy</code> after an update, as <code>import</code> is <em>explicit</em> about importing.</p>
 <p>It also shows that one can import multiple objects in a single statement, and even rename objects if desired; for example, in the above one can imagine that <code>filter</code> from <code>stats</code> is needed later on, and so <code>dplyr</code>’s <code>filter</code> is renamed to avoid confusion. Sometimes, it is not at all clear what purpose a package has; e.g. the name <code>magrittr</code> does not immediately reveal that it’s main purpose is to provide the pipe operator, <code>%&gt;%</code>.</p>
 <p>When <code>import::from</code> is used to import objects it will place them in an environment attached in the search path under the name “imports”. This name is just default, and can be specified:</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true"></a>import<span class="op">::</span><span class="kw">from</span>(dplyr, mutate, select, <span class="dt">.into =</span> <span class="st">&quot;wrangling&quot;</span>)</span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true"></a></span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true"></a><span class="co"># or equivalently:</span></span>
-<span id="cb4-4"><a href="#cb4-4" aria-hidden="true"></a>import<span class="op">::</span><span class="kw">into</span>(<span class="st">&quot;wrangling&quot;</span>, mutate, select, <span class="dt">.from =</span> dplyr)</span>
-<span id="cb4-5"><a href="#cb4-5" aria-hidden="true"></a></span>
-<span id="cb4-6"><a href="#cb4-6" aria-hidden="true"></a><span class="kw">ls</span>(<span class="st">&quot;wrangling&quot;</span>) <span class="co"># Also viewable in Rstudio&#39;s environment browser!</span></span>
-<span id="cb4-7"><a href="#cb4-7" aria-hidden="true"></a><span class="co"># =&gt; [1] &quot;mutate&quot; &quot;select&quot;</span></span></code></pre></div>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1"></a>import<span class="op">::</span><span class="kw">from</span>(dplyr, mutate, select, <span class="dt">.into =</span> <span class="st">&quot;wrangling&quot;</span>)</span>
+<span id="cb4-2"><a href="#cb4-2"></a></span>
+<span id="cb4-3"><a href="#cb4-3"></a><span class="co"># or equivalently:</span></span>
+<span id="cb4-4"><a href="#cb4-4"></a>import<span class="op">::</span><span class="kw">into</span>(<span class="st">&quot;wrangling&quot;</span>, mutate, select, <span class="dt">.from =</span> dplyr)</span>
+<span id="cb4-5"><a href="#cb4-5"></a></span>
+<span id="cb4-6"><a href="#cb4-6"></a><span class="kw">ls</span>(<span class="st">&quot;wrangling&quot;</span>) <span class="co"># Also viewable in Rstudio&#39;s environment browser!</span></span>
+<span id="cb4-7"><a href="#cb4-7"></a><span class="co"># =&gt; [1] &quot;mutate&quot; &quot;select&quot;</span></span></code></pre></div>
 <p>Note, that the <code>.from</code> and <code>.into</code> arguments are prefixed by a dot to clearly distinguish them from other named arguments. The two alternatives above are equivalent (the choice is a matter of preferece).</p>
 <p>If it is desired to import objects directly into the current environment, this can be accomplished by <code>import::here</code>. This is particularly useful when importing inside a function definition, or module scripts as described below.</p>
 </div>
 <div id="importing-from-module-scripts" class="section level2">
 <h2>Importing from “Module” scripts</h2>
 <p>Suppose that you have some related functionality that you wish to bundle, and that authoring a full package seems excessive or inappropriate for the specific task, for example bundling related UI components for a <code>shiny</code> application. One option with <code>import</code> is to author a module (script), say as outlined below:</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true"></a><span class="co"># File: foo.R</span></span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true"></a><span class="co"># Desc: Functionality related to foos.</span></span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true"></a><span class="co"># Imports from other_resources.R</span></span>
-<span id="cb5-4"><a href="#cb5-4" aria-hidden="true"></a>import<span class="op">::</span><span class="kw">here</span>(fun_a, fun_b, <span class="dt">.from =</span> <span class="st">&quot;other_resources.R&quot;</span>)</span>
-<span id="cb5-5"><a href="#cb5-5" aria-hidden="true"></a></span>
-<span id="cb5-6"><a href="#cb5-6" aria-hidden="true"></a>internal_fun &lt;-<span class="st"> </span><span class="cf">function</span>(...) ...</span>
-<span id="cb5-7"><a href="#cb5-7" aria-hidden="true"></a></span>
-<span id="cb5-8"><a href="#cb5-8" aria-hidden="true"></a>fun_c &lt;-<span class="st"> </span><span class="cf">function</span>(...) </span>
-<span id="cb5-9"><a href="#cb5-9" aria-hidden="true"></a>{</span>
-<span id="cb5-10"><a href="#cb5-10" aria-hidden="true"></a>  ...</span>
-<span id="cb5-11"><a href="#cb5-11" aria-hidden="true"></a>  a &lt;-<span class="st"> </span><span class="kw">fun_a</span>(...)</span>
-<span id="cb5-12"><a href="#cb5-12" aria-hidden="true"></a>  i &lt;-<span class="st"> </span><span class="kw">internal_fun</span>(...)</span>
-<span id="cb5-13"><a href="#cb5-13" aria-hidden="true"></a>  ...</span>
-<span id="cb5-14"><a href="#cb5-14" aria-hidden="true"></a>}</span>
-<span id="cb5-15"><a href="#cb5-15" aria-hidden="true"></a></span>
-<span id="cb5-16"><a href="#cb5-16" aria-hidden="true"></a>fun_d &lt;-<span class="st"> </span><span class="cf">function</span>(...) ...</span></code></pre></div>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1"></a><span class="co"># File: foo.R</span></span>
+<span id="cb5-2"><a href="#cb5-2"></a><span class="co"># Desc: Functionality related to foos.</span></span>
+<span id="cb5-3"><a href="#cb5-3"></a><span class="co"># Imports from other_resources.R</span></span>
+<span id="cb5-4"><a href="#cb5-4"></a>import<span class="op">::</span><span class="kw">here</span>(fun_a, fun_b, <span class="dt">.from =</span> <span class="st">&quot;other_resources.R&quot;</span>)</span>
+<span id="cb5-5"><a href="#cb5-5"></a></span>
+<span id="cb5-6"><a href="#cb5-6"></a>internal_fun &lt;-<span class="st"> </span><span class="cf">function</span>(...) ...</span>
+<span id="cb5-7"><a href="#cb5-7"></a></span>
+<span id="cb5-8"><a href="#cb5-8"></a>fun_c &lt;-<span class="st"> </span><span class="cf">function</span>(...) </span>
+<span id="cb5-9"><a href="#cb5-9"></a>{</span>
+<span id="cb5-10"><a href="#cb5-10"></a>  ...</span>
+<span id="cb5-11"><a href="#cb5-11"></a>  a &lt;-<span class="st"> </span><span class="kw">fun_a</span>(...)</span>
+<span id="cb5-12"><a href="#cb5-12"></a>  i &lt;-<span class="st"> </span><span class="kw">internal_fun</span>(...)</span>
+<span id="cb5-13"><a href="#cb5-13"></a>  ...</span>
+<span id="cb5-14"><a href="#cb5-14"></a>}</span>
+<span id="cb5-15"><a href="#cb5-15"></a></span>
+<span id="cb5-16"><a href="#cb5-16"></a>fun_d &lt;-<span class="st"> </span><span class="cf">function</span>(...) ...</span></code></pre></div>
 <p>Then in another file we need <code>fun_c</code>:</p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true"></a><span class="co"># File: bar.R</span></span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true"></a><span class="co"># Desc: Functionality related to bars. </span></span>
-<span id="cb6-3"><a href="#cb6-3" aria-hidden="true"></a><span class="co"># Imports from foo.R</span></span>
-<span id="cb6-4"><a href="#cb6-4" aria-hidden="true"></a>import<span class="op">::</span><span class="kw">here</span>(fun_c, <span class="dt">.from =</span> <span class="st">&quot;foo.R&quot;</span>)</span>
-<span id="cb6-5"><a href="#cb6-5" aria-hidden="true"></a>...</span></code></pre></div>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1"></a><span class="co"># File: bar.R</span></span>
+<span id="cb6-2"><a href="#cb6-2"></a><span class="co"># Desc: Functionality related to bars. </span></span>
+<span id="cb6-3"><a href="#cb6-3"></a><span class="co"># Imports from foo.R</span></span>
+<span id="cb6-4"><a href="#cb6-4"></a>import<span class="op">::</span><span class="kw">here</span>(fun_c, <span class="dt">.from =</span> <span class="st">&quot;foo.R&quot;</span>)</span>
+<span id="cb6-5"><a href="#cb6-5"></a>...</span></code></pre></div>
 <p>In the above, <em>only</em> <code>fun_c</code> is visible inside <code>bar.R</code>. The functions on which it depends exist, but are not exposed. Also, note that imported scripts may themselves import. To avoid imports becoming global, it is suggested to use <code>import::here</code> rather than <code>import::from</code>, in which case imports are only exposed to the module itself.</p>
 <p>When importing from a module, it is sourced into an environment managed by <code>import</code>, and will not be sourced again upon subsequent imports (unless the file has changed). For example, in a <code>shiny</code> application, importing some objects in <code>server.R</code> and others in <code>ui.R</code> from the same module will not cause it to be sourced twice.</p>
 </div>
@@ -436,56 +452,56 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 <div id="programmatically-selecting-the-objects-to-import" class="section level2">
 <h2>Programmatically selecting the objects to import</h2>
 <p>It is not always know in advance which objects to import from a given package. For example, assume we have a list of objects from the <code>broom</code> package that we need to import, we can do it as follows:</p>
-<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true"></a>objects &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;tidy&quot;</span>, <span class="st">&quot;glance&quot;</span>, <span class="st">&quot;augment&quot;</span>)</span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true"></a>import<span class="op">::</span><span class="kw">from</span>(<span class="st">&quot;broom&quot;</span>, objects, <span class="dt">.character_only=</span><span class="ot">TRUE</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1"></a>objects &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;tidy&quot;</span>, <span class="st">&quot;glance&quot;</span>, <span class="st">&quot;augment&quot;</span>)</span>
+<span id="cb7-2"><a href="#cb7-2"></a>import<span class="op">::</span><span class="kw">from</span>(<span class="st">&quot;broom&quot;</span>, objects, <span class="dt">.character_only=</span><span class="ot">TRUE</span>)</span></code></pre></div>
 <p>This will import the three functions specified in the <code>objects</code> vector. It is worth noting that because <code>.character_only</code> disables NSE on <em>all</em> parameters, the name of the package must now be quoted.</p>
 <p>One common use case is when one wants to import all objects except one or a few, because of conflicts with other packages. Should one, for example, want to use the <code>stats</code> versions of the <code>filter()</code> and <code>lag()</code> functions, but import all the other functions in the <code>dplyr</code> package, one could do it like this:</p>
-<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true"></a>objects &lt;-<span class="st"> </span><span class="kw">setdiff</span>(<span class="kw">getNamespaceExports</span>(<span class="st">&quot;dplyr&quot;</span>), <span class="kw">c</span>(<span class="st">&quot;filter&quot;</span>,<span class="st">&quot;lag&quot;</span>))</span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true"></a>import<span class="op">::</span><span class="kw">from</span>(<span class="st">&quot;dplyr&quot;</span>, objects, <span class="dt">.character_only=</span><span class="ot">TRUE</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1"></a>objects &lt;-<span class="st"> </span><span class="kw">setdiff</span>(<span class="kw">getNamespaceExports</span>(<span class="st">&quot;dplyr&quot;</span>), <span class="kw">c</span>(<span class="st">&quot;filter&quot;</span>,<span class="st">&quot;lag&quot;</span>))</span>
+<span id="cb8-2"><a href="#cb8-2"></a>import<span class="op">::</span><span class="kw">from</span>(<span class="st">&quot;dplyr&quot;</span>, objects, <span class="dt">.character_only=</span><span class="ot">TRUE</span>)</span></code></pre></div>
 </div>
 <div id="programmatically-selecting-the-location-of-a-module" class="section level2">
 <h2>Programmatically selecting the location of a module</h2>
 <p>The same approach can be used when the directory of the source file for a module is not known in advance. This can be useful when the original source file is not always run with the original working directory, but one still does not want to specify a hard-coded absolute path, but to determine it at run time:</p>
-<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true"></a>mymodule &lt;-<span class="st"> </span><span class="kw">file.path</span>(mypath,<span class="st">&quot;module.R&quot;</span>)</span>
-<span id="cb9-2"><a href="#cb9-2" aria-hidden="true"></a>import<span class="op">::</span><span class="kw">from</span>(mymodule, <span class="st">&quot;myfunction&quot;</span>, <span class="dt">.character_only=</span><span class="ot">TRUE</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1"></a>mymodule &lt;-<span class="st"> </span><span class="kw">file.path</span>(mypath,<span class="st">&quot;module.R&quot;</span>)</span>
+<span id="cb9-2"><a href="#cb9-2"></a>import<span class="op">::</span><span class="kw">from</span>(mymodule, <span class="st">&quot;myfunction&quot;</span>, <span class="dt">.character_only=</span><span class="ot">TRUE</span>)</span></code></pre></div>
 <p>Again, note that now the name of the function must be quoted because NSE is disabled on all parameters.</p>
 <p>The <code>here</code> package is useful in many circumstances like this; it allows the setting of a “root” directory for a project and by using the <code>here::here()</code> function to figure out the correct directory, regardless of the working directory.</p>
-<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true"></a>import<span class="op">::</span><span class="kw">from</span>(here<span class="op">::</span><span class="kw">here</span>(<span class="st">&quot;src/utils/module.R&quot;</span>)), <span class="st">&quot;myfunction&quot;</span>, .character_only=<span class="ot">TRUE</span><span class="er">)</span></span></code></pre></div>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1"></a>import<span class="op">::</span><span class="kw">from</span>(here<span class="op">::</span><span class="kw">here</span>(<span class="st">&quot;src/utils/module.R&quot;</span>)), <span class="st">&quot;myfunction&quot;</span>, .character_only=<span class="ot">TRUE</span><span class="er">)</span></span></code></pre></div>
 <p>Note that <code>here::here()</code> has no relation to <code>import::here()</code> despite the similarity in names.</p>
 </div>
 <div id="importing-from-a-url" class="section level2">
 <h2>Importing from a URL</h2>
 <p>Another case where <code>.character_only</code> comes in handy is when one wants to import some functions from a URL. While <code>import</code> does not allow direct importing from a URL (because of difficult questions about when a URL target has changes, whether to download a file and other things), it easy to achieve the desired result by using the <code>pins</code> package (whose raison d’etre is to resolve such difficult questions). A simple example follows:</p>
-<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true"></a>url &lt;-<span class="st"> &quot;https://gist.githubusercontent.com/noamross/378884a472b5ef58c6cf/raw/1cd3a47158427ef7e2faa897d32821f14fa19bfd/test.R&quot;</span></span>
-<span id="cb11-2"><a href="#cb11-2" aria-hidden="true"></a>import<span class="op">::</span><span class="kw">from</span>(pins<span class="op">::</span><span class="kw">pin</span>(url), <span class="st">&quot;myfunc&quot;</span>, <span class="dt">.character_only=</span><span class="ot">TRUE</span>)</span>
-<span id="cb11-3"><a href="#cb11-3" aria-hidden="true"></a><span class="kw">myfunc</span>(<span class="dv">3</span>)</span>
-<span id="cb11-4"><a href="#cb11-4" aria-hidden="true"></a><span class="co">#&gt; [1] 4</span></span></code></pre></div>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1"></a>url &lt;-<span class="st"> &quot;https://gist.githubusercontent.com/noamross/378884a472b5ef58c6cf/raw/1cd3a47158427ef7e2faa897d32821f14fa19bfd/test.R&quot;</span></span>
+<span id="cb11-2"><a href="#cb11-2"></a>import<span class="op">::</span><span class="kw">from</span>(pins<span class="op">::</span><span class="kw">pin</span>(url), <span class="st">&quot;myfunc&quot;</span>, <span class="dt">.character_only=</span><span class="ot">TRUE</span>)</span>
+<span id="cb11-3"><a href="#cb11-3"></a><span class="kw">myfunc</span>(<span class="dv">3</span>)</span>
+<span id="cb11-4"><a href="#cb11-4"></a><span class="co">#&gt; [1] 4</span></span></code></pre></div>
 </div>
 <div id="python-like-imports" class="section level2">
 <h2>Python-like imports</h2>
 <p>A frequent pattern in python imports packages under an alias; all subsequent use of the imported objects then explitly includes the alias:</p>
-<div class="sourceCode" id="cb12"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
-<span id="cb12-2"><a href="#cb12-2" aria-hidden="true"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
-<span id="cb12-3"><a href="#cb12-3" aria-hidden="true"></a><span class="im">import</span> math <span class="im">as</span> m</span>
-<span id="cb12-4"><a href="#cb12-4" aria-hidden="true"></a></span>
-<span id="cb12-5"><a href="#cb12-5" aria-hidden="true"></a><span class="bu">print</span>(m.pi)</span>
-<span id="cb12-6"><a href="#cb12-6" aria-hidden="true"></a><span class="bu">print</span>(m.e)</span></code></pre></div>
+<div class="sourceCode" id="cb12"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb12-2"><a href="#cb12-2"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb12-3"><a href="#cb12-3"></a><span class="im">import</span> math <span class="im">as</span> m</span>
+<span id="cb12-4"><a href="#cb12-4"></a></span>
+<span id="cb12-5"><a href="#cb12-5"></a><span class="bu">print</span>(m.pi)</span>
+<span id="cb12-6"><a href="#cb12-6"></a><span class="bu">print</span>(m.e)</span></code></pre></div>
 <p>In order to achieve this functionality with the import package, use <code>.into={new.env()}</code> which assign to a new environment without attachihng it. <code>import::from()</code> returns this environment, so it can be assigned toa variable:</p>
-<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true"></a><span class="co"># Import into a new namespace, use $ to access</span></span>
-<span id="cb13-2"><a href="#cb13-2" aria-hidden="true"></a>td &lt;-<span class="st"> </span>import<span class="op">::</span><span class="kw">from</span>(tidyr, spread, pivot_wider, <span class="dt">.into=</span>{<span class="kw">new.env</span>()})</span>
-<span id="cb13-3"><a href="#cb13-3" aria-hidden="true"></a>dp &lt;-<span class="st"> </span>import<span class="op">::</span><span class="kw">from</span>(dplyr, <span class="dt">.all=</span><span class="ot">TRUE</span>, <span class="dt">.into=</span>{<span class="kw">new.env</span>()})</span>
-<span id="cb13-4"><a href="#cb13-4" aria-hidden="true"></a>dp<span class="op">$</span><span class="kw">select</span>(<span class="kw">head</span>(cars),dist)</span>
-<span id="cb13-5"><a href="#cb13-5" aria-hidden="true"></a><span class="co">#&gt;   dist</span></span>
-<span id="cb13-6"><a href="#cb13-6" aria-hidden="true"></a><span class="co">#&gt; 1    2</span></span>
-<span id="cb13-7"><a href="#cb13-7" aria-hidden="true"></a><span class="co">#&gt; 2   10</span></span>
-<span id="cb13-8"><a href="#cb13-8" aria-hidden="true"></a><span class="co">#&gt; 3    4</span></span>
-<span id="cb13-9"><a href="#cb13-9" aria-hidden="true"></a><span class="co">#&gt; 4   22</span></span>
-<span id="cb13-10"><a href="#cb13-10" aria-hidden="true"></a><span class="co">#&gt; 5   16</span></span>
-<span id="cb13-11"><a href="#cb13-11" aria-hidden="true"></a><span class="co">#&gt; 6   10</span></span>
-<span id="cb13-12"><a href="#cb13-12" aria-hidden="true"></a></span>
-<span id="cb13-13"><a href="#cb13-13" aria-hidden="true"></a><span class="co"># Note that functions are not visible without dp$ prefix</span></span>
-<span id="cb13-14"><a href="#cb13-14" aria-hidden="true"></a><span class="kw">select</span>(<span class="kw">head</span>(cars),dist)</span>
-<span id="cb13-15"><a href="#cb13-15" aria-hidden="true"></a><span class="co">#&gt; Error in select(head(cars), dist): could not find function &quot;select&quot;</span></span></code></pre></div>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1"></a><span class="co"># Import into a new namespace, use $ to access</span></span>
+<span id="cb13-2"><a href="#cb13-2"></a>td &lt;-<span class="st"> </span>import<span class="op">::</span><span class="kw">from</span>(tidyr, spread, pivot_wider, <span class="dt">.into=</span>{<span class="kw">new.env</span>()})</span>
+<span id="cb13-3"><a href="#cb13-3"></a>dp &lt;-<span class="st"> </span>import<span class="op">::</span><span class="kw">from</span>(dplyr, <span class="dt">.all=</span><span class="ot">TRUE</span>, <span class="dt">.into=</span>{<span class="kw">new.env</span>()})</span>
+<span id="cb13-4"><a href="#cb13-4"></a>dp<span class="op">$</span><span class="kw">select</span>(<span class="kw">head</span>(cars),dist)</span>
+<span id="cb13-5"><a href="#cb13-5"></a><span class="co">#&gt;   dist</span></span>
+<span id="cb13-6"><a href="#cb13-6"></a><span class="co">#&gt; 1    2</span></span>
+<span id="cb13-7"><a href="#cb13-7"></a><span class="co">#&gt; 2   10</span></span>
+<span id="cb13-8"><a href="#cb13-8"></a><span class="co">#&gt; 3    4</span></span>
+<span id="cb13-9"><a href="#cb13-9"></a><span class="co">#&gt; 4   22</span></span>
+<span id="cb13-10"><a href="#cb13-10"></a><span class="co">#&gt; 5   16</span></span>
+<span id="cb13-11"><a href="#cb13-11"></a><span class="co">#&gt; 6   10</span></span>
+<span id="cb13-12"><a href="#cb13-12"></a></span>
+<span id="cb13-13"><a href="#cb13-13"></a><span class="co"># Note that functions are not visible without dp$ prefix</span></span>
+<span id="cb13-14"><a href="#cb13-14"></a><span class="kw">select</span>(<span class="kw">head</span>(cars),dist)</span>
+<span id="cb13-15"><a href="#cb13-15"></a><span class="co">#&gt; Error in select(head(cars), dist): could not find function &quot;select&quot;</span></span></code></pre></div>
 </div>
 </div>
 
