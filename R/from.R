@@ -171,7 +171,16 @@ from <- function(.from, ..., .into = "imports",
       scripts[[from]][[".packageName"]] <- from
 
       # Source the file into the new environment.
+      packages_before <- .packages()
       suppress_output(sys.source(file_path(.directory, from), scripts[[from]], chdir = .chdir))
+
+      # If sourcing the script loaded new packages, raise error
+      packages_after <- .packages()
+      if ( !identical(packages_before,packages_after) ) {
+        warning("A package was loaded using 'library(...)' from within an import::*() module.\n",
+             "    Please rely on import::here() to load objects from packages within an \n",
+             "    import::*() module.  See vignette(import) for further details." )
+      }
 
       # Make sure to detach any new attachments.
       on.exit({
