@@ -1,5 +1,5 @@
-## General
-This is an update with the following features:
+Version 1.2.0
+=============
 
 * import is now more strict and won't allow an import from a different
   environment to replace an existing import of that name and location.
@@ -25,31 +25,23 @@ This is an update with the following features:
   parameter (`.from`) was previously behind the ellipsis, requiring the use of 
   named parameters.
 * Unit tests have been added and various issues fixed.
+  
 
-## Test environments
-* local Mac OS X (R 4.0.1)
-* win-builder (devel R R-4.1.0 and release R-4.0.2)
-* GitHub CE (macos, linux and windows)
+Version 1.1.0
+=============
+* There is now support to import objects from script files, i.e. a kind of
+  "module". Scripts meant to expose objects for import should ideally be
+  side-effect free, but this is not enforced. Any attachments are detached
+  after import, but loaded namespaces remain loaded.
 
-## R CMD check results
-There were no ERRORs or WARNINGs.
+Version 1.0.2
+=============
 
-There was one NOTE (due to issues with time service):
-> checking for future file timestamps ... NOTE
-  unable to verify current time
-
-## Downstream dependencies
-Downstream dependencies were checked with the revdep package and no
-issues were found.
-
-## Other Notes (unchanged since last):
-The package's functionality may alter the search path, but this
-is intended and should be clear for the user, as the main functionality 
-is an alternative to using `library`. For example the call 
-
-`import::from(parallel, makeCluster, parLapply)`
-
-will make an "imports" entry in the search path and place the
-imported there.
-
-
+* You can now specify which library to use, and only one library is ever
+  used in a single call: there is no ambiguity about where imports come from.
+* There is a distinction between using double- and triple colon syntax;
+  analogously to using :: and ::: operators.
+* If the package is attached (e.g. via library) there is a startup message
+  informing the user that the package is not meant to be attached.
+* It is only possible to use the functions with the `import::` / `import:::`
+  syntax.
