@@ -65,8 +65,8 @@ a very satisfying nor value-adding activity.
 It is possible to unambiguously specify where a function comes from by 
 prefixing it with `::` every time it used, but this is often 
 overly verbose and does not provide an easily accessible overview of what
-external functionality is used in a script.  One may also import single 
-exported objects, one at a time,  using the (double) "colon syntax",
+external functionality is used in a script. One may also import single 
+exported objects, one at a time, using the (double) "colon syntax",
 
 ```{r, eval = FALSE}
 function_a <- PackageA::function_a
@@ -93,8 +93,8 @@ The `import` package sets out to improve the way external functionality
 is included in your code by alleviating some of the concerns raised above by
 providing an expressive way of importing object from both packages and
 scripts. The latter provides a bridge between the *package* approach to
-distribtion and simple stand-alone script files. This allows for the use of scripts
-as *modules*, a collection og related object definitions, each of which
+distribution and simple stand-alone script files. This allows for the use of scripts
+as *modules*, a collection of related object definitions, each of which
 may be used at different places without exposing more than necessary.
 
 The package is inspired in part by Python's 
@@ -124,18 +124,16 @@ import::from(psych, geometric.mean, harmonic.mean)
 geometric.mean(trees$Volume)
 ```
 
-The imported objects are placed in a
-separate entity in the search path (@lionel- suggests naming them "pied-à-terres", 
-meaning living units some distance away from primary residence), which by 
+The imported objects are placed in a separate entity in the search path which by 
 default is named "imports". It is therefore also easy to get rid of them again 
 with `detach("imports")`. The main point is that it is **clear which functions 
-will be used and where they come from**.  It's noteworthy that there is nothing 
+will be used and where they come from**. It's noteworthy that there is nothing 
 special going on: the `import::from` function is only a convenient wrapper 
 around `getExportedValue` (as is `::` itself) and `assign`. 
 
 The `import` package itself should not to be attached 
 (don't include it via `library`, you will get a warning). Rather, it is designed
-to be expressive when using the colon syntax.   To import  non-exported objects 
+to be expressive when using the colon syntax. To import non-exported objects 
 one must use triple-colon syntax: `import:::from(pkg, obj)`.
 If any of the `import` functions are called regularly, i.e. without preceding
 `import::` or `import:::`, an error is raised. If `import` is attached, a 
@@ -295,7 +293,7 @@ plot_it()
 
 Suppose that you have some related functionality that you wish to bundle, and
 that authoring a full package seems excessive or inappropriate 
-for the specific task, for example bundling related UI components for a `shiny` 
+for the specific task, for example bundling related user interface components for a `shiny` 
 application. One option with `import` is to author a module (script), say as outlined
 below:
 
@@ -358,21 +356,21 @@ One import call can only use *one* library so there will not be ambiguity
 as to where imports come from.
 
 When importing from a module (.R file), the directory where `import` looks for
-the module script can be speecified with the with `.directory` paremeter. 
+the module script can be specified with the with `.directory` parameter. 
 The default is `.` (the current working directory).
 
 ### Choosing where the imported functions are placed
 
-One can also specify which names to use in the search path and use several to 
-group imports:
+One can also specify which names to use in the search path 
+and use several to group imports:
 
 ```{r, eval = FALSE}
 import::from(magrittr, "%>%", "%$%", .into = "operators") 
 import::from(dplyr, arrange, .into = "datatools")
 ```
 
-If using pied-à-terres actively, one might prefer the alternative syntax 
-(which does the same but reverses the argument order):
+If using custom search path entities actively, one might prefer the 
+alternative syntax (which does the same but reverses the argument order):
 
 ```{r, eval = FALSE}
 import::into("operators", "%>%", "%$%", .from = magrittr)
@@ -382,7 +380,7 @@ import::into("datatools", arrange, .from = dplyr)
 Note, that the `.from` and `.into` arguments are prefixed by a dot to
 clearly distinguish them from other named arguments. The `import::into`
 and `import::from` accept the same parameters and achieve the same
-result. The the choice between them a matter of preferece).
+result. The the choice between them a matter of preference).
 
 If it is desired to import objects directly into the current environment, 
 this can be accomplished by `import::here`. This is particularly 
@@ -415,20 +413,20 @@ x = import::into({new.env()}, "%<>%", .from = magrittr)
 
 ## Advanced usage and the .character_only parameter
 
-The `import` package uses non-standard evaluation (NSE) in order to allow the 
+The `import` package uses non-standard evaluation in order to allow the 
 names of packages and functions to be listed without quoting them. This
 makes some common use-cases very straightforward, but can get in the 
 way of more programmatic usages.
 
 This is where the `.character_only` parameter comes in handy. By setting
-`.character_only=TRUE`, all NSE of the `.from`, 
+`.character_only=TRUE`, all non-standard evaluation of the `.from`, 
 `.into` and the `...` parameters is disabled (other parameters are 
 always evaluated in a standard way). Instead, the parameters are processed
 as character vectors containing the relevant values. It is useful to 
 examine some examples of how this can be helpful.
 
 
-## Programmatically selecting the objects to import
+## Programmatic selection of objects to import
 
 It is not always know in advance which objects to import from a given
 package. For example, assume we have a list of objects from the 
@@ -440,8 +438,8 @@ import::from("broom", objects, .character_only=TRUE)
 ```
 
 This will import the three functions specified in the `objects` vector.
-It is worth noting that because `.character_only` disables NSE on *all*
-parameters, the name of the package must now be quoted.
+It is worth noting that because `.character_only` disables non-standard
+evaluation on *all* parameters, the name of the package must now be quoted.
 
 One common use case is when one wants to import all objects except one
 or a few, because of conflicts with other packages. Should one, for 
@@ -455,7 +453,7 @@ import::from("dplyr", objects, .character_only=TRUE)
 ```
 
 
-## Programmatically selecting the location of a module
+## Programmatic selection of module location
 
 The same approach can be used when the directory of the source
 file for a module is not known in advance. This can be useful
@@ -469,7 +467,7 @@ import::from(mymodule, "myfunction", .character_only=TRUE)
 ```
 
 Again, note that now the name of the function must be quoted because
-NSE is disabled on all parameters.
+non-standard evaluation is disabled on all parameters.
 
 The `here` package is useful in many circumstances like this; it 
 allows the setting of a "root" directory for a project and by using
@@ -499,10 +497,10 @@ wants to import some functions from a URL. While `import` does
 not allow direct importing from a URL (because of difficult 
 questions about when a URL target has changes, whether to 
 download a file and other things), it easy to achieve the desired
-result by using the `pins` package (whose raison d'etre is to 
+result by using the `pins` package (whose  main purpose is to 
 resolve such difficult questions). A simple example follows, which 
-directly imports the `myfunc()` function,  which is defined in the 
-[plusone_module.R](https://raw.githubusercontent.com/rticulate/import/master/man/examples/plusone_module.R):
+directly imports the `myfunc()` function, which is defined in the 
+[`plusone_module.R`](https://raw.githubusercontent.com/rticulate/import/master/man/examples/plusone_module.R):
 
 ```{r, eval = FALSE}
 url <- "https://raw.githubusercontent.com/rticulate/import/master/man/examples/plusone_module.R"
@@ -512,10 +510,9 @@ myfunc(3)
 ```
 
 
-
 ## Python-like imports
 
-A frequent pattern in python imports packages under an alias; all subsequent use of the imported objects then explitly includes the alias:
+A frequent pattern in python imports packages under an alias; all subsequent use of the imported objects then explicitly includes the alias:
 
 ```python
 import pandas as pd
@@ -526,7 +523,7 @@ print(m.pi)
 print(m.e)
 ```
 
-In order to achieve this functionality with the import package, use `.into={new.env()}` which assign to a new environment without attachihng it. `import::from()` returns this environment, so it can be assigned toa variable:
+In order to achieve this functionality with the import package, use `.into={new.env()}` which assign to a new environment without attaching it. `import::from()` returns this environment, so it can be assigned to a variable:
 
 ```{r, eval = FALSE}
 # Import into a new namespace, use $ to access

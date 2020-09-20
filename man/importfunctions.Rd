@@ -109,7 +109,7 @@ of altering the search path, as they (by default) import objects into the
 
 The \code{import} package is not meant to be loaded with \code{library} (and
 will output a message about this if attached), but rather it is named to make
-the function calls expressive without the need to preload, i.e. it is
+the function calls expressive without the need to loading before use, i.e. it is
 designed to be used explicitly with the \code{::} syntax, e.g.
 \code{import::from(pkg, x, y)}.
 }

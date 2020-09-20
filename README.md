@@ -8,7 +8,7 @@
 
 The import package is intended to simplify the way in which functions from external 
 packages or modules are made available for use in R scripts. Learn more on 
-the [package website](https://import.rticulate.org/), by reading  
+the [package website](https://import.rticulate.org/), by reading
 [`vignette("import")`](https://import.rticulate.org/articles/import.html),
 or using the help (`?import::from`).
 
@@ -119,24 +119,22 @@ One import call can only use *one* library so there will not be ambiguity
 as to where imports come from.
 
 When importing from a module (.R file), the directory where `import` looks for
-the module script can be speecified with the with `.directory` paremeter. 
+the module script can be specified with the with `.directory` parameter. 
 The default is `.` (the current working directory).
 
 ### Choosing where the imported functions are placed
 
-By default, imported objects are placed in a
-separate entity in the search path called "imports" (@lionel- suggests naming such entities  "pied-à-terres", 
-meaning living units some distance away from primary residence).
-One can also specify which names to use in the search path and use several to 
-group imports:
+By default, imported objects are placed in a separate entity in the search 
+path called "imports". One can also specify which names to use in the search 
+path and use several to group imports:
 
 ```R
 import::from(magrittr, "%>%", "%$%", .into = "operators") 
 import::from(dplyr, arrange, .into = "datatools")
 ```
 
-If using pied-à-terres actively, one might prefer the alternative syntax 
-(which does the same but reverses the argument order):
+If using custom search path entities actively, one might prefer the 
+alternative syntax (which does the same but reverses the argument order):
 
 ```R
 import::into("operators", "%>%", "%$%", .from = magrittr)
@@ -168,7 +166,7 @@ The `.character_only` parameter is covered in more detail in the
 [Advanced Usage](articles/import.html#advanced-usage) section of the package vignette, 
 which also describes how you can import from module scripts stored online with the
 help of the `pins` package, or achieve python-like imports with the help of `{}` 
-notation for environments in the `.into` pareter.
+notation for environments in the `.into` parameter.
 
 
 # See also:
