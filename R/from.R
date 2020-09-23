@@ -27,7 +27,7 @@
 #'
 #' The \code{import} package is not meant to be loaded with \code{library} (and
 #' will output a message about this if attached), but rather it is named to make
-#' the function calls expressive without the need to preload, i.e. it is
+#' the function calls expressive without the need to loading before use, i.e. it is
 #' designed to be used explicitly with the \code{::} syntax, e.g.
 #' \code{import::from(pkg, x, y)}.
 #'
@@ -48,10 +48,11 @@
 #' @param .from The package from which to import.
 #' @param ... Names or name-value pairs specifying objects to import.
 #'   If arguments are named, then the imported object will have this new name.
-#' @param .into The name of the search path entry. Use \code{""} to import
-#'   into the current environment. Enclosing the value in curly brackets causes
-#'   the parameter to be treated as an actual environment value, rather than the
-#'   name of an environment.
+#' @param .into The name of the search path entry. Enclosing the value in curly
+#'   brackets causes the parameter to be treated as an actual
+#'   environment value, rather than the name of an environment. Using
+#'   \code{.into={environment()}} causes imports to be made into the current
+#'   environment; \code{.into=""} is an equivalent shorthand value.
 #' @param .library character specifying the library to use when importing from
 #'   packages. Defaults to the latest specified library.
 #' @param .directory character specifying the directory to use when importing
@@ -71,13 +72,21 @@
 #'   \code{...} can be assumed to be character strings. (Note that this
 #'   parameter does not apply to how the \code{.into} parameter is handled).
 #'
-#' @return a reference to the environment with the imports or \code{NULL}
-#'   if \code{into = ""}, invisibly.
+#' @return a reference to the environment containing the imported objects.
 #'
 #' @export
 #' @examples
 #' import::from(parallel, makeCluster, parLapply)
 #' import::into("imports:parallel", makeCluster, parLapply, .from = parallel)
+#'
+#' @seealso
+#'   Helpful links:
+#'     \itemize{
+#'       \item{[https://import.rticulate.org](https://import.rticulate.org)}
+#'       \item{[https://github.com/rticulate/import](https://github.com/rticulate/import)}
+#'       \item{[https://github.com/rticulate/import/issues](https://github.com/rticulate/import/issues)}
+#'     }
+#' @md
 from <- function(.from, ..., .into = "imports",
                  .library = .libPaths()[1L], .directory=".",
                  .all=(length(.except) > 0), .except=character(),

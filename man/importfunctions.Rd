@@ -47,10 +47,11 @@ into(
 \item{...}{Names or name-value pairs specifying objects to import.
 If arguments are named, then the imported object will have this new name.}
 
-\item{.into}{The name of the search path entry. Use \code{""} to import
-into the current environment. Enclosing the value in curly brackets causes
-the parameter to be treated as an actual environment value, rather than the
-name of an environment.}
+\item{.into}{The name of the search path entry. Enclosing the value in curly
+brackets causes the parameter to be treated as an actual
+environment value, rather than the name of an environment. Using
+\code{.into={environment()}} causes imports to be made into the current
+environment; \code{.into=""} is an equivalent shorthand value.}
 
 \item{.library}{character specifying the library to use when importing from
 packages. Defaults to the latest specified library.}
@@ -77,8 +78,7 @@ sourcing a module (this parameter is ignored for libraries)}
 parameter does not apply to how the \code{.into} parameter is handled).}
 }
 \value{
-a reference to the environment with the imports or \code{NULL}
-  if \code{into = ""}, invisibly.
+a reference to the environment containing the imported objects.
 }
 \description{
 The \code{import::from} and \code{import::into} functions provide an
@@ -109,7 +109,7 @@ of altering the search path, as they (by default) import objects into the
 
 The \code{import} package is not meant to be loaded with \code{library} (and
 will output a message about this if attached), but rather it is named to make
-the function calls expressive without the need to preload, i.e. it is
+the function calls expressive without the need to loading before use, i.e. it is
 designed to be used explicitly with the \code{::} syntax, e.g.
 \code{import::from(pkg, x, y)}.
 }
@@ -133,4 +133,13 @@ You can use the operators \code{<}, \code{>}, \code{<=}, \code{>=},
 \examples{
 import::from(parallel, makeCluster, parLapply)
 import::into("imports:parallel", makeCluster, parLapply, .from = parallel)
+
+}
+\seealso{
+Helpful links:
+\itemize{
+\item{\url{https://import.rticulate.org}}
+\item{\url{https://github.com/rticulate/import}}
+\item{\url{https://github.com/rticulate/import/issues}}
+}
 }
