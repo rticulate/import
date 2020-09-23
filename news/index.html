@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>License • import</title>
+<title>Changelog • import</title>
 
 
 <!-- jquery -->
@@ -18,8 +18,8 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script>
 
 <!-- bootstrap-toc -->
-<link rel="stylesheet" href="bootstrap-toc.css">
-<script src="bootstrap-toc.js"></script>
+<link rel="stylesheet" href="../bootstrap-toc.css">
+<script src="../bootstrap-toc.js"></script>
 
 <!-- Font Awesome icons -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous" />
@@ -33,13 +33,13 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script>
 
 <!-- pkgdown -->
-<link href="pkgdown.css" rel="stylesheet">
-<script src="pkgdown.js"></script>
+<link href="../pkgdown.css" rel="stylesheet">
+<script src="../pkgdown.js"></script>
 
 
 
 
-<meta property="og:title" content="License" />
+<meta property="og:title" content="Changelog" />
 
 
 
@@ -58,7 +58,7 @@
   </head>
 
   <body data-spy="scroll" data-target="#toc">
-    <div class="container template-title-body">
+    <div class="container template-news">
       <header>
       <div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
@@ -70,7 +70,7 @@
         <span class="icon-bar"></span>
       </button>
       <span class="navbar-brand">
-        <a class="navbar-link" href="index.html">import</a>
+        <a class="navbar-link" href="../index.html">import</a>
         <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.2.0</span>
       </span>
     </div>
@@ -78,19 +78,19 @@
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
         <li>
-  <a href="index.html">
+  <a href="../index.html">
     <span class="fas fa fas fa-home fa-lg"></span>
      
   </a>
 </li>
 <li>
-  <a href="articles/import.html">Get started</a>
+  <a href="../articles/import.html">Get started</a>
 </li>
 <li>
-  <a href="reference/index.html">Reference</a>
+  <a href="../reference/index.html">Reference</a>
 </li>
 <li>
-  <a href="news/index.html">Changelog</a>
+  <a href="../news/index.html">Changelog</a>
 </li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
@@ -111,15 +111,49 @@
       </header>
 
 <div class="row">
-  <div class="contents col-md-9">
+  <div class="col-md-9 contents">
     <div class="page-header">
-      <h1>License</h1>
+      <h1 data-toc-skip>Changelog <small></small></h1>
+      <small>Source: <a href='https://github.com/rticulate/import/blob/master/NEWS.md'><code>NEWS.md</code></a></small>
     </div>
 
-<pre>YEAR: 2017
-COPYRIGHT HOLDER: Stefan Milton Bache
-</pre>
-
+    <div id="version-120" class="section level1">
+<h1 class="page-header" data-toc-text="1.2.0">
+<a href="#version-120" class="anchor"></a>Version 1.2.0<small> Unreleased </small>
+</h1>
+<ul>
+<li>import is now more strict and won’t allow an import from a different environment to replace an existing import of that name and location.</li>
+<li>One can now import directly into an environment (which may not be attached) by wrapping it in braces, e.g. import::from(pkg, symbol, .into = {environment()})</li>
+<li>import::from/here/into now include a new option, <code>.character_only</code>, that suppresses non-standard evaluation and thus allows passing object names or locations in variables (character strings).</li>
+<li>import::from/here/into now include new options, <code>.all</code> and <code>.except</code>, that allow the user to import all functions, or all functions except a few, from a package or module.</li>
+<li>import::from/here/into now include a new option, “<code>.chdir</code>”, specifying whether the working directory is changed before sourcing modules to import.</li>
+<li>import::from/here/into now include a new option, “<code>.directory</code>”,<br>
+</li>
+<li>import::here() has been fixed to use environment() explicitly to import into the current environment, rather than importing into "" (the empty string), which no longer works because of upstream changes. Passing "" to “<code>.into</code>” parameter is now only a shorthand for .into = {environment()}.</li>
+<li>Using import::from(), import::into(), or library() inside a module that is being sourced from the import::from/here/into</li>
+<li>The parameter order for import::here() has been changed to be consistent with import::from(). The change is backwards compatible because the moved parameter (<code>.from</code>) was previously behind the ellipsis, requiring the use of named parameters.</li>
+<li>Unit tests have been added and various issues fixed.</li>
+</ul>
+</div>
+    <div id="version-110" class="section level1">
+<h1 class="page-header" data-toc-text="1.1.0">
+<a href="#version-110" class="anchor"></a>Version 1.1.0<small> 2015-06-22 </small>
+</h1>
+<ul>
+<li>There is now support to import objects from script files, i.e. a kind of “module”. Scripts meant to expose objects for import should ideally be side-effect free, but this is not enforced. Any attachments are detached after import, but loaded namespaces remain loaded.</li>
+</ul>
+</div>
+    <div id="version-102" class="section level1">
+<h1 class="page-header" data-toc-text="1.0.2">
+<a href="#version-102" class="anchor"></a>Version 1.0.2<small> 2015-04-10 </small>
+</h1>
+<ul>
+<li>You can now specify which library to use, and only one library is ever used in a single call: there is no ambiguity about where imports come from.</li>
+<li>There is a distinction between using double- and triple colon syntax; analogously to using :: and ::: operators.</li>
+<li>If the package is attached (e.g. via library) there is a startup message informing the user that the package is not meant to be attached.</li>
+<li>It is only possible to use the functions with the <code>import::</code> / <code>import:::</code> syntax.</li>
+</ul>
+</div>
   </div>
 
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
@@ -129,7 +163,6 @@ COPYRIGHT HOLDER: Stefan Milton Bache
   </div>
 
 </div>
-
 
 
       <footer>

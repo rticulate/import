@@ -81,7 +81,7 @@ desired. The function import::here imports into the current environment." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">import</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.1.9001</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.2.0</span>
       </span>
     </div>
 
@@ -98,6 +98,9 @@ desired. The function import::here imports into the current environment." />
 </li>
 <li>
   <a href="../reference/index.html">Reference</a>
+</li>
+<li>
+  <a href="../news/index.html">Changelog</a>
 </li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
@@ -187,10 +190,11 @@ If arguments are named, then the imported object will have this new name.</p></t
     </tr>
     <tr>
       <th>.into</th>
-      <td><p>The name of the search path entry. Use <code>""</code> to import
-into the current environment. Enclosing the value in curly brackets causes
-the parameter to be treated as an actual environment value, rather than the
-name of an environment.</p></td>
+      <td><p>The name of the search path entry. Enclosing the value in curly
+brackets causes the parameter to be treated as an actual
+environment value, rather than the name of an environment. Using
+<code>.into={environment()}</code> causes imports to be made into the current
+environment; <code>.into=""</code> is an equivalent shorthand value.</p></td>
     </tr>
     <tr>
       <th>.library</th>
@@ -232,8 +236,7 @@ parameter does not apply to how the <code>.into</code> parameter is handled).</p
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>a reference to the environment with the imports or <code>NULL</code>
-  if <code>into = ""</code>, invisibly.</p>
+    <p>a reference to the environment containing the imported objects.</p>
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
     <p>The function arguments can be quoted or unquoted as with e.g. <code>library</code>.
@@ -250,7 +253,7 @@ of altering the search path, as they (by default) import objects into the
 "imports" search path entry rather than the global environment.</p>
 <p>The <code>import</code> package is not meant to be loaded with <code>library</code> (and
 will output a message about this if attached), but rather it is named to make
-the function calls expressive without the need to preload, i.e. it is
+the function calls expressive without the need to loading before use, i.e. it is
 designed to be used explicitly with the <code><a href='https://rdrr.io/r/base/ns-dblcolon.html'>::</a></code> syntax, e.g.
 <code>import::from(pkg, x, y)</code>.</p>
     <h2 class="hasAnchor" id="packages-vs-modules"><a class="anchor" href="#packages-vs-modules"></a>Packages vs. modules</h2>
@@ -270,10 +273,19 @@ add a requirement in parentheses to the package name (which then needs to
 be quoted), e.g <code>import::from("parallel (&gt;= 3.2.0)", ...)</code>.
 You can use the operators <code>&lt;</code>, <code>&gt;</code>, <code>&lt;=</code>, <code>&gt;=</code>,
 <code><a href='https://rdrr.io/r/base/Comparison.html'>==</a></code>, <code><a href='https://rdrr.io/r/base/Comparison.html'>!=</a></code>. Whitespace in the specification is irrelevant.</p>
+    <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
+
+    <div class='dont-index'><p>Helpful links:</p><ul>
+<li><p><a href='https://import.rticulate.org'>https://import.rticulate.org</a></p></li>
+<li><p><a href='https://github.com/rticulate/import'>https://github.com/rticulate/import</a></p></li>
+<li><p><a href='https://github.com/rticulate/import/issues'>https://github.com/rticulate/import/issues</a></p></li>
+</ul>
+</div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='kw'>import</span>::<span class='fu'>from</span>(<span class='kw'>parallel</span>, <span class='kw'>makeCluster</span>, <span class='kw'>parLapply</span>)
 <span class='kw'>import</span>::<span class='fu'>into</span>(<span class='st'>"imports:parallel"</span>, <span class='kw'>makeCluster</span>, <span class='kw'>parLapply</span>, .from = <span class='kw'>parallel</span>)
+
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
