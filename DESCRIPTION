@@ -5,11 +5,11 @@ Version: 1.2.0
 Authors@R:
     c(person(given = "Stefan Milton",
              family = "Bache",
-             role = c("aut", "cre"),
+             role = c("aut"),
              email = "stefan@stefanbache.dk"),
       person(given = "Magnus Thor",
              family = "Torfason",
-             role = "aut",
+             role = c("aut", "cre"),
              email = "m@zulutime.net"))
 Description: Alternative mechanism for importing objects from packages
     and R modules. The syntax allows for importing multiple objects with a single
