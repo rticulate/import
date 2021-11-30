@@ -1,3 +1,11 @@
+Version 1.2.1
+=============
+
+* Minor patch to import fixes a bug when importing from a library not defined in
+the `libPaths`. The namespace was fixed to be imported earlier in the function
+definition so that later functions that do not use a `lib.loc` parameter (such
+as `getNamespaceExports`) can successfully reference the namespace.
+
 Version 1.2.0
 =============
 
