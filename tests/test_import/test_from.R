@@ -29,6 +29,15 @@ test_that("Imports from libraries work", {
   cleanup_environment()
 })
 
+test_that("Imports from libraries NOT defined in .libPaths work", {
+  tmp_install_dir = tempdir()
+  system("R CMD build packageToTest")
+  install.packages('packageToTest_0.1.0.tar.gz', lib = tmp_install_dir, repos = NULL, type = 'source')
+  expect_true( 'packageToTest' %in% list.files(tmp_install_dir) )
+  expect_silent( import::from(.from = packageToTest, .library = tmp_install_dir, hello) )
+  expect_equal(hello(), "Hello, world!")
+})
+
 test_that("Imports from modules work", {
   expect_error ( fun1() )
   expect_silent( import::from(module_base.R, fun1) )
