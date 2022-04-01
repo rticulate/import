@@ -419,11 +419,13 @@ makes some common use-cases very straightforward, but can get in the
 way of more programmatic usages.
 
 This is where the `.character_only` parameter comes in handy. By setting
-`.character_only=TRUE`, all non-standard evaluation of the `.from`, 
-`.into` and the `...` parameters is disabled (other parameters are 
-always evaluated in a standard way). Instead, the parameters are processed
-as character vectors containing the relevant values. It is useful to 
-examine some examples of how this can be helpful.
+`.character_only=TRUE`, the non-standard evaluation of the `.from` and the
+`...` parameters is disabled. Instead, the parameters are processed as
+character vectors containing the relevant values. (`.character_only=TRUE`
+does not effect the evaluation of `.into`, which still uses non-standard
+evaluation. Other parameters are always evaluated in a standard way.) 
+
+It is useful to examine some examples of how this can be helpful.
 
 
 ## Programmatic selection of objects to import
