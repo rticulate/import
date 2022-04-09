@@ -14,10 +14,10 @@ make_import_call <- function(params, exports_only)
 {
   cl <-
     if (exports_only)
-       substitute(safe_assign(new, getExportedValue(nm, ns = ns), pos = pos),
+       substitute(safe_assign(new, base::getExportedValue(nm, ns = ns), pos = pos),
                   params)
     else
-       substitute(safe_assign(new, get(nm, envir = ns, inherits = inh), pos = pos),
+       substitute(safe_assign(new, base::get(nm, envir = ns, inherits = inh), pos = pos),
                   params)
 
   cl[[1]] <- safe_assign
