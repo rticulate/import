@@ -202,7 +202,7 @@ from <- function(.from, ..., .into = "imports",
     pkg_name <- from
 
     # Create list of all available objects (for use with the .all parameter)
-    all_objects <- ls(scripts[[from]])
+    all_objects <- ls(scripts[[from]], all.names = TRUE)
   } else {
     # Load the package namespace, which is passed to the import calls.
     spec <- package_specs(from)
