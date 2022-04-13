@@ -97,7 +97,9 @@ The function arguments can be quoted or unquoted as with e.g. \code{library}.
 In any case, the character representation is used when unquoted arguments are
 provided (and not the value of objects with matching names). The period in
 the argument names \code{.into} and \code{.from} are there to avoid name
-clash with package objects. The double-colon syntax \code{import::from}
+clash with package objects. However, while importing of hidden objects (those with
+names prefixed by a period) is supported, care should be taken not to conflict
+with the argument names. The double-colon syntax \code{import::from}
 allows for imports of exported objects (and lazy data) only. To import
 objects that are not exported, use triple-colon syntax, e.g.
 \code{import:::from}. The two ways of calling the \code{import} functions

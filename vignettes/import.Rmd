@@ -378,7 +378,9 @@ import::into("datatools", arrange, .from = dplyr)
 ```
 
 Note, that the `.from` and `.into` arguments are prefixed by a dot to
-clearly distinguish them from other named arguments. The `import::into`
+clearly distinguish them from other named arguments. Be aware that
+hidden objects (those with names prefixed by a period) are supported.
+Take care to avoid name clashes with argument names. The `import::into`
 and `import::from` accept the same parameters and achieve the same
 result. The the choice between them a matter of preference).
 

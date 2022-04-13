@@ -6,6 +6,9 @@ the `libPaths`. The namespace was fixed to be imported earlier in the function
 definition so that later functions that do not use a `lib.loc` parameter (such
 as `getNamespaceExports`) can successfully reference the namespace.
 
+* import::from/here/into now support importing hidden objects (those with 
+names prefixed by a period). Take care to avoid name clashes with argument names.
+
 Version 1.2.0
 =============
 
