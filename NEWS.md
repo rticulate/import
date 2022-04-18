@@ -5,6 +5,10 @@ Version 1.2.1
 the `libPaths`. The namespace was fixed to be imported earlier in the function
 definition so that later functions that do not use a `lib.loc` parameter (such
 as `getNamespaceExports`) can successfully reference the namespace.
+* Minor patch to import fixes a bug where function `get` from namespaces other
+than `package:base` can be incorrectly substituted in `make_import_call`. This
+fix also applies to `getExportedValue`, even though this function is less likely
+to be masked.
 
 * import::from/here/into now support importing hidden objects (those with 
 names prefixed by a period). Take care to avoid name clashes with argument names.
