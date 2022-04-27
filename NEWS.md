@@ -13,6 +13,8 @@ to be masked.
 * import::from/here/into now support importing hidden objects (those with 
 names prefixed by a period). Take care to avoid name clashes with argument names.
 
+* import::from/into now support importing `.into` `symbol`s, regardless of `.character_only` value.
+
 Version 1.2.0
 =============
 

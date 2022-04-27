@@ -203,7 +203,7 @@ not immediately reveal that it's main purpose is to provide the pipe
 operator, `%>%`.
 
 
-### Importing Functions from "Module" Scripts
+### Importing Functions from "Module" Scripts {#module}
 
 
 The `import` package allows for importing objects defined in script files,
@@ -387,11 +387,11 @@ result. The the choice between them a matter of preference).
 If it is desired to import objects directly into the current environment, 
 this can be accomplished by `import::here`. This is particularly 
 useful when importing inside a function definition, or module scripts as
-described below.
+described [here](#module).
 
 ```{r, eval = FALSE}
-import::into("operators", "%>%", "%$%", .from = magrittr)
-import::into("datatools", arrange, .from = dplyr)
+import::here("%>%", "%$%", .from = magrittr)
+import::here(arrange, .from = dplyr)
 ```
 
 The `.into` parameter can be surrounded with `{}`, which leads it to be
@@ -408,6 +408,22 @@ import::into({.GlobalEnv}, "%>%", "%$%", .from = magrittr)
 # Import into a new environment, mainly useful for python-style imports
 # (see below)
 x = import::into({new.env()}, "%<>%", .from = magrittr)
+```
+
+Lastly, the `.into` parameter can be input as a symbol, allowing dynamic environment naming.
+
+```{r, eval = FALSE}
+# define a variable representing the environment name
+env_name <- "operators"
+
+# this will import into a new "operators" environment
+import::into(env_name, "%>%", "%$%", .from = magrittr)
+
+# define a variable representing the environment name
+env_name <- "datatools"
+
+# shows that .into is unaffected by .character_only
+import::from("dplyr", .into = env_name, "arrange", .character_only = TRUE)
 ```
 
 
