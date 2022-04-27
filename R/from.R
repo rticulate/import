@@ -137,16 +137,11 @@ from <- function(.from, ..., .into = "imports",
     `if`(isTRUE(.character_only), .from, symbol_as_character(substitute(.from)))
 
   into_expr <- substitute(.into)
-  `{env}` <- identical(into_expr[[1]], quote(`{`))
+  `{env}` <- !is.symbol(into_expr) && identical(into_expr[[1]], quote(`{`))
 
-  # if {env} syntax is used, treat env as explicit env
-  if (`{env}`) {
-    into <- eval.parent(.into)
-    if (!is.environment(into))
-      stop("into is not an environment, but {env} notation was used.", call. = FALSE)
-  } else {
-    into    <- symbol_as_character(into_expr)
-  }
+  into <- eval.parent(into_expr)
+  if (`{env}` && !is.environment(into))
+    stop("into is not an environment, but {env} notation was used.", call. = FALSE)
 
   # Check whether assignment should be done in a named entry in the search path.
   use_into <- !exists(".packageName", parent.frame(), inherits = TRUE) &&
