@@ -112,10 +112,26 @@ test_that("The .into paremeter is honored", {
   cleanup_environment("custom_env")
 })
 
+test_that("The .into paremeter is honored w/ .character_only=TRUE", {
+  expect_error ( normal_print("OK") )
+  expect_silent( import::from('knitr', "normal_print", .into="custom_env", .character_only=TRUE) )
+  expect_output( normal_print("OK"), "OK" )
+  cleanup_environment("custom_env")
+})
+
 test_that("Importing .into={....} (curly brackets) works", {
   expect_error ( normal_print("OK") )
   expect_false ( "normal_print" %in% ls() )
   expect_silent( import::from(knitr, normal_print, .into={environment()}) )
+  expect_output( normal_print("OK"), "OK" )
+  expect_true  ("normal_print" %in% ls() )
+  cleanup_environment(cleanup_here=TRUE)
+})
+
+test_that("Importing .into={....} (curly brackets) works w/ .character_only=TRUE", {
+  expect_error ( normal_print("OK") )
+  expect_false ( "normal_print" %in% ls() )
+  expect_silent( import::from("knitr", "normal_print", .into={environment()}, .character_only=TRUE) )
   expect_output( normal_print("OK"), "OK" )
   expect_true  ("normal_print" %in% ls() )
   cleanup_environment(cleanup_here=TRUE)
@@ -128,6 +144,35 @@ test_that("Importing .into=\"\" (empty string) works", {
   expect_output( normal_print("OK"), "OK" )
   expect_true  ("normal_print" %in% ls() )
   cleanup_environment(cleanup_here=TRUE)
+})
+
+test_that("Importing .into=\"\" (empty string) works w/ .character_only=TRUE", {
+  expect_error ( normal_print("OK") )
+  expect_false ( "normal_print" %in% ls() )
+  expect_silent( import::from("knitr", "normal_print", .into="", .character_only=TRUE) )
+  expect_output( normal_print("OK"), "OK" )
+  expect_true  ("normal_print" %in% ls() )
+  cleanup_environment(cleanup_here=TRUE)
+})
+
+test_that("Importing .into a symbol works", {
+  expect_error ( normal_print("OK") )
+  expect_false ( "normal_print" %in% ls() )
+  symbol_env <- "custom_env"
+  expect_silent( import::from(knitr, normal_print, .into=symbol_env) )
+  expect_output( normal_print("OK"), "OK" )
+  expect_true  ("normal_print" %in% ls(name = symbol_env) )
+  cleanup_environment(environments = symbol_env)
+})
+
+test_that("Importing .into a symbol works w/ .character_only=TRUE", {
+  expect_error ( normal_print("OK") )
+  expect_false ( "normal_print" %in% ls() )
+  symbol_env <- "custom_env"
+  expect_silent( import::from("knitr", "normal_print", .into=symbol_env, .character_only=TRUE) )
+  expect_output( normal_print("OK"), "OK" )
+  expect_true  ("normal_print" %in% ls(name = symbol_env) )
+  cleanup_environment(environments = symbol_env)
 })
 
 test_that("Imports from libraries NOT defined in .libPaths work", {
