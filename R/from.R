@@ -116,18 +116,22 @@ from <- function(.from, ..., .into = "imports",
             (.all!=FALSE || length(.except)!=0))
     stop("`import:::` must not be used in conjunction with .all or .except", call. = FALSE)
 
-  # .into="" is a short-hand for .into={environment()}
-  if (!missing(.into) && is.character(.into) && .into == "")
-    .into = quote({environment()})
+  # OLD .into processing, not needed anymore, .into is simply either a character or an environment
+  # # .into="" is a short-hand for .into={environment()}
+  # if (!missing(.into) && is.character(.into) && .into == "")
+  #   .into = quote({environment()})
 
   # If we are inside a bad recursion call, warn and set .into to the only
   # acceptable value for an inner recursive call, which is quote({environment()})
   if (detect_bad_recursion(.traceback(0))) {
-     .into = quote({environment()})
-     warning(paste0("import::from() or import::into() was used recursively, to import \n",
-                    "    a module from within a module.  Please rely on import::here() \n",
-                    "    when using the import package in this way.\n",
-                    "    See vignette(import) for further details."))
+
+    # OLD .into processing, instead of quoting, we just set to parent frame if evaluating "here()-style"
+    #.into = quote({environment()})
+    .into = parent.frame()
+    warning(paste0("import::from() or import::into() was used recursively, to import \n",
+                   "    a module from within a module.  Please rely on import::here() \n",
+                   "    when using the import package in this way.\n",
+                   "    See vignette(import) for further details."))
   }
 
   # Extract the arguments
@@ -136,18 +140,36 @@ from <- function(.from, ..., .into = "imports",
   from    <-
     `if`(isTRUE(.character_only), .from, symbol_as_character(substitute(.from)))
 
-  into_expr <- substitute(.into)
-  `{env}` <- identical(into_expr[[1]], quote(`{`))
-
-  # if {env} syntax is used, treat env as explicit env
-  if (`{env}`) {
-    into <- eval.parent(.into)
-    if (!is.environment(into))
-      stop("into is not an environment, but {env} notation was used.", call. = FALSE)
-  } else {
-    into    <- symbol_as_character(into_expr)
+  # .into =="" indicates here()-style processing, so .into becomes the caling environment, that is parent.frame()
+  # Handle special case of .into==""
+  if (is.character(.into) && .into=="") {
+    .into = parent.frame()
   }
 
+  # .into handling - it is now enough to check the type of .into to see if it is an environment
+  # Check if .into is an environment
+  # Probably best to rename this simple boolean variable, `{env}`, to into_is_env or something like that
+  `{env}` <- is.environment(.into)
+  #print(`{env}`)
+
+  # .into handling. With NSE gone, .into is just .into, no special proccessing needed
+  # For now, we set all versions to the same value, but they should be combined
+  # into_expr is, for now, just the same as .into, and ditto for into
+  into_expr <- .into
+  into      <- .into
+
+  # OLD .into handling. No need for substution anymore
+  # into_expr <- substitute(.into)
+  # `{env}` <- !is.symbol(into_expr) && identical(into_expr[[1]], quote(`{`))
+  #
+  # into <- eval.parent(into_expr)
+  # if (`{env}` && !is.environment(into))
+  #   stop("into is not an environment, but {env} notation was used.", call. = FALSE)
+
+  # .into handling. See special handling of "" above
+  # If .into is "" we import into the current
+
+  # .into handling. Checking for "" should not be needed anymore
   # Check whether assignment should be done in a named entry in the search path.
   use_into <- !exists(".packageName", parent.frame(), inherits = TRUE) &&
               !`{env}` &&
