@@ -116,72 +116,43 @@ from <- function(.from, ..., .into = "imports",
             (.all!=FALSE || length(.except)!=0))
     stop("`import:::` must not be used in conjunction with .all or .except", call. = FALSE)
 
-  # OLD .into processing, not needed anymore, .into is simply either a character or an environment
-  # # .into="" is a short-hand for .into={environment()}
-  # if (!missing(.into) && is.character(.into) && .into == "")
-  #   .into = quote({environment()})
+  # Extract the arguments
+  symbols <- symbol_list(..., .character_only = .character_only, .all = .all)
+
+  # Do NSE on .from if .character_only is FALSE
+  # If we just use .from in all cases, this would be a simple if statement
+  from    <-
+    `if`(isTRUE(.character_only), .from, symbol_as_character(substitute(.from)))
+
+  # .into =="" is a special case, indicating that objects should be imported directly
+  # into the calling environment (as in import::here()). So we set .into<-parent.frame()
+  if (is.character(.into) && .into=="")
+    .into <- parent.frame()
 
   # If we are inside a bad recursion call, warn and set .into to the only
-  # acceptable value for an inner recursive call, which is quote({environment()})
+  # acceptable value for an inner recursive call, which is parent.frame() (the calling environment)
   if (detect_bad_recursion(.traceback(0))) {
-
-    # OLD .into processing, instead of quoting, we just set to parent frame if evaluating "here()-style"
-    #.into = quote({environment()})
-    .into = parent.frame()
+    .into <- parent.frame()
     warning(paste0("import::from() or import::into() was used recursively, to import \n",
                    "    a module from within a module.  Please rely on import::here() \n",
                    "    when using the import package in this way.\n",
                    "    See vignette(import) for further details."))
   }
 
-  # Extract the arguments
-  symbols <- symbol_list(..., .character_only = .character_only, .all = .all)
+  # .into is either a character or an environment. Check which it is
+  into_is_env <- is.environment(.into)
 
-  from    <-
-    `if`(isTRUE(.character_only), .from, symbol_as_character(substitute(.from)))
-
-  # .into =="" indicates here()-style processing, so .into becomes the caling environment, that is parent.frame()
-  # Handle special case of .into==""
-  if (is.character(.into) && .into=="") {
-    .into = parent.frame()
-  }
-
-  # .into handling - it is now enough to check the type of .into to see if it is an environment
-  # Check if .into is an environment
-  # Probably best to rename this simple boolean variable, `{env}`, to into_is_env or something like that
-  `{env}` <- is.environment(.into)
-  #print(`{env}`)
-
-  # .into handling. With NSE gone, .into is just .into, no special proccessing needed
-  # For now, we set all versions to the same value, but they should be combined
-  # into_expr is, for now, just the same as .into, and ditto for into
-  into_expr <- .into
-  into      <- .into
-
-  # OLD .into handling. No need for substution anymore
-  # into_expr <- substitute(.into)
-  # `{env}` <- !is.symbol(into_expr) && identical(into_expr[[1]], quote(`{`))
-  #
-  # into <- eval.parent(into_expr)
-  # if (`{env}` && !is.environment(into))
-  #   stop("into is not an environment, but {env} notation was used.", call. = FALSE)
-
-  # .into handling. See special handling of "" above
-  # If .into is "" we import into the current
-
-  # .into handling. Checking for "" should not be needed anymore
-  # Check whether assignment should be done in a named entry in the search path.
+  # .into handling. Check whether assignment should be done in a named entry in the search path.
   use_into <- !exists(".packageName", parent.frame(), inherits = TRUE) &&
-              !`{env}` &&
-              !into == ""
+              !into_is_env
 
   # Check whether the name already exists in the search path.
-  into_exists <- !`{env}` && (into %in% search())
+  into_exists <- !into_is_env && (.into %in% search())
 
   # Create the entry if needed.
   make_attach <- attach # Make R CMD check happy.
   if (use_into && !into_exists)
-    make_attach(NULL, 2L, name = into)
+    make_attach(NULL, 2L, name = .into)
 
   # Determine whether the source is a script or package.
   from_is_script <- is_script(from, .directory)
@@ -262,7 +233,7 @@ from <- function(.from, ..., .into = "imports",
              nm  = symbols[s],
              ns  = pkg,
              inh = !exports_only,
-             pos = if (use_into || `{env}`) into else -1),
+             pos = if (use_into || into_is_env) .into else -1),
         exports_only && !from_is_script)
 
     if (!from_is_script)
@@ -274,9 +245,9 @@ from <- function(.from, ..., .into = "imports",
              error = function(e) stop(e$message, call. = FALSE))
   }
 
-  if (!`{env}` && into != "" && !exists("?", into, mode = "function", inherits = FALSE)) {
-    assign("?", `?redirect`, into)
+  if (!into_is_env && !exists("?", .into, mode = "function", inherits = FALSE)) {
+    assign("?", `?redirect`, .into)
   }
 
-  invisible(as.environment(into))
+  invisible(as.environment(.into))
 }
