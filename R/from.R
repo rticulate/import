@@ -119,10 +119,9 @@ from <- function(.from, ..., .into = "imports",
   # Extract the arguments
   symbols <- symbol_list(..., .character_only = .character_only, .all = .all)
 
-  # Do NSE on .from if .character_only is FALSE
-  # If we just use .from in all cases, this would be a simple if statement
-  from    <-
-    `if`(isTRUE(.character_only), .from, symbol_as_character(substitute(.from)))
+  # If .character_only==FALSE, we substitute the symbol with its string representation
+  if (!isTRUE(.character_only))
+    .from <- symbol_as_character(substitute(.from))
 
   # .into =="" is a special case, indicating that objects should be imported directly
   # into the calling environment (as in import::here()). So we set .into<-parent.frame()
@@ -155,28 +154,28 @@ from <- function(.from, ..., .into = "imports",
     make_attach(NULL, 2L, name = .into)
 
   # Determine whether the source is a script or package.
-  from_is_script <- is_script(from, .directory)
+  from_is_script <- is_script(.from, .directory)
 
   if (from_is_script) {
-    from_created <- from %in% ls(scripts, all.names = TRUE)
-    if (!from_created || modified(from, .directory) > modified(scripts[[from]])) {
+    from_created <- .from %in% ls(scripts, all.names = TRUE)
+    if (!from_created || modified(.from, .directory) > modified(scripts[[.from]])) {
 
       # Find currently attachments
       attached <- search()
 
       # Create a new environment to manage the script module if it does not exist
       if (!from_created)
-        assign(from, new.env(parent = parent.frame()), scripts)
+        assign(.from, new.env(parent = parent.frame()), scripts)
 
       # Make modification time stamp
-      modified(scripts[[from]]) <- modified(from, .directory)
+      modified(scripts[[.from]]) <- modified(.from, .directory)
 
       # Make behaviour match that of a package, i.e. import::from won't use "imports"
-      scripts[[from]][[".packageName"]] <- from
+      scripts[[.from]][[".packageName"]] <- .from
 
       # Source the file into the new environment.
       packages_before <- .packages()
-      suppress_output(sys.source(file_path(.directory, from), scripts[[from]], chdir = .chdir))
+      suppress_output(sys.source(file_path(.directory, .from), scripts[[.from]], chdir = .chdir))
 
       # If sourcing the script loaded new packages, raise error
       packages_after <- .packages()
@@ -193,14 +192,14 @@ from <- function(.from, ..., .into = "imports",
           detach(d, character.only = TRUE)
       })
     }
-    pkg <- scripts[[from]]
-    pkg_name <- from
+    pkg <- scripts[[.from]]
+    pkg_name <- .from
 
     # Create list of all available objects (for use with the .all parameter)
-    all_objects <- ls(scripts[[from]], all.names = TRUE)
+    all_objects <- ls(scripts[[.from]], all.names = TRUE)
   } else {
     # Load the package namespace, which is passed to the import calls.
-    spec <- package_specs(from)
+    spec <- package_specs(.from)
     pkg <- tryCatch(
       loadNamespace(spec$pkg, lib.loc = .library,
                     versionCheck = spec$version_check),
