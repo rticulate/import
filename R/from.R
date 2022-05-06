@@ -201,12 +201,12 @@ from <- function(.from, ..., .into = "imports",
   } else {
     # Load the package namespace, which is passed to the import calls.
     spec <- package_specs(.from)
+    all_objects <- getNamespaceExports(spec$pkg)
     pkg <- tryCatch(
       loadNamespace(spec$pkg, lib.loc = .library,
                     versionCheck = spec$version_check),
       error = function(e) stop(conditionMessage(e), call. = FALSE)
     )
-    all_objects <- getNamespaceExports(spec$pkg)
     pkg_name <- spec$pkg
   }
   # If .all parameter was specified, override with list of all objects
