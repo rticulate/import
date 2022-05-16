@@ -3,7 +3,7 @@
 into <- function(.into, ..., .from,
                  .library = .libPaths()[1L], .directory=".",
                  .all=(length(.except) > 0), .except=character(),
-                 .chdir = TRUE, .character_only = FALSE)
+                 .chdir = TRUE, .character_only = FALSE, .S3 = FALSE)
 {
   # Capture the call and check that it is valid.
   cl <- match.call()
