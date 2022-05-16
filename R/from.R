@@ -74,6 +74,10 @@
 #' @param .character_only A logical indicating whether \code{.from} and
 #'   \code{...} can be assumed to be character strings. (Note that this
 #'   parameter does not apply to how the \code{.into} parameter is handled).
+#' @param .S3 A logical indicating whether an automatic detection and registration
+#'   of S3 methods should be performed. The S3 methods are assumed to be in
+#'   the standard form `generic.class`. Methods can also be registered
+#'   manually instead using the `.S3method(generic, class, method)` call.
 #'
 #' @return a reference to the environment containing the imported objects.
 #'
@@ -93,7 +97,7 @@
 from <- function(.from, ..., .into = "imports",
                  .library = .libPaths()[1L], .directory=".",
                  .all=(length(.except) > 0), .except=character(),
-                 .chdir = TRUE, .character_only = FALSE)
+                 .chdir = TRUE, .character_only = FALSE, .S3 = FALSE)
 {
   # Capture the relevant part of the call to see if
   # the import function is used as intended.
@@ -198,6 +202,11 @@ from <- function(.from, ..., .into = "imports",
 
     # Create list of all available objects (for use with the .all parameter)
     all_objects <- ls(scripts[[.from]], all.names = TRUE)
+
+    # Only for scripts: Register S3 methods, if needed.
+    if (.S3)
+        register_s3_methods(all_objects, env=pkg)
+
   } else {
     # Load the package namespace, which is passed to the import calls.
     spec <- package_specs(.from)
