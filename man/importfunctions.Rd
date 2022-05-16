@@ -15,7 +15,8 @@ from(
   .all = (length(.except) > 0),
   .except = character(),
   .chdir = TRUE,
-  .character_only = FALSE
+  .character_only = FALSE,
+  .S3 = FALSE
 )
 
 here(
@@ -26,7 +27,8 @@ here(
   .all = (length(.except) > 0),
   .except = character(),
   .chdir = TRUE,
-  .character_only = FALSE
+  .character_only = FALSE,
+  .S3 = FALSE
 )
 
 into(
@@ -38,7 +40,8 @@ into(
   .all = (length(.except) > 0),
   .except = character(),
   .chdir = TRUE,
-  .character_only = FALSE
+  .character_only = FALSE,
+  .S3 = FALSE
 )
 }
 \arguments{
@@ -77,6 +80,11 @@ sourcing a module (this parameter is ignored for libraries)}
 \item{.character_only}{A logical indicating whether \code{.from} and
 \code{...} can be assumed to be character strings. (Note that this
 parameter does not apply to how the \code{.into} parameter is handled).}
+
+\item{.S3}{A logical indicating whether an automatic detection and registration
+of S3 methods should be performed. The S3 methods are assumed to be in
+the standard form \code{generic.class}. Methods can also be registered
+manually instead using the \code{.S3method(generic, class, method)} call.}
 }
 \value{
 a reference to the environment containing the imported objects.

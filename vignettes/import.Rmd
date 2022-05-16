@@ -563,3 +563,32 @@ select(head(cars),dist)
 #> Error in select(head(cars), dist): could not find function "select"
 ```
 
+
+## Importing S3 methods
+
+S3 methods work well in local context, but when the method is called from a different environment, it must be registered (in packages, this is done in the `NAMESPACE` file). `import` can now register methods of form `generic.class` or `generic.class.name` automatically using the new `.S3` argument. By specifying `.S3=TRUE`, `import` will automatically detect methods for existing or new generics. No need to export and/or register them manually!
+
+Consider following script `foo.r` with a generic and two methods:
+```{r, eval = FALSE}
+# foo.r
+# functions with great foonctionality
+foo = function(x){
+  UseMethod("foo", x)
+}
+
+foo.numeric <- function(x){
+  x + 1
+}
+
+foo.character <- function(x){
+  paste0("_", x, "_")
+}
+```
+
+Now, all we need is to import the `foo` generic:
+```{r, eval = FALSE}
+import::from("foo.r", foo, .S3=TRUE)
+
+foo(0) # 1
+foo("bar") # _bar_
+```
