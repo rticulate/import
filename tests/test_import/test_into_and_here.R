@@ -31,6 +31,15 @@ test_that("Imports from libraries work with into()", {
   cleanup_environment("custom_env")
 })
 
+test_that("Imports from libraries work with .into as a symbol", {
+  expect_error ( normal_print("OK") )
+  symbol_env <- "custom_env"
+  expect_silent( import::into(symbol_env, normal_print, .from=knitr) )
+  expect_output( normal_print("OK"), "OK" )
+  expect_true  ("normal_print" %in% ls(name = symbol_env) )
+  cleanup_environment("custom_env")
+})
+
 test_that("Imports from modules work with into()", {
   expect_error ( fun1() )
   expect_silent( import::into("custom_env", fun1, .from=module_base.R) )

@@ -50,7 +50,8 @@ into(
 \item{...}{Names or name-value pairs specifying objects to import.
 If arguments are named, then the imported object will have this new name.}
 
-\item{.into}{The name of the search path entry. Enclosing the value in curly
+\item{.into}{The name of the search path entry, either as a character string
+or as a symbol containing a string. Enclosing the value in curly
 brackets causes the parameter to be treated as an actual
 environment value, rather than the name of an environment. Using
 \code{.into={environment()}} causes imports to be made into the current
