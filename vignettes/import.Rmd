@@ -566,6 +566,8 @@ select(head(cars),dist)
 
 ## Importing S3 methods
 
+![](lifecycle-experimental.svg)
+
 S3 methods work well in local context, but when the method is called from a different environment, it must be registered (in packages, this is done in the `NAMESPACE` file). `import` can now register methods of form `generic.class` or `generic.class.name` automatically using the new `.S3` argument. By specifying `.S3=TRUE`, `import` will automatically detect methods for existing or new generics. No need to export and/or register them manually!
 
 Consider following script `foo.r` with a generic and two methods:
@@ -592,3 +594,7 @@ import::from("foo.r", foo, .S3=TRUE)
 foo(0) # 1
 foo("bar") # _bar_
 ```
+
+*This is an experimental feature. We think it should work well and you are
+encouraged to use it and report back – but the syntax and semantics may change
+in the future to improve the feature.*

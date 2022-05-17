@@ -81,10 +81,14 @@ sourcing a module (this parameter is ignored for libraries)}
 \code{...} can be assumed to be character strings. (Note that this
 parameter does not apply to how the \code{.into} parameter is handled).}
 
-\item{.S3}{A logical indicating whether an automatic detection and registration
-of S3 methods should be performed. The S3 methods are assumed to be in
-the standard form \code{generic.class}. Methods can also be registered
-manually instead using the \code{.S3method(generic, class, method)} call.}
+\item{.S3}{\figure{lifecycle-experimental.svg} A logical indicating
+whether an automatic detection and registration of S3 methods should be
+performed. The S3 methods are assumed to be in the standard form
+\code{generic.class}. Methods can also be registered manually instead using be
+registered manually instead using the \code{.S3method(generic, class, method)}
+call.  \emph{This is an experimental feature. We think it should work well and
+you are encouraged to use it and report back – but the syntax and semantics
+may change in the future to improve the feature.}}
 }
 \value{
 a reference to the environment containing the imported objects.
