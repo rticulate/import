@@ -23,6 +23,8 @@
 <![endif]-->
 </head>
 <body data-spy="scroll" data-target="#toc">
+    
+
     <div class="container template-home">
       <header><div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
@@ -35,18 +37,12 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">import</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.2.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.3.0</span>
       </span>
     </div>
 
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
-<li>
-  <a href="index.html">
-    <span class="fas fa fas fa-home fa-lg"></span>
-     
-  </a>
-</li>
 <li>
   <a href="articles/import.html">Get started</a>
 </li>
@@ -59,8 +55,8 @@
       </ul>
 <ul class="nav navbar-nav navbar-right">
 <li>
-  <a href="https://github.com/rticulate/import/">
-    <span class="fab fa fab fa-github fa-lg"></span>
+  <a href="https://github.com/rticulate/import/" class="external-link">
+    <span class="fab fa-github fa-lg"></span>
      
   </a>
 </li>
@@ -77,119 +73,121 @@
       </header><div class="row">
   <div class="contents col-md-9">
 
-<p><img src="articles/import.png?raw=true" align="right" alt="" width="120"></p>
+<p><img src="https://import.rticulate.org/articles/import.png" align="right" alt="" width="120"></p>
 <!-- badges: start -->
-<p><a href="https://github.com/rticulate/import/actions"><img src="https://github.com/rticulate/import/workflows/R-CMD-check/badge.svg" alt="R build status"></a> <!-- badges: end --></p>
-<div id="an-import-mechanism-for-r" class="section level1">
-<div class="page-header"><h1 class="hasAnchor">
-<a href="#an-import-mechanism-for-r" class="anchor"></a>An Import Mechanism For R</h1></div>
-<p>The import package is intended to simplify the way in which functions from external packages or modules are made available for use in R scripts. Learn more on the <a href="https://import.rticulate.org/">package website</a>, by reading <a href="https://import.rticulate.org/articles/import.html"><code>vignette("import")</code></a>, or using the help (<code><a href="reference/from.html">?import::from</a></code>).</p>
-<div id="introduction" class="section level2">
-<h2 class="hasAnchor">
-<a href="#introduction" class="anchor"></a>Introduction</h2>
-<p>The typical way of using functionality exposed by a package in R scripts is to load (and attach) the entire package with <code>library()</code> (or <code>require()</code>). This can have the <strong>undesirable effect of masking objects</strong> in the user’s search path and can also make it difficult and <strong>confusing to identify</strong> what functionality comes from which package when using several <code>library</code> statements.</p>
+<div class="section level1">
+<div class="page-header"><h1 id="an-import-mechanism-for-r">An Import Mechanism For R<a class="anchor" aria-label="anchor" href="#an-import-mechanism-for-r"></a>
+</h1></div>
+<p>The import package is intended to simplify the way in which functions from external packages or modules are made available for use in R scripts. Learn more on the <a href="https://import.rticulate.org/" class="external-link">package website</a>, by reading <a href="https://import.rticulate.org/articles/import.html" class="external-link"><code>vignette("import")</code></a>, or using the help (<code><a href="reference/importfunctions.html">?import::from</a></code>).</p>
+<div class="section level2">
+<h2 id="introduction">Introduction<a class="anchor" aria-label="anchor" href="#introduction"></a>
+</h2>
+<p>The typical way of using functionality exposed by a package in R scripts is to load (and attach) the entire package with <code><a href="https://rdrr.io/r/base/library.html" class="external-link">library()</a></code> (or <code><a href="https://rdrr.io/r/base/library.html" class="external-link">require()</a></code>). This can have the <strong>undesirable effect of masking objects</strong> in the user’s search path and can also make it difficult and <strong>confusing to identify</strong> what functionality comes from which package when using several <code>library</code> statements.</p>
 <p>The <code>import</code> package provides a simple alternative, allowing the user specify in a concise way exactly which objects. For example, the <code>Hmisc</code> package exposes over four hundred functions. Instead of exposing all of those functions, someone who only needs access to, say the <code>impute()</code> and the <code>nomiss()</code> functions, can import those functions only:</p>
-<div class="sourceCode" id="cb1"><pre class="downlit">
-<span class="kw">import</span>::<span class="fu"><a href="reference/from.html">from</a></span>(<span class="kw">Hmisc</span>, <span class="kw">impute</span>, <span class="kw">nomiss</span>)
-</pre></div>
-<p>For more on the motivation behind the package, see <a href="https://import.rticulate.org/articles/import.html">vignette(“import”)</a></p>
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu">import</span><span class="fu">::</span><span class="fu"><a href="reference/importfunctions.html">from</a></span><span class="op">(</span><span class="va">Hmisc</span>, <span class="va">impute</span>, <span class="va">nomiss</span><span class="op">)</span></code></pre></div>
+<p>For more on the motivation behind the package, see <a href="https://import.rticulate.org/articles/import.html" class="external-link">vignette(“import”)</a></p>
 </div>
-<div id="installation" class="section level2">
-<h2 class="hasAnchor">
-<a href="#installation" class="anchor"></a>Installation</h2>
+<div class="section level2">
+<h2 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
+</h2>
 <p>To install <code>import</code> from CRAN:</p>
-<div class="sourceCode" id="cb2"><pre class="downlit">
-<span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span>(<span class="st">"import"</span>)
-</pre></div>
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"import"</span><span class="op">)</span></code></pre></div>
 <p>You can also install the development version of <code>import</code> from GitHub using <code>devtools</code>:</p>
-<div class="sourceCode" id="cb3"><pre class="downlit">
-<span class="kw">devtools</span>::<span class="fu">install_github</span>(<span class="st">"rticulate/import"</span>)
-</pre></div>
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu">devtools</span><span class="fu">::</span><span class="fu">install_github</span><span class="op">(</span><span class="st">"rticulate/import"</span><span class="op">)</span></code></pre></div>
 </div>
-<div id="usage" class="section level2">
-<h2 class="hasAnchor">
-<a href="#usage" class="anchor"></a>Usage</h2>
-<div id="importing-functions-from-r-packages" class="section level3">
-<h3 class="hasAnchor">
-<a href="#importing-functions-from-r-packages" class="anchor"></a>Importing functions from R packages</h3>
+<div class="section level2">
+<h2 id="usage">Usage<a class="anchor" aria-label="anchor" href="#usage"></a>
+</h2>
+<div class="section level3">
+<h3 id="importing-functions-from-r-packages">Importing functions from R packages<a class="anchor" aria-label="anchor" href="#importing-functions-from-r-packages"></a>
+</h3>
 <p>The most basic use case is to import a few functions from package (here the <code>psych</code> package):</p>
-<div class="sourceCode" id="cb4"><pre class="downlit">
-<span class="kw">import</span>::<span class="fu"><a href="reference/from.html">from</a></span>(<span class="kw">psych</span>, <span class="kw">geometric.mean</span>, <span class="kw">harmonic.mean</span>)
-<span class="fu">geometric.mean</span>(<span class="kw">trees</span><span class="op">$</span><span class="kw">Volume</span>)
-</pre></div>
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu">import</span><span class="fu">::</span><span class="fu"><a href="reference/importfunctions.html">from</a></span><span class="op">(</span><span class="va">psych</span>, <span class="va">geometric.mean</span>, <span class="va">harmonic.mean</span><span class="op">)</span>
+<span class="fu">geometric.mean</span><span class="op">(</span><span class="va">trees</span><span class="op">$</span><span class="va">Volume</span><span class="op">)</span></code></pre></div>
 <p>If one of the function names conflicts with an existing function (such as <code>filter</code> from the <code>dplyr</code> package) it is simple to rename it:</p>
-<div class="sourceCode" id="cb5"><pre class="downlit">
-<span class="kw">import</span>::<span class="fu"><a href="reference/from.html">from</a></span>(<span class="kw">dplyr</span>, <span class="kw">select</span>, <span class="kw">arrange</span>, keep_when = <span class="kw">filter</span>)
-<span class="fu">keep_when</span>(<span class="kw">mtcars</span>, <span class="kw">hp</span><span class="op">&gt;</span><span class="fl">250</span>)
-</pre></div>
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu">import</span><span class="fu">::</span><span class="fu"><a href="reference/importfunctions.html">from</a></span><span class="op">(</span><span class="va">dplyr</span>, <span class="va">select</span>, <span class="va">arrange</span>, keep_when <span class="op">=</span> <span class="va">filter</span><span class="op">)</span>
+<span class="fu">keep_when</span><span class="op">(</span><span class="va">mtcars</span>, <span class="va">hp</span><span class="op">&gt;</span><span class="fl">250</span><span class="op">)</span></code></pre></div>
 <p>Use <code>.all=TRUE</code> to import all functions from a package. If you want to rename one of them, you can still do that:</p>
-<div class="sourceCode" id="cb6"><pre class="downlit">
-<span class="kw">import</span>::<span class="fu"><a href="reference/from.html">from</a></span>(<span class="kw">dplyr</span>, keep_when = <span class="kw">filter</span>, .all=<span class="fl">TRUE</span>)
-</pre></div>
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu">import</span><span class="fu">::</span><span class="fu"><a href="reference/importfunctions.html">from</a></span><span class="op">(</span><span class="va">dplyr</span>, keep_when <span class="op">=</span> <span class="va">filter</span>, .all<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span></code></pre></div>
 <p>To omit a function from the import, use <code>.except</code> (which takes a character vector):</p>
-<div class="sourceCode" id="cb7"><pre class="downlit">
-<span class="kw">import</span>::<span class="fu"><a href="reference/from.html">from</a></span>(<span class="kw">dplyr</span>, .except=<span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"filter"</span>, <span class="st">"lag"</span>))
-</pre></div>
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu">import</span><span class="fu">::</span><span class="fu"><a href="reference/importfunctions.html">from</a></span><span class="op">(</span><span class="va">dplyr</span>, .except<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"filter"</span>, <span class="st">"lag"</span><span class="op">)</span><span class="op">)</span></code></pre></div>
 <p>Note that <code>import</code> tries to be smart about this and assumes that if you are using the <code>.except</code> parameter, you probably want to import everything you are <em>not</em> explicitly omitting, and sets the <code>.all</code> parameter to <code>TRUE</code>. You can still override this in exceptional cases, but you seldom need to.</p>
 <p>These and other examples are discussed in more detail in the <a href="articles/import.html#importing-from-packages">Importing from Packages</a> section of the package vignette.</p>
 </div>
-<div id="importing-functions-from-module-scripts" class="section level3">
-<h3 class="hasAnchor">
-<a href="#importing-functions-from-module-scripts" class="anchor"></a>Importing Functions from “Module” Scripts</h3>
-<p>The <code>import</code> package allows R files to be used as “modules” from which functions are loaded. For example, the file <a href="https://raw.githubusercontent.com/rticulate/import/master/man/examples/sequence_module.R">sequence_module.R</a> contains several functions calculating terms of mathematical sequences. It is possible to import from such files, just as one imports from packages:</p>
-<div class="sourceCode" id="cb8"><pre class="downlit">
-<span class="kw">import</span>::<span class="fu"><a href="reference/from.html">from</a></span>(<span class="kw">sequence_module.R</span>, <span class="kw">fibonacci</span>, <span class="kw">square</span>, <span class="kw">triangular</span>)
-</pre></div>
+<div class="section level3">
+<h3 id="importing-functions-from-module-scripts">Importing Functions from “Module” Scripts<a class="anchor" aria-label="anchor" href="#importing-functions-from-module-scripts"></a>
+</h3>
+<p>The <code>import</code> package allows R files to be used as “modules” from which functions are loaded. For example, the file <a href="https://raw.githubusercontent.com/rticulate/import/master/man/examples/sequence_module.R" class="external-link">sequence_module.R</a> contains several functions calculating terms of mathematical sequences. It is possible to import from such files, just as one imports from packages:</p>
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu">import</span><span class="fu">::</span><span class="fu"><a href="reference/importfunctions.html">from</a></span><span class="op">(</span><span class="va">sequence_module.R</span>, <span class="va">fibonacci</span>, <span class="va">square</span>, <span class="va">triangular</span><span class="op">)</span></code></pre></div>
 <p>Renaming, as well as the <code>.all</code> and <code>.except</code> parameters, work in the same way as for packages:</p>
-<div class="sourceCode" id="cb9"><pre class="downlit">
-<span class="kw">import</span>::<span class="fu"><a href="reference/from.html">from</a></span>(<span class="kw">sequence_module.R</span>, fib=<span class="kw">fibonacci</span>, .except=<span class="st">"square"</span>)
-</pre></div>
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu">import</span><span class="fu">::</span><span class="fu"><a href="reference/importfunctions.html">from</a></span><span class="op">(</span><span class="va">sequence_module.R</span>, fib<span class="op">=</span><span class="va">fibonacci</span>, .except<span class="op">=</span><span class="st">"square"</span><span class="op">)</span></code></pre></div>
 <p>These and other examples are discussed in more detail in the <a href="articles/import.html#importing-functions-from-module-scripts">Importing from Modules</a> section of the package vignette.</p>
 </div>
-<div id="choosing-where-import-looks-for-packages-or-modules" class="section level3">
-<h3 class="hasAnchor">
-<a href="#choosing-where-import-looks-for-packages-or-modules" class="anchor"></a>Choosing where import looks for packages or modules</h3>
+<div class="section level3">
+<h3 id="choosing-where-import-looks-for-packages-or-modules">Choosing where import looks for packages or modules<a class="anchor" aria-label="anchor" href="#choosing-where-import-looks-for-packages-or-modules"></a>
+</h3>
 <p>The <code>import</code> package will by default only use the latest specified library (i.e. the result of <code>.libPaths()[1L]</code>). It is possible to specify a different library using the <code>.library</code> argument in any of the <code>import</code> functions. One import call can only use <em>one</em> library so there will not be ambiguity as to where imports come from.</p>
 <p>When importing from a module (.R file), the directory where <code>import</code> looks for the module script can be specified with the with <code>.directory</code> parameter. The default is <code>.</code> (the current working directory).</p>
 </div>
-<div id="choosing-where-the-imported-functions-are-placed" class="section level3">
-<h3 class="hasAnchor">
-<a href="#choosing-where-the-imported-functions-are-placed" class="anchor"></a>Choosing where the imported functions are placed</h3>
+<div class="section level3">
+<h3 id="choosing-where-the-imported-functions-are-placed">Choosing where the imported functions are placed<a class="anchor" aria-label="anchor" href="#choosing-where-the-imported-functions-are-placed"></a>
+</h3>
 <p>By default, imported objects are placed in a separate entity in the search path called “imports”. One can also specify which names to use in the search path and use several to group imports:</p>
-<div class="sourceCode" id="cb10"><pre class="downlit">
-<span class="kw">import</span>::<span class="fu"><a href="reference/from.html">from</a></span>(<span class="kw">magrittr</span>, <span class="st">"%&gt;%"</span>, <span class="st">"%$%"</span>, .into = <span class="st">"operators"</span>) 
-<span class="kw">import</span>::<span class="fu"><a href="reference/from.html">from</a></span>(<span class="kw">dplyr</span>, <span class="kw">arrange</span>, .into = <span class="st">"datatools"</span>)
-</pre></div>
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu">import</span><span class="fu">::</span><span class="fu"><a href="reference/importfunctions.html">from</a></span><span class="op">(</span><span class="va">magrittr</span>, <span class="st">"%&gt;%"</span>, <span class="st">"%$%"</span>, .into <span class="op">=</span> <span class="st">"operators"</span><span class="op">)</span> 
+<span class="fu">import</span><span class="fu">::</span><span class="fu"><a href="reference/importfunctions.html">from</a></span><span class="op">(</span><span class="va">dplyr</span>, <span class="va">arrange</span>, .into <span class="op">=</span> <span class="st">"datatools"</span><span class="op">)</span></code></pre></div>
 <p>If using custom search path entities actively, one might prefer the alternative syntax (which does the same but reverses the argument order):</p>
-<div class="sourceCode" id="cb11"><pre class="downlit">
-<span class="kw">import</span>::<span class="fu"><a href="reference/from.html">into</a></span>(<span class="st">"operators"</span>, <span class="st">"%&gt;%"</span>, <span class="st">"%$%"</span>, .from = <span class="kw">magrittr</span>)
-<span class="kw">import</span>::<span class="fu"><a href="reference/from.html">into</a></span>(<span class="st">"datatools"</span>, <span class="kw">arrange</span>, .from = <span class="kw">dplyr</span>)
-</pre></div>
-<p>If it is desired to place imported objects in the current environment, use <code><a href="reference/from.html">import::here()</a></code>:</p>
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu">import</span><span class="fu">::</span><span class="fu"><a href="reference/importfunctions.html">into</a></span><span class="op">(</span><span class="st">"operators"</span>, <span class="st">"%&gt;%"</span>, <span class="st">"%$%"</span>, .from <span class="op">=</span> <span class="va">magrittr</span><span class="op">)</span>
+<span class="fu">import</span><span class="fu">::</span><span class="fu"><a href="reference/importfunctions.html">into</a></span><span class="op">(</span><span class="st">"datatools"</span>, <span class="va">arrange</span>, .from <span class="op">=</span> <span class="va">dplyr</span><span class="op">)</span></code></pre></div>
+<p>If it is desired to place imported objects in the current environment, use <code><a href="reference/importfunctions.html">import::here()</a></code>:</p>
 </div>
-<div id="more-advanced-usage" class="section level3">
-<h3 class="hasAnchor">
-<a href="#more-advanced-usage" class="anchor"></a>More advanced usage</h3>
+<div class="section level3">
+<h3 id="more-advanced-usage">More advanced usage<a class="anchor" aria-label="anchor" href="#more-advanced-usage"></a>
+</h3>
 <p>The <code>import</code> package is designed to be simple to use for basic cases, so it uses symbolic evaluation to allow the names of packages, modules and functions to be entered without quotes (except for operators, such as <code>"%&gt;%"</code> which must be quoted). However, this means that it calling a variable containing the name of a module, or a vector of functions to import, will not work. For this use case, you can use the <code>.character_only</code> parameter:</p>
-<div class="sourceCode" id="cb12"><pre class="downlit">
-<span class="kw">module_name</span> <span class="op">&lt;-</span> <span class="st">"../utils/my_module.R"</span>
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">module_name</span> <span class="op">&lt;-</span> <span class="st">"../utils/my_module.R"</span>
 
 <span class="co"># Will not work (import will look for a package called "module_name")</span>
-<span class="kw">import</span>::<span class="fu"><a href="reference/from.html">from</a></span>(<span class="kw">module_name</span>, <span class="kw">foo</span>, <span class="kw">bar</span>)
+<span class="fu">import</span><span class="fu">::</span><span class="fu"><a href="reference/importfunctions.html">from</a></span><span class="op">(</span><span class="va">module_name</span>, <span class="va">foo</span>, <span class="va">bar</span><span class="op">)</span>
 
 <span class="co"># This will correctly import the foo() and bar() functions from "../utils/my_module.R"</span>
-<span class="kw">import</span>::<span class="fu"><a href="reference/from.html">from</a></span>(<span class="kw">module_name</span>, <span class="kw">foo</span>, <span class="kw">bar</span>, .character_only=<span class="fl">TRUE</span>)
-</pre></div>
-<p>The <code>.character_only</code> parameter is covered in more detail in the <a href="articles/import.html#advanced-usage">Advanced Usage</a> section of the package vignette, which also describes how you can import from module scripts stored online with the help of the <code>pins</code> package, or achieve python-like imports with the help of <code>{}</code> notation for environments in the <code>.into</code> parameter.</p>
+<span class="fu">import</span><span class="fu">::</span><span class="fu"><a href="reference/importfunctions.html">from</a></span><span class="op">(</span><span class="va">module_name</span>, <span class="va">foo</span>, <span class="va">bar</span>, .character_only<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span></code></pre></div>
+<p>The <code>.character_only</code> parameter is covered in more detail in the <a href="articles/import.html#advanced-usage">Advanced Usage</a> section of the package vignette, which also describes how you can import from module scripts stored online with the help of the <code>pins</code> package, or achieve python-like imports with the help of <code><a href="https://rdrr.io/r/base/Paren.html" class="external-link">{}</a></code> notation for environments in the <code>.into</code> parameter.</p>
 </div>
 </div>
 </div>
-<div id="see-also" class="section level1">
-<h1 class="hasAnchor">
-<a href="#see-also" class="anchor"></a>See also:</h1>
+<div class="section level1">
+<h1 id="contributing">Contributing<a class="anchor" aria-label="anchor" href="#contributing"></a>
+</h1>
+<p>Contributions to this project are welcome. Please start by opening an issue or discussion thread. New features are added conservatively based on supply (is anyone willing to contribute an implementation of the feature?), demand (how many people seem to need a new feature?), and last, but not least, by whether a feature can be implemented without breaking backwards compatibility.</p>
 <ul>
-<li>For an interesting but slightly different idea of Python-like modules for R, see the <a href="https://github.com/klmr/modules">modules</a> package by @klmr.</li>
-<li>Another approach, focused on treating the use of functions with naming conflicts as explicit errors is the <a href="https://github.com/r-lib/conflicted">conflicted</a> package by @hadley.</li>
+<li>Created and authored by <a href="https://github.com/smbache" class="external-link">@smbache</a>
+</li>
+<li>Currently maintained by <a href="https://github.com/torfason" class="external-link">@torfason</a>
+</li>
+<li>Code contributions by <a href="https://github.com/awong234" class="external-link">@awong234</a>, <a href="https://github.com/brshallo" class="external-link">@brshallo</a>, <a href="https://github.com/flying-sheep" class="external-link">@flying-sheep</a>, <a href="https://github.com/hutch3232" class="external-link">@hutch3232</a>, <a href="https://github.com/J-Moravec" class="external-link">@J-Moravec</a>, <a href="https://github.com/mschilli87" class="external-link">@mschilli87</a>,</li>
+</ul>
+<p><em>(Did we forget to add you? If so, please let us know!)</em></p>
+</div>
+<div class="section level1">
+<h1 id="see-also">See also:<a class="anchor" aria-label="anchor" href="#see-also"></a>
+</h1>
+<ul>
+<li>Some of the use cases for <code>import</code> can now be handled directly in base R using the new <code>exclude</code> and <code>include.only</code> arguments of <code><a href="https://rdrr.io/r/base/library.html" class="external-link">library()</a></code> and <code><a href="https://rdrr.io/r/base/library.html" class="external-link">require()</a></code>
+</li>
+<li>For an interesting but slightly different idea of Python-like modules for R, see the <a href="https://github.com/klmr/modules" class="external-link">modules</a> package by <a href="https://github.com/klmr" class="external-link">@klmr</a>.</li>
+<li>Another approach, focused on treating the use of functions with naming conflicts as explicit errors is the <a href="https://github.com/r-lib/conflicted" class="external-link">conflicted</a> package by <a href="https://github.com/hadley" class="external-link">@hadley</a>.</li>
 </ul>
 </div>
 
@@ -197,29 +195,44 @@
 
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <div class="links">
-<h2>Links</h2>
+<h2 data-toc-skip>Links</h2>
 <ul class="list-unstyled">
-<li>Download from CRAN at <br><a href="https://cloud.r-project.org/package=import">https://​cloud.r-project.org/​package=import</a>
-</li>
-<li>Browse source code at <br><a href="https://github.com/rticulate/import/">https://​github.com/​rticulate/​import/​</a>
-</li>
-<li>Report a bug at <br><a href="https://github.com/rticulate/import/issues">https://​github.com/​rticulate/​import/​issues</a>
-</li>
+<li><a href="https://cloud.r-project.org/package=import" class="external-link">View on CRAN</a></li>
+<li><a href="https://github.com/rticulate/import/" class="external-link">Browse source code</a></li>
+<li><a href="https://github.com/rticulate/import/issues" class="external-link">Report a bug</a></li>
 </ul>
 </div>
+
 <div class="license">
-<h2>License</h2>
+<h2 data-toc-skip>License</h2>
 <ul class="list-unstyled">
 <li>
-<a href="https://opensource.org/licenses/mit-license.php">MIT</a> + file <a href="LICENSE-text.html">LICENSE</a>
+<a href="https://opensource.org/licenses/mit-license.php" class="external-link">MIT</a> + file <a href="LICENSE-text.html">LICENSE</a>
 </li>
 </ul>
 </div>
+
+
+<div class="citation">
+<h2 data-toc-skip>Citation</h2>
+<ul class="list-unstyled">
+<li><a href="authors.html#citation">Citing import</a></li>
+</ul>
+</div>
+
 <div class="developers">
-<h2>Developers</h2>
+<h2 data-toc-skip>Developers</h2>
 <ul class="list-unstyled">
 <li>Stefan Milton Bache <br><small class="roles"> Author </small>  </li>
 <li>Magnus Thor Torfason <br><small class="roles"> Author, maintainer </small>  </li>
+</ul>
+</div>
+
+<div class="dev-status">
+<h2 data-toc-skip>Dev status</h2>
+<ul class="list-unstyled">
+<li><a href="https://CRAN.R-project.org/package=import" class="external-link"><img src="https://www.r-pkg.org/badges/version/import" alt="CRAN status"></a></li>
+<li><a href="https://github.com/rticulate/import/actions" class="external-link"><img src="https://github.com/rticulate/import/workflows/R-CMD-check/badge.svg" alt="R build status"></a></li>
 </ul>
 </div>
 
@@ -228,11 +241,13 @@
 
 
       <footer><div class="copyright">
-  <p>Developed by Stefan Milton Bache, Magnus Thor Torfason.</p>
+  <p></p>
+<p>Developed by Stefan Milton Bache, Magnus Thor Torfason.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
+  <p></p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.</p>
 </div>
 
       </footer>
@@ -240,6 +255,8 @@
 
   
 
+
+  
 
   </body>
 </html>
