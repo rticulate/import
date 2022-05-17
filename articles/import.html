@@ -258,43 +258,34 @@
 <div class="section level4">
 <h4 id="choosing-where-the-imported-functions-are-placed">Choosing where the imported functions are placed<a class="anchor" aria-label="anchor" href="#choosing-where-the-imported-functions-are-placed"></a>
 </h4>
-<p>One can also specify which names to use in the search path and use several to group imports:</p>
+<p>One can also specify which names to use in the search path and use several to group imports. Names can be specified either as character literals or as variables of type <code>character</code> (for example if the environment needs to be determined dynamically).</p>
 <div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu">import</span><span class="fu">::</span><span class="fu"><a href="../reference/importfunctions.html">from</a></span><span class="op">(</span><span class="va">magrittr</span>, <span class="st">"%&gt;%"</span>, <span class="st">"%$%"</span>, .into <span class="op">=</span> <span class="st">"operators"</span><span class="op">)</span> 
-<span class="fu">import</span><span class="fu">::</span><span class="fu"><a href="../reference/importfunctions.html">from</a></span><span class="op">(</span><span class="va">dplyr</span>, <span class="va">arrange</span>, .into <span class="op">=</span> <span class="st">"datatools"</span><span class="op">)</span></code></pre></div>
-<p>If using custom search path entities actively, one might prefer the alternative syntax (which does the same but reverses the argument order):</p>
+<code class="sourceCode R"><span class="fu">import</span><span class="fu">::</span><span class="fu"><a href="../reference/importfunctions.html">from</a></span><span class="op">(</span><span class="va">magrittr</span>, <span class="st">"%&gt;%"</span>, <span class="st">"%$%"</span>, .into <span class="op">=</span> <span class="st">"operators"</span><span class="op">)</span>
+<span class="fu">import</span><span class="fu">::</span><span class="fu"><a href="../reference/importfunctions.html">from</a></span><span class="op">(</span><span class="va">dplyr</span>, <span class="va">arrange</span>, .into <span class="op">=</span> <span class="st">"datatools"</span><span class="op">)</span>
+<span class="fu">import</span><span class="fu">::</span><span class="fu"><a href="../reference/importfunctions.html">from</a></span><span class="op">(</span><span class="va">psych</span>, <span class="va">describe</span>, .into<span class="op">=</span><span class="va">month.name</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span><span class="op">)</span> <span class="co"># Uses env: "January"</span></code></pre></div>
+<p>The <code><a href="../reference/importfunctions.html">import::into</a></code> and <code><a href="../reference/importfunctions.html">import::from</a></code> accept the same parameters and achieve the same result. The the choice between them a matter of preference). If using custom search path entities actively, one might prefer the alternative syntax (which does the same but reverses the argument order):</p>
 <div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu">import</span><span class="fu">::</span><span class="fu"><a href="../reference/importfunctions.html">into</a></span><span class="op">(</span><span class="st">"operators"</span>, <span class="st">"%&gt;%"</span>, <span class="st">"%$%"</span>, .from <span class="op">=</span> <span class="va">magrittr</span><span class="op">)</span>
-<span class="fu">import</span><span class="fu">::</span><span class="fu"><a href="../reference/importfunctions.html">into</a></span><span class="op">(</span><span class="st">"datatools"</span>, <span class="va">arrange</span>, .from <span class="op">=</span> <span class="va">dplyr</span><span class="op">)</span></code></pre></div>
-<p>Note, that the <code>.from</code> and <code>.into</code> arguments are prefixed by a dot to clearly distinguish them from other named arguments. Be aware that hidden objects (those with names prefixed by a period) are supported. Take care to avoid name clashes with argument names. The <code><a href="../reference/importfunctions.html">import::into</a></code> and <code><a href="../reference/importfunctions.html">import::from</a></code> accept the same parameters and achieve the same result. The the choice between them a matter of preference).</p>
+<span class="fu">import</span><span class="fu">::</span><span class="fu"><a href="../reference/importfunctions.html">into</a></span><span class="op">(</span><span class="st">"datatools"</span>, <span class="va">arrange</span>, .from <span class="op">=</span> <span class="va">dplyr</span><span class="op">)</span>
+<span class="fu">import</span><span class="fu">::</span><span class="fu"><a href="../reference/importfunctions.html">into</a></span><span class="op">(</span><span class="va">month.name</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span>, <span class="va">describe</span>, .from<span class="op">=</span><span class="va">psych</span><span class="op">)</span></code></pre></div>
+<p>Be aware that beginning in version <code>1.3.0</code> hidden objects (those with names prefixed by a period) are supported. Take care to avoid name clashes with argument names.</p>
 <p>If it is desired to import objects directly into the current environment, this can be accomplished by <code><a href="../reference/importfunctions.html">import::here</a></code>. This is particularly useful when importing inside a function definition, or module scripts as described <a href="#module">here</a>.</p>
 <div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu">import</span><span class="fu">::</span><span class="fu"><a href="../reference/importfunctions.html">here</a></span><span class="op">(</span><span class="st">"%&gt;%"</span>, <span class="st">"%$%"</span>, .from <span class="op">=</span> <span class="va">magrittr</span><span class="op">)</span>
 <span class="fu">import</span><span class="fu">::</span><span class="fu"><a href="../reference/importfunctions.html">here</a></span><span class="op">(</span><span class="va">arrange</span>, .from <span class="op">=</span> <span class="va">dplyr</span><span class="op">)</span></code></pre></div>
-<p>The <code>.into</code> parameter can be surrounded with <code><a href="https://rdrr.io/r/base/Paren.html" class="external-link">{}</a></code>, which leads it to be interpreted as a variable or function, instead of as the name of an environment in the search path. Examples include:</p>
+<p>Instead of specifying a named environment on the search path, by passing a <code>character</code> to the <code>.into</code> parameter, it is possible to directly specify an environment. The function automatically determines which use case is involved, based on the <code><a href="https://rdrr.io/r/base/mode.html" class="external-link">mode()</a></code> of the <code>.into</code> parameter (either <code>character</code> or <code>environment</code>).</p>
+<p>Prior to version <code>1.3.0</code>, non-standard evaluation (NSE) was applied to the <code>.into</code> parameter, and it was necessary to surround it with <code><a href="https://rdrr.io/r/base/Paren.html" class="external-link">{}</a></code>, in order for it to be treated as an <code>environment</code>. This is no longer needed, although it is still allowed (curly brackets are simply ignored).</p>
+<p>Examples include:</p>
 <div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># Import into the local environment</span>
-<span class="fu">import</span><span class="fu">::</span><span class="fu"><a href="../reference/importfunctions.html">into</a></span><span class="op">(</span><span class="op">{</span><span class="fu"><a href="https://rdrr.io/r/base/environment.html" class="external-link">environment</a></span><span class="op">(</span><span class="op">)</span><span class="op">}</span>, <span class="st">"%&gt;%"</span>, .from <span class="op">=</span> <span class="va">magrittr</span><span class="op">)</span>
+<span class="fu">import</span><span class="fu">::</span><span class="fu"><a href="../reference/importfunctions.html">into</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/environment.html" class="external-link">environment</a></span><span class="op">(</span><span class="op">)</span>, <span class="st">"%&gt;%"</span>, .from <span class="op">=</span> <span class="va">magrittr</span><span class="op">)</span>
 
-<span class="co"># Import ihnto the global environment</span>
+<span class="co"># Import into the global environment, curlies are optional</span>
 <span class="fu">import</span><span class="fu">::</span><span class="fu"><a href="../reference/importfunctions.html">into</a></span><span class="op">(</span><span class="op">{</span><span class="va">.GlobalEnv</span><span class="op">}</span>, <span class="st">"%&gt;%"</span>, <span class="st">"%$%"</span>, .from <span class="op">=</span> <span class="va">magrittr</span><span class="op">)</span>
 
 <span class="co"># Import into a new environment, mainly useful for python-style imports</span>
 <span class="co"># (see below)</span>
-<span class="va">x</span> <span class="op">=</span> <span class="fu">import</span><span class="fu">::</span><span class="fu"><a href="../reference/importfunctions.html">into</a></span><span class="op">(</span><span class="op">{</span><span class="fu"><a href="https://rdrr.io/r/base/environment.html" class="external-link">new.env</a></span><span class="op">(</span><span class="op">)</span><span class="op">}</span>, <span class="st">"%&lt;&gt;%"</span>, .from <span class="op">=</span> <span class="va">magrittr</span><span class="op">)</span></code></pre></div>
-<p>Lastly, the <code>.into</code> parameter can be input as a symbol, allowing dynamic environment naming.</p>
-<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co"># define a variable representing the environment name</span>
-<span class="va">env_name</span> <span class="op">&lt;-</span> <span class="st">"operators"</span>
-
-<span class="co"># this will import into a new "operators" environment</span>
-<span class="fu">import</span><span class="fu">::</span><span class="fu"><a href="../reference/importfunctions.html">into</a></span><span class="op">(</span><span class="va">env_name</span>, <span class="st">"%&gt;%"</span>, <span class="st">"%$%"</span>, .from <span class="op">=</span> <span class="va">magrittr</span><span class="op">)</span>
-
-<span class="co"># define a variable representing the environment name</span>
-<span class="va">env_name</span> <span class="op">&lt;-</span> <span class="st">"datatools"</span>
-
-<span class="co"># shows that .into is unaffected by .character_only</span>
-<span class="fu">import</span><span class="fu">::</span><span class="fu"><a href="../reference/importfunctions.html">from</a></span><span class="op">(</span><span class="st">"dplyr"</span>, .into <span class="op">=</span> <span class="va">env_name</span>, <span class="st">"arrange"</span>, .character_only <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></code></pre></div>
+<span class="va">x</span> <span class="op">=</span> <span class="fu">import</span><span class="fu">::</span><span class="fu"><a href="../reference/importfunctions.html">into</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/environment.html" class="external-link">new.env</a></span><span class="op">(</span><span class="op">)</span>, <span class="st">"%&lt;&gt;%"</span>, .from <span class="op">=</span> <span class="va">magrittr</span><span class="op">)</span></code></pre></div>
 </div>
 </div>
 </div>
@@ -304,20 +295,21 @@
 <div class="section level3">
 <h3 id="advanced-usage-and-the--character_only-parameter">Advanced usage and the .character_only parameter<a class="anchor" aria-label="anchor" href="#advanced-usage-and-the--character_only-parameter"></a>
 </h3>
-<p>The <code>import</code> package uses non-standard evaluation in order to allow the names of packages and functions to be listed without quoting them. This makes some common use-cases very straightforward, but can get in the way of more programmatic usages.</p>
-<p>This is where the <code>.character_only</code> parameter comes in handy. By setting <code>.character_only=TRUE</code>, the non-standard evaluation of the <code>.from</code> and the <code>...</code> parameters is disabled. Instead, the parameters are processed as character vectors containing the relevant values. (<code>.character_only=TRUE</code> does not effect the evaluation of <code>.into</code>, which still uses non-standard evaluation. Other parameters are always evaluated in a standard way.)</p>
-<p>It is useful to examine some examples of how this can be helpful.</p>
+<p>The <code>import</code> package uses non-standard evaluation (NSE) on the <code>.from</code> and <code>...</code> parameters, allowing the names of packages and functions to be listed without quoting them. This makes some common use-cases very straightforward, but can get in the way of more programmatic usages.</p>
+<p>This is where the <code>.character_only</code> parameter comes in handy. By setting <code>.character_only=TRUE</code>, the non-standard evaluation of the <code>.from</code> and the <code>...</code> parameters is disabled. Instead, the parameters are processed as character vectors containing the relevant values.</p>
+<p>(Previously, NSE was also applied to the <code>.into</code> parameter, but as of version <code>1.3.0</code> this is no longer the case, and all parameters except <code>.from</code> and <code>...</code> are always evaluated in a standard way.)</p>
+<p>It is useful to examine some examples of how specifying <code>.character_only=TRUE</code> can be helpful.</p>
 </div>
 <div class="section level3">
 <h3 id="programmatic-selection-of-objects-to-import">Programmatic selection of objects to import<a class="anchor" aria-label="anchor" href="#programmatic-selection-of-objects-to-import"></a>
 </h3>
 <p>It is not always know in advance which objects to import from a given package. For example, assume we have a list of objects from the <code>broom</code> package that we need to import, we can do it as follows:</p>
-<div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">objects</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"tidy"</span>, <span class="st">"glance"</span>, <span class="st">"augment"</span><span class="op">)</span>
 <span class="fu">import</span><span class="fu">::</span><span class="fu"><a href="../reference/importfunctions.html">from</a></span><span class="op">(</span><span class="st">"broom"</span>, <span class="va">objects</span>, .character_only<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span></code></pre></div>
 <p>This will import the three functions specified in the <code>objects</code> vector. It is worth noting that because <code>.character_only</code> disables non-standard evaluation on <em>all</em> parameters, the name of the package must now be quoted.</p>
 <p>One common use case is when one wants to import all objects except one or a few, because of conflicts with other packages. Should one, for example, want to use the <code>stats</code> versions of the <code><a href="https://rdrr.io/r/stats/filter.html" class="external-link">filter()</a></code> and <code><a href="https://rdrr.io/r/stats/lag.html" class="external-link">lag()</a></code> functions, but import all the other functions in the <code>dplyr</code> package, one could do it like this:</p>
-<div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">objects</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/sets.html" class="external-link">setdiff</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/ns-reflect.html" class="external-link">getNamespaceExports</a></span><span class="op">(</span><span class="st">"dplyr"</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"filter"</span>,<span class="st">"lag"</span><span class="op">)</span><span class="op">)</span>
 <span class="fu">import</span><span class="fu">::</span><span class="fu"><a href="../reference/importfunctions.html">from</a></span><span class="op">(</span><span class="st">"dplyr"</span>, <span class="va">objects</span>, .character_only<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span></code></pre></div>
 </div>
@@ -325,14 +317,14 @@
 <h3 id="programmatic-selection-of-module-location">Programmatic selection of module location<a class="anchor" aria-label="anchor" href="#programmatic-selection-of-module-location"></a>
 </h3>
 <p>The same approach can be used when the directory of the source file for a module is not known in advance. This can be useful when the original source file is not always run with the original working directory, but one still does not want to specify a hard-coded absolute path, but to determine it at run time:</p>
-<div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">mymodule</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">mypath</span>,<span class="st">"module.R"</span><span class="op">)</span>
+<div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">mymodule</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">mypath</span>, <span class="st">"module.R"</span><span class="op">)</span>
 <span class="fu">import</span><span class="fu">::</span><span class="fu"><a href="../reference/importfunctions.html">from</a></span><span class="op">(</span><span class="va">mymodule</span>, <span class="st">"myfunction"</span>, .character_only<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span></code></pre></div>
 <p>Again, note that now the name of the function must be quoted because non-standard evaluation is disabled on all parameters.</p>
 <p>The <code>here</code> package is useful in many circumstances like this; it allows the setting of a “root” directory for a project and by using the <code>here::here()</code> function to figure out the correct directory, regardless of the working directory.</p>
-<div class="sourceCode" id="cb22"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1"></a>import<span class="op">::</span><span class="kw">from</span>(here<span class="op">::</span><span class="kw">here</span>(<span class="st">"src/utils/module.R"</span>)), <span class="st">"myfunction"</span>, .character_only=<span class="ot">TRUE</span><span class="er">)</span></span></code></pre></div>
+<div class="sourceCode" id="cb21"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1"></a>import<span class="op">::</span><span class="kw">from</span>(here<span class="op">::</span><span class="kw">here</span>(<span class="st">"src/utils/module.R"</span>)), <span class="st">"myfunction"</span>, .character_only=<span class="ot">TRUE</span><span class="er">)</span></span></code></pre></div>
 <p>Alternatively, if the file name is always the same and it is only the directory that differs, you could use the <code>.directory</code> parameter, which always expects standard evaluation arguments.</p>
-<div class="sourceCode" id="cb23"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb22"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu">import</span><span class="fu">::</span><span class="fu"><a href="../reference/importfunctions.html">from</a></span><span class="op">(</span><span class="va">module.R</span>, <span class="st">"myfunction"</span>, <span class="fu">here</span><span class="fu">::</span><span class="fu">here</span><span class="op">(</span><span class="st">"src/utils"</span><span class="op">)</span><span class="op">)</span></code></pre></div>
 <p>Note that <code>here::here()</code> has no relation to <code><a href="../reference/importfunctions.html">import::here()</a></code> despite the similarity in names.</p>
 </div>
@@ -340,7 +332,7 @@
 <h3 id="importing-from-a-url">Importing from a URL<a class="anchor" aria-label="anchor" href="#importing-from-a-url"></a>
 </h3>
 <p>Another case where <code>.character_only</code> comes in handy is when one wants to import some functions from a URL. While <code>import</code> does not allow direct importing from a URL (because of difficult questions about when a URL target has changes, whether to download a file and other things), it easy to achieve the desired result by using the <code>pins</code> package (whose main purpose is to resolve such difficult questions). A simple example follows, which directly imports the <code>myfunc()</code> function, which is defined in the <a href="https://raw.githubusercontent.com/rticulate/import/master/man/examples/plusone_module.R" class="external-link"><code>plusone_module.R</code></a>:</p>
-<div class="sourceCode" id="cb24"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb23"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">url</span> <span class="op">&lt;-</span> <span class="st">"https://raw.githubusercontent.com/rticulate/import/master/man/examples/plusone_module.R"</span>
 <span class="fu">import</span><span class="fu">::</span><span class="fu"><a href="../reference/importfunctions.html">from</a></span><span class="op">(</span><span class="fu">pins</span><span class="fu">::</span><span class="fu">pin</span><span class="op">(</span><span class="va">url</span><span class="op">)</span>, <span class="st">"myfunc"</span>, .character_only<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span>
 <span class="fu">myfunc</span><span class="op">(</span><span class="fl">3</span><span class="op">)</span>
@@ -350,14 +342,14 @@
 <h3 id="python-like-imports">Python-like imports<a class="anchor" aria-label="anchor" href="#python-like-imports"></a>
 </h3>
 <p>A frequent pattern in python imports packages under an alias; all subsequent use of the imported objects then explicitly includes the alias:</p>
-<div class="sourceCode" id="cb25"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb25-1"><a href="#cb25-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
-<span id="cb25-2"><a href="#cb25-2"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
-<span id="cb25-3"><a href="#cb25-3"></a><span class="im">import</span> math <span class="im">as</span> m</span>
-<span id="cb25-4"><a href="#cb25-4"></a></span>
-<span id="cb25-5"><a href="#cb25-5"></a><span class="bu">print</span>(m.pi)</span>
-<span id="cb25-6"><a href="#cb25-6"></a><span class="bu">print</span>(m.e)</span></code></pre></div>
+<div class="sourceCode" id="cb24"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb24-1"><a href="#cb24-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb24-2"><a href="#cb24-2"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb24-3"><a href="#cb24-3"></a><span class="im">import</span> math <span class="im">as</span> m</span>
+<span id="cb24-4"><a href="#cb24-4"></a></span>
+<span id="cb24-5"><a href="#cb24-5"></a><span class="bu">print</span>(m.pi)</span>
+<span id="cb24-6"><a href="#cb24-6"></a><span class="bu">print</span>(m.e)</span></code></pre></div>
 <p>In order to achieve this functionality with the import package, use <code>.into={new.env()}</code> which assign to a new environment without attaching it. <code><a href="../reference/importfunctions.html">import::from()</a></code> returns this environment, so it can be assigned to a variable:</p>
-<div class="sourceCode" id="cb26"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb25"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># Import into a new namespace, use $ to access</span>
 <span class="va">td</span> <span class="op">&lt;-</span> <span class="fu">import</span><span class="fu">::</span><span class="fu"><a href="../reference/importfunctions.html">from</a></span><span class="op">(</span><span class="va">tidyr</span>, <span class="va">spread</span>, <span class="va">pivot_wider</span>, .into<span class="op">=</span><span class="op">{</span><span class="fu"><a href="https://rdrr.io/r/base/environment.html" class="external-link">new.env</a></span><span class="op">(</span><span class="op">)</span><span class="op">}</span><span class="op">)</span>
 <span class="va">dp</span> <span class="op">&lt;-</span> <span class="fu">import</span><span class="fu">::</span><span class="fu"><a href="../reference/importfunctions.html">from</a></span><span class="op">(</span><span class="va">dplyr</span>, .all<span class="op">=</span><span class="cn">TRUE</span>, .into<span class="op">=</span><span class="op">{</span><span class="fu"><a href="https://rdrr.io/r/base/environment.html" class="external-link">new.env</a></span><span class="op">(</span><span class="op">)</span><span class="op">}</span><span class="op">)</span>
@@ -380,7 +372,7 @@
 <p><img src="lifecycle-experimental.svg"></p>
 <p>S3 methods work well in local context, but when the method is called from a different environment, it must be registered (in packages, this is done in the <code>NAMESPACE</code> file). <code>import</code> can now register methods of form <code>generic.class</code> or <code>generic.class.name</code> automatically using the new <code>.S3</code> argument. By specifying <code>.S3=TRUE</code>, <code>import</code> will automatically detect methods for existing or new generics. No need to export and/or register them manually!</p>
 <p>Consider following script <code>foo.r</code> with a generic and two methods:</p>
-<div class="sourceCode" id="cb27"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb26"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># foo.r</span>
 <span class="co"># functions with great foonctionality</span>
 <span class="va">foo</span> <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">{</span>
@@ -395,7 +387,7 @@
   <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="st">"_"</span>, <span class="va">x</span>, <span class="st">"_"</span><span class="op">)</span>
 <span class="op">}</span></code></pre></div>
 <p>Now, all we need is to import the <code>foo</code> generic:</p>
-<div class="sourceCode" id="cb28"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb27"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu">import</span><span class="fu">::</span><span class="fu"><a href="../reference/importfunctions.html">from</a></span><span class="op">(</span><span class="st">"foo.r"</span>, <span class="va">foo</span>, .S3<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span>
 
 <span class="fu">foo</span><span class="op">(</span><span class="fl">0</span><span class="op">)</span> <span class="co"># 1</span>
