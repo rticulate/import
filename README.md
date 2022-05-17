@@ -1,6 +1,7 @@
-<img src="vignettes/import.png?raw=true" align="right" alt="" width="120" />
+<img src="https://import.rticulate.org/articles/import.png" align="right" alt="" width="120" />
 
 <!-- badges: start -->
+[![CRAN status](https://www.r-pkg.org/badges/version/import)](https://CRAN.R-project.org/package=import)
 [![R build status](https://github.com/rticulate/import/workflows/R-CMD-check/badge.svg)](https://github.com/rticulate/import/actions)
 <!-- badges: end -->
 
@@ -168,11 +169,32 @@ which also describes how you can import from module scripts stored online with t
 help of the `pins` package, or achieve python-like imports with the help of `{}` 
 notation for environments in the `.into` parameter.
 
+# Contributing
+
+Contributions to this project are welcome. Please start by opening an issue or
+discussion thread. New features are added conservatively based on supply (is
+anyone willing to contribute an implementation of the feature?), demand (how many
+people seem to need a new feature?), and last, but not least, by whether a
+feature can be implemented without breaking backwards compatibility.
+
+* Created and authored by [@smbache](https://github.com/smbache)
+* Currently maintained by [@torfason](https://github.com/torfason)
+* Code contributions by 
+  [@awong234](https://github.com/awong234), 
+  [@brshallo](https://github.com/brshallo), 
+  [@flying-sheep](https://github.com/flying-sheep), 
+  [@hutch3232](https://github.com/hutch3232),
+  [@J-Moravec](https://github.com/J-Moravec), 
+  [@mschilli87](https://github.com/mschilli87),
+  
+*(Did we forget to add you? If so, please let us know!)*
 
 # See also:
 
+* Some of the use cases for `import` can now be handled directly in base R using the
+  new `exclude` and `include.only` arguments of `library()` and `require()`
 * For an interesting but slightly different idea of Python-like modules for R, see the 
-  [modules](https://github.com/klmr/modules) package by @klmr.
+  [modules](https://github.com/klmr/modules) package by [@klmr](https://github.com/klmr).
 * Another approach, focused on treating the use of functions with naming conflicts as
   explicit errors is the [conflicted](https://github.com/r-lib/conflicted) 
-  package by @hadley.
+  package by [@hadley](https://github.com/hadley).

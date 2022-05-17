@@ -5,11 +5,13 @@ output:
     toc: true
 vignette: >
   %\VignetteIndexEntry{The import package}
-  %\VignetteEngine{knitr::rmarkdown}
   \usepackage[utf8]{inputenc}
+  %\VignetteEngine{knitr::rmarkdown}
+editor_options: 
+  chunk_output_type: console
 ---
 
-* This version: September, 2020. 
+* This version: May, 2022
 * Latest version at: https://import.rticulate.org/articles/import.html
 * A briefer intro at: https://import.rticulate.org/
 

@@ -1,24 +1,37 @@
-Version 1.2.1
+Version 1.3.0
 =============
 
+* import::from/into now support importing `.into` `symbol`s, regardless of
+  `.character_only` value, and NSE is never performed on this parameter. In
+  other words, the `.into` parameter should now always be a regular variable,
+  and can be of type `character` (indicating a named environment) or
+  `environment` (indicating an unnamed environment). Curly brackets `{}` are no
+  longer needed, and are simply ignored if present.
+  
 * import::from/here/into now have a new `.S3` parameter, setting it to `TRUE`
   which allows automatic detection and registration of S3 generics and methods.
   This is an initial experimental implementation, and is disabled by default.
   
+* import::from/here/into now support importing hidden objects (those with names
+  prefixed by a period). Users should be aware that importing objects with the
+  same names as named function parameters may cause issues (and this could
+  happen as well with any new parameters that may be added to the `import`
+  package in the future)
+  
 * Minor patch to import fixes a bug when importing from a library not defined in
-the `libPaths`. The namespace was fixed to be imported earlier in the function
-definition so that later functions that do not use a `lib.loc` parameter (such
-as `getNamespaceExports`) can successfully reference the namespace.
+  the `libPaths`. The namespace was fixed to be imported earlier in the function
+  definition so that later functions that do not use a `lib.loc` parameter (such
+  as `getNamespaceExports`) can successfully reference the namespace.
+
 * Minor patch to import fixes a bug where function `get` from namespaces other
-than `package:base` can be incorrectly substituted in `make_import_call`. This
-fix also applies to `getExportedValue`, even though this function is less likely
-to be masked.
+  than `package:base` can be incorrectly substituted in `make_import_call`. This
+  fix also applies to `getExportedValue`, even though this function is less
+  likely to be masked.
+  
+* Several documentation improvements.
 
-* import::from/here/into now support importing hidden objects (those with 
-names prefixed by a period). Take care to avoid name clashes with argument names.
 
-* import::from/into now support importing `.into` `symbol`s, regardless of `.character_only` value.
-
+ 
 Version 1.2.0
 =============
 
@@ -50,10 +63,12 @@ Version 1.2.0
 
 Version 1.1.0
 =============
+
 * There is now support to import objects from script files, i.e. a kind of
   "module". Scripts meant to expose objects for import should ideally be
   side-effect free, but this is not enforced. Any attachments are detached
   after import, but loaded namespaces remain loaded.
+  
 
 Version 1.0.2
 =============

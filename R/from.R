@@ -74,14 +74,14 @@
 #' @param .character_only A logical indicating whether \code{.from} and
 #'   \code{...} can be assumed to be character strings. (Note that this
 #'   parameter does not apply to how the \code{.into} parameter is handled).
-#' @param .S3 ![experimental](lifecycle-experimental.svg) A logical indicating
-#'   whether an automatic detection and registration of S3 methods should be
-#'   performed. The S3 methods are assumed to be in the standard form
-#'   `generic.class`. Methods can also be registered manually instead using be
-#'   registered manually instead using the `.S3method(generic, class, method)`
-#'   call.  *This is an experimental feature. We think it should work well and
-#'   you are encouraged to use it and report back – but the syntax and semantics
-#'   may change in the future to improve the feature.*
+#' @param .S3 `r badge("experimental")` A logical indicating whether an
+#'   automatic detection and registration of S3 methods should be performed. The
+#'   S3 methods are assumed to be in the standard form `generic.class`. Methods
+#'   can also be registered manually instead using be registered manually
+#'   instead using the `.S3method(generic, class, method)` call.  *This is an
+#'   experimental feature. We think it should work well and you are encouraged
+#'   to use it and report back – but the syntax and semantics may change in the
+#'   future to improve the feature.*
 #'
 #' @return a reference to the environment containing the imported objects.
 #'

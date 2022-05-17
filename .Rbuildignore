@@ -11,3 +11,4 @@
 ^doc$
 ^Meta$
 ^CRAN-RELEASE$
+^revdep$
