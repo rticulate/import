@@ -185,7 +185,8 @@ feature can be implemented without breaking backwards compatibility.
   [@flying-sheep](https://github.com/flying-sheep), 
   [@hutch3232](https://github.com/hutch3232),
   [@J-Moravec](https://github.com/J-Moravec), 
-  [@mschilli87](https://github.com/mschilli87),
+  [@klmr](https://github.com/klmr),
+  [@mschilli87](https://github.com/mschilli87)
   
 *(Did we forget to add you? If so, please let us know!)*
 

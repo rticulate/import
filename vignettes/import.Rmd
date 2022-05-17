@@ -363,28 +363,31 @@ The default is `.` (the current working directory).
 
 ### Choosing where the imported functions are placed
 
-One can also specify which names to use in the search path 
-and use several to group imports:
+One can also specify which names to use in the search path and use several to
+group imports. Names can be specified either as character literals or as
+variables of type `character` (for example if the environment needs to be
+determined dynamically).
 
 ```{r, eval = FALSE}
-import::from(magrittr, "%>%", "%$%", .into = "operators") 
+import::from(magrittr, "%>%", "%$%", .into = "operators")
 import::from(dplyr, arrange, .into = "datatools")
+import::from(psych, describe, .into=month.name[1]) # Uses env: "January"
 ```
 
-If using custom search path entities actively, one might prefer the 
-alternative syntax (which does the same but reverses the argument order):
+The `import::into` and `import::from` accept the same parameters and achieve the
+same result. The the choice between them a matter of preference). If using
+custom search path entities actively, one might prefer the alternative syntax
+(which does the same but reverses the argument order):
 
 ```{r, eval = FALSE}
 import::into("operators", "%>%", "%$%", .from = magrittr)
 import::into("datatools", arrange, .from = dplyr)
+import::into(month.name[1], describe, .from=psych)
 ```
 
-Note, that the `.from` and `.into` arguments are prefixed by a dot to
-clearly distinguish them from other named arguments. Be aware that
-hidden objects (those with names prefixed by a period) are supported.
-Take care to avoid name clashes with argument names. The `import::into`
-and `import::from` accept the same parameters and achieve the same
-result. The the choice between them a matter of preference).
+Be aware that beginning in version `1.3.0` hidden objects (those with names
+prefixed by a period) are supported. Take care to avoid name clashes with
+argument names.
 
 If it is desired to import objects directly into the current environment, 
 this can be accomplished by `import::here`. This is particularly 
@@ -396,36 +399,29 @@ import::here("%>%", "%$%", .from = magrittr)
 import::here(arrange, .from = dplyr)
 ```
 
-The `.into` parameter can be surrounded with `{}`, which leads it to be
-interpreted as a variable or function, instead of as the name of an
-environment in the search path. Examples include:
+Instead of specifying a named environment on the search path, by passing a
+`character` to the `.into` parameter, it is possible to directly specify an
+environment. The function automatically determines which use case is involved,
+based on the `mode()` of the `.into` parameter (either `character` or
+`environment`).
+
+Prior to version `1.3.0`, non-standard evaluation (NSE) was applied to the
+`.into` parameter, and it was necessary to surround it with `{}`, in order for
+it to be treated as an `environment`. This is no longer needed, although it is
+still allowed (curly brackets are simply ignored).
+
+Examples include:
 
 ```{r, eval = FALSE}
 # Import into the local environment
-import::into({environment()}, "%>%", .from = magrittr)
+import::into(environment(), "%>%", .from = magrittr)
 
-# Import ihnto the global environment
+# Import into the global environment, curlies are optional
 import::into({.GlobalEnv}, "%>%", "%$%", .from = magrittr)
 
 # Import into a new environment, mainly useful for python-style imports
 # (see below)
-x = import::into({new.env()}, "%<>%", .from = magrittr)
-```
-
-Lastly, the `.into` parameter can be input as a symbol, allowing dynamic environment naming.
-
-```{r, eval = FALSE}
-# define a variable representing the environment name
-env_name <- "operators"
-
-# this will import into a new "operators" environment
-import::into(env_name, "%>%", "%$%", .from = magrittr)
-
-# define a variable representing the environment name
-env_name <- "datatools"
-
-# shows that .into is unaffected by .character_only
-import::from("dplyr", .into = env_name, "arrange", .character_only = TRUE)
+x = import::into(new.env(), "%<>%", .from = magrittr)
 ```
 
 
@@ -433,19 +429,22 @@ import::from("dplyr", .into = env_name, "arrange", .character_only = TRUE)
 
 ## Advanced usage and the .character_only parameter
 
-The `import` package uses non-standard evaluation in order to allow the 
-names of packages and functions to be listed without quoting them. This
-makes some common use-cases very straightforward, but can get in the 
-way of more programmatic usages.
+The `import` package uses non-standard evaluation (NSE) on the `.from` and `...`
+parameters, allowing the names of packages and functions to be listed without
+quoting them. This makes some common use-cases very straightforward, but can get
+in the way of more programmatic usages.
 
 This is where the `.character_only` parameter comes in handy. By setting
-`.character_only=TRUE`, the non-standard evaluation of the `.from` and the
-`...` parameters is disabled. Instead, the parameters are processed as
-character vectors containing the relevant values. (`.character_only=TRUE`
-does not effect the evaluation of `.into`, which still uses non-standard
-evaluation. Other parameters are always evaluated in a standard way.) 
+`.character_only=TRUE`, the non-standard evaluation of the `.from` and the `...`
+parameters is disabled. Instead, the parameters are processed as character
+vectors containing the relevant values.
 
-It is useful to examine some examples of how this can be helpful.
+(Previously, NSE was also applied to the `.into` parameter, but as of version
+`1.3.0` this is no longer the case, and all parameters except `.from` and `...`
+are always evaluated in a standard way.)
+
+It is useful to examine some examples of how specifying `.character_only=TRUE`
+can be helpful.
 
 
 ## Programmatic selection of objects to import
@@ -484,7 +483,7 @@ working directory, but one still does not want to specify a
 hard-coded absolute path, but to determine it at run time:
 
 ```{r, eval = FALSE}
-mymodule <- file.path(mypath,"module.R")
+mymodule <- file.path(mypath, "module.R")
 import::from(mymodule, "myfunction", .character_only=TRUE)
 ```
 
