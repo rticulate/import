@@ -5,7 +5,7 @@ This is an update with the following features and fixes:
 * import::from/into now support importing `.into` `symbol`s
 * import::from/here/into can now support importing generics
 * import::from/here/into now support importing hidden objects
-* Fix where function `base::get` gould be masked internally
+* Fix where function `base::get` could be masked internally
 * Several documentation improvements
 
 
@@ -49,7 +49,7 @@ We checked 11 reverse dependencies (10 from CRAN + 1 from Bioconductor), compari
 
 ## Other Notes (unchanged since last release):
 
-The package's functionality may alter the search path, but this is intended and should be clear for the user, as the main functionality  is an alternative to using `library`. For example the call:
+The package's functionality may alter the search path, but this is intended and should be clear for the user, as the main functionality is an alternative to using `library`. For example the call:
 
 `import::from(parallel, makeCluster, parLapply)`
 
