@@ -51,7 +51,7 @@
     </div>
 
     <div class="section level2">
-<h2 class="page-header" data-toc-text="1.3.0" id="version-130">Version 1.3.0<a class="anchor" aria-label="anchor" href="#version-130"></a></h2>
+<h2 class="page-header" data-toc-text="1.3.0" id="version-130">Version 1.3.0<small>2022-05-23</small><a class="anchor" aria-label="anchor" href="#version-130"></a></h2>
 <ul><li><p>import::from/into now support importing <code>.into</code> <code>symbol</code>s, regardless of <code>.character_only</code> value, and NSE is never performed on this parameter. In other words, the <code>.into</code> parameter should now always be a regular variable, and can be of type <code>character</code> (indicating a named environment) or <code>environment</code> (indicating an unnamed environment). Curly brackets <code><a href="https://rdrr.io/r/base/Paren.html" class="external-link">{}</a></code> are no longer needed, and are simply ignored if present.</p></li>
 <li><p>import::from/here/into now have a new <code>.S3</code> parameter, setting it to <code>TRUE</code> which allows automatic detection and registration of S3 generics and methods. This is an initial experimental implementation, and is disabled by default.</p></li>
 <li><p>import::from/here/into now support importing hidden objects (those with names prefixed by a period). Users should be aware that importing objects with the same names as named function parameters may cause issues (and this could happen as well with any new parameters that may be added to the <code>import</code> package in the future)</p></li>
