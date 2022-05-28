@@ -99,7 +99,7 @@
 #'     }
 #' @md
 from <- function(.from, ..., .into = "imports",
-                 .library = .libPaths()[1L], .directory=".",
+                 .library = .libPaths(), .directory=".",
                  .all=(length(.except) > 0), .except=character(),
                  .chdir = TRUE, .character_only = FALSE, .S3 = FALSE)
 {

@@ -10,7 +10,7 @@ from(
   .from,
   ...,
   .into = "imports",
-  .library = .libPaths()[1L],
+  .library = .libPaths(),
   .directory = ".",
   .all = (length(.except) > 0),
   .except = character(),
