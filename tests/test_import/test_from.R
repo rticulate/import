@@ -176,7 +176,6 @@ test_that("Importing .into a symbol works w/ .character_only=TRUE", {
 })
 
 test_that("Imports from libraries NOT defined in .libPaths work", {
-  testthat::skip("Implementation of this fix has been reverted")
   tmp_install_dir <- tempdir()
   if (!file.exists("packageToTest_0.1.0.tar.gz")) {
     system("R CMD build packageToTest")
@@ -209,7 +208,6 @@ test_that("Functions named `get` in arbitrary environment on search path do not 
 })
 
 test_that("Functions named `get` exported from packages do not mask base::get", {
-  skip("Implementation of fix allowing custom .libPaths has been reverted")
   tmp_install_dir <- tempdir()
   library(packageToTest, lib.loc = tmp_install_dir)
   expect_true("get" %in% getNamespaceExports("packageToTest"))
