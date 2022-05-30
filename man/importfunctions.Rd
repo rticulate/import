@@ -58,7 +58,8 @@ environment value, rather than the name of an environment. Using
 environment; \code{.into=""} is an equivalent shorthand value.}
 
 \item{.library}{character specifying the library to use when importing from
-packages. Defaults to the latest specified library.}
+packages. Defaults to the current set of library paths (note that the
+default value was different in versions up to and including \code{1.3.0}).}
 
 \item{.directory}{character specifying the directory to use when importing
 from modules. Defaults to the current working directory. If .from is a

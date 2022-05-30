@@ -1,3 +1,18 @@
+
+Version 1.3.0.9xxx
+=============
+
+* The `import` package will now by default use the full current set of library
+  paths, i.e. the result of `.libPaths()`, while in versions up to and including
+  `1.3.0` this defaulted to use only the *first* entry in the library paths, i.e.
+  `.library=.libPaths()[1L]`.
+
+* The order of `loadNamespace()` and `getNamespaceExports()` has been changed in
+  `import::from()`. While this is intended to be a bug fix, it is possible that
+  it affects usage in situations where specificity about the library path is
+  important.
+
+
 Version 1.3.0
 =============
 

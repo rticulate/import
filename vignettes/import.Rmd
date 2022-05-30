@@ -352,11 +352,16 @@ cause it to be sourced twice.
 
 ### Choosing where import looks for packages or modules
 
-The `import` package will by default only use the latest specified library
-(i.e. the result of `.libPaths()[1L]`). It is possible to specify a different
-library using the `.library` argument in any of the `import` functions.
-One import call can only use *one* library so there will not be ambiguity
-as to where imports come from.
+The `import` package will by default use the current set of library paths, i.e.
+the result of `.libPaths()`. It is, however, possible to specify a different set
+of library paths using the `.library` argument in any of the `import` functions,
+for example to import packages installed in a custom location, or to remove any
+ambiguity as to where imports come from.
+
+Note that in versions up to and including `1.3.0` this defaulted to use only the
+*first* entry in the library paths, i.e. `.library=.libPaths()[1L]`. We believe
+the new default is applicable in a broader set of circumstances, but if this
+change causes any issues, we would very much appreciate hearing about it.
 
 When importing from a module (.R file), the directory where `import` looks for
 the module script can be specified with the with `.directory` parameter. 
