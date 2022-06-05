@@ -37,7 +37,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">import</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.3.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.3.0.9001</span>
       </span>
     </div>
 
@@ -135,7 +135,8 @@
 <div class="section level3">
 <h3 id="choosing-where-import-looks-for-packages-or-modules">Choosing where import looks for packages or modules<a class="anchor" aria-label="anchor" href="#choosing-where-import-looks-for-packages-or-modules"></a>
 </h3>
-<p>The <code>import</code> package will by default only use the latest specified library (i.e. the result of <code>.libPaths()[1L]</code>). It is possible to specify a different library using the <code>.library</code> argument in any of the <code>import</code> functions. One import call can only use <em>one</em> library so there will not be ambiguity as to where imports come from.</p>
+<p>The <code>import</code> package will by default use the current set of library paths, i.e. the result of <code><a href="https://rdrr.io/r/base/libPaths.html" class="external-link">.libPaths()</a></code>. It is, however, possible to specify a different set of library paths using the <code>.library</code> argument in any of the <code>import</code> functions, for example to import packages installed in a custom location, or to remove any ambiguity as to where imports come from.</p>
+<p>Note that in versions up to and including <code>1.3.0</code> this defaulted to use only the <em>first</em> entry in the library paths, i.e. <code>.library=.libPaths()[1L]</code>. We believe the new default is applicable in a broader set of circumstances, but if this change causes any issues, we would very much appreciate hearing about it.</p>
 <p>When importing from a module (.R file), the directory where <code>import</code> looks for the module script can be specified with the with <code>.directory</code> parameter. The default is <code>.</code> (the current working directory).</p>
 </div>
 <div class="section level3">

@@ -26,7 +26,7 @@ desired. The function import::here imports into the current environment."><!-- m
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">import</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.3.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.3.0.9001</span>
       </span>
     </div>
 
@@ -78,7 +78,7 @@ desired. The function <code>import::here</code> imports into the current environ
   <span class="va">.from</span>,
   <span class="va">...</span>,
   .into <span class="op">=</span> <span class="st">"imports"</span>,
-  .library <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/libPaths.html" class="external-link">.libPaths</a></span><span class="op">(</span><span class="op">)</span><span class="op">[</span><span class="fl">1L</span><span class="op">]</span>,
+  .library <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/libPaths.html" class="external-link">.libPaths</a></span><span class="op">(</span><span class="op">)</span>,
   .directory <span class="op">=</span> <span class="st">"."</span>,
   .all <span class="op">=</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">.except</span><span class="op">)</span> <span class="op">&gt;</span> <span class="fl">0</span><span class="op">)</span>,
   .except <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/character.html" class="external-link">character</a></span><span class="op">(</span><span class="op">)</span>,
@@ -129,7 +129,8 @@ environment value, rather than the name of an environment. Using
 environment; <code>.into=""</code> is an equivalent shorthand value.</p></dd>
 <dt>.library</dt>
 <dd><p>character specifying the library to use when importing from
-packages. Defaults to the latest specified library.</p></dd>
+packages. Defaults to the current set of library paths (note that the
+default value was different in versions up to and including <code>1.3.0</code>).</p></dd>
 <dt>.directory</dt>
 <dd><p>character specifying the directory to use when importing
 from modules. Defaults to the current working directory. If .from is a
