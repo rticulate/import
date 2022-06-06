@@ -47,40 +47,39 @@ into(
 \arguments{
 \item{.from}{The package from which to import.}
 
-\item{...}{Names or name-value pairs specifying objects to import.
-If arguments are named, then the imported object will have this new name.}
+\item{...}{Names or name-value pairs specifying objects to import. If
+arguments are named, then the imported object will have this new name.}
 
-\item{.into}{The name of the search path entry, either as a character string
-or as a symbol containing a string. Enclosing the value in curly
-brackets causes the parameter to be treated as an actual
-environment value, rather than the name of an environment. Using
-\code{.into={environment()}} causes imports to be made into the current
+\item{.into}{The environment into which the imported objects should be
+assigned. If the value is of mode \code{character}, it is treated as referring
+to a named environment on the search path. If it is of mode \code{environment},
+the objects are assigned directly to that environment. Using
+\code{.into=environment()} causes imports to be made into the current
 environment; \code{.into=""} is an equivalent shorthand value.}
 
 \item{.library}{character specifying the library to use when importing from
 packages. Defaults to the current set of library paths (note that the
-default value was different in versions up to and including \code{1.3.0}).}
+default value was different in versions up to and including \verb{1.3.0}).}
 
 \item{.directory}{character specifying the directory to use when importing
 from modules. Defaults to the current working directory. If .from is a
-module specified using an absolute path (i.e. starting with \code{/}),
-this parameter is ignored.}
+module specified using an absolute path (i.e. starting with \code{/}), this
+parameter is ignored.}
 
-\item{.all}{logical specifying whether all available objects in a
-package or module should  be imported. It defaults to FALSE unless
-.exclude is being used to omit particular functions.}
+\item{.all}{logical specifying whether all available objects in a package or
+module should  be imported. It defaults to FALSE unless .exclude is being
+used to omit particular functions.}
 
-\item{.except}{character vector specifying any objects that should
-not be imported. Any values specified here override both values
-provided in \code{...} and objects included because of the
-\code{.all} parameter}
+\item{.except}{character vector specifying any objects that should not be
+imported. Any values specified here override both values provided in \code{...}
+and objects included because of the \code{.all} parameter}
 
 \item{.chdir}{logical specifying whether to change directories before
 sourcing a module (this parameter is ignored for libraries)}
 
-\item{.character_only}{A logical indicating whether \code{.from} and
-\code{...} can be assumed to be character strings. (Note that this
-parameter does not apply to how the \code{.into} parameter is handled).}
+\item{.character_only}{A logical indicating whether \code{.from} and \code{...} can be
+assumed to be character strings. (Note that this parameter does not apply
+to how the \code{.into} parameter is handled).}
 
 \item{.S3}{\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}} A logical indicating whether an
 automatic detection and registration of S3 methods should be performed. The
@@ -95,55 +94,54 @@ future to improve the feature.}}
 a reference to the environment containing the imported objects.
 }
 \description{
-The \code{import::from} and \code{import::into} functions provide an
-alternative way to import objects (e.g. functions) from packages. It is
-sometimes preferred over using \code{library} (or \code{require}) which will
-import all objects exported by the package. The benefit over \code{obj <-
-pkg::obj} is that the imported objects will (by default) be placed in a
-separate entry in the search path (which can be specified), rather in the
-global/current environment. Also, it is a more succinct way of importing
-several objects. Note that the two functions are symmetric, and usage is a
-matter of preference and whether specifying the \code{.into} argument is
-desired. The function \code{import::here} imports into the current environment.
+The \code{import::from} and \code{import::into} functions provide an alternative way to
+import objects (e.g. functions) from packages. It is sometimes preferred over
+using \code{library} (or \code{require}) which will import all objects exported by the
+package. The benefit over \code{obj <- pkg::obj} is that the imported objects will
+(by default) be placed in a separate entry in the search path (which can be
+specified), rather in the global/current environment. Also, it is a more
+succinct way of importing several objects. Note that the two functions are
+symmetric, and usage is a matter of preference and whether specifying the
+\code{.into} argument is desired. The function \code{import::here} imports into the
+current environment.
 }
 \details{
-The function arguments can be quoted or unquoted as with e.g. \code{library}.
-In any case, the character representation is used when unquoted arguments are
+The function arguments can be quoted or unquoted as with e.g. \code{library}. In
+any case, the character representation is used when unquoted arguments are
 provided (and not the value of objects with matching names). The period in
-the argument names \code{.into} and \code{.from} are there to avoid name
-clash with package objects. However, while importing of hidden objects (those with
-names prefixed by a period) is supported, care should be taken not to conflict
-with the argument names. The double-colon syntax \code{import::from}
-allows for imports of exported objects (and lazy data) only. To import
-objects that are not exported, use triple-colon syntax, e.g.
-\code{import:::from}. The two ways of calling the \code{import} functions
-analogue the \code{::} and \code{:::} operators themselves.
+the argument names \code{.into} and \code{.from} are there to avoid name clash with
+package objects. However, while importing of hidden objects (those with names
+prefixed by a period) is supported, care should be taken not to conflict with
+the argument names. The double-colon syntax \code{import::from} allows for imports
+of exported objects (and lazy data) only. To import objects that are not
+exported, use triple-colon syntax, e.g. \code{import:::from}. The two ways of
+calling the \code{import} functions analogue the \code{::} and \code{:::} operators
+themselves.
 
-Note that the \code{import} functions usually have the (intended) side-effect
-of altering the search path, as they (by default) import objects into the
+Note that the \code{import} functions usually have the (intended) side-effect of
+altering the search path, as they (by default) import objects into the
 "imports" search path entry rather than the global environment.
 
-The \code{import} package is not meant to be loaded with \code{library} (and
-will output a message about this if attached), but rather it is named to make
-the function calls expressive without the need to loading before use, i.e. it is
-designed to be used explicitly with the \code{::} syntax, e.g.
-\code{import::from(pkg, x, y)}.
+The \code{import} package is not meant to be loaded with \code{library} (and will
+output a message about this if attached), but rather it is named to make the
+function calls expressive without the need to loading before use, i.e. it is
+designed to be used explicitly with the \code{::} syntax, e.g. \code{import::from(pkg, x, y)}.
 }
 \section{Packages vs. modules}{
 
-\code{import} can either be used to import objects either from R packages or
-from \code{R} source files. If the \code{.from} parameter ends with '.R' or
-'.r', \code{import} will look for a source file to import from. A source file
-in this context is referred to as a \code{module} in the documentation.
+\code{import} can either be used to import objects either from R packages or from
+\code{R} source files. If the \code{.from} parameter ends with '.R' or '.r', \code{import}
+will look for a source file to import from. A source file in this context is
+referred to as a \code{module} in the documentation.
 }
 
 \section{Package Versions}{
 
-With \code{import} you can specify package version requirements. To do this
-add a requirement in parentheses to the package name (which then needs to
-be quoted), e.g \code{import::from("parallel (>= 3.2.0)", ...)}.
-You can use the operators \code{<}, \code{>}, \code{<=}, \code{>=},
-\code{==}, \code{!=}. Whitespace in the specification is irrelevant.
+With \code{import} you can specify package version requirements. To do this add a
+requirement in parentheses to the package name (which then needs to be
+quoted), e.g \code{import::from("parallel (>= 3.2.0)", ...)}. You can use the
+operators \code{<}, \code{>}, \code{<=}, \code{>=}, \code{==}, \code{!=}. Whitespace in the specification
+is irrelevant.
 }
 
 \examples{
@@ -154,8 +152,8 @@ import::into("imports:parallel", makeCluster, parLapply, .from = parallel)
 \seealso{
 Helpful links:
 \itemize{
-\item{\url{https://import.rticulate.org}}
-\item{\url{https://github.com/rticulate/import}}
-\item{\url{https://github.com/rticulate/import/issues}}
+\item \url{https://import.rticulate.org}
+\item \url{https://github.com/rticulate/import}
+\item \url{https://github.com/rticulate/import/issues}
 }
 }

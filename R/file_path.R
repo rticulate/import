@@ -1,12 +1,15 @@
 #' Return a file path given file name and directory
 #'
-#' Given a directory and a file name (path), return the combined path.
-#' For relative file names, this is identical to \code{file.path()},
-#' for absolute file names, it simply returns the absolute file name.
+#' Given a directory and a file name (path), return the combined path. For
+#' relative file names, this is identical to `file.path()`, for absolute file
+#' names, it simply returns the absolute file name.
 #'
-#' @param working_directory character: the working directory to use
-#' @param file_name character: the name of a possible R script file.
-#' @return character: the resulting file name of the file.
+#' @param working_directory The working directory to use.
+#' @param file_name The name of a possible R script file.
+#'
+#' @return The resulting file name of the file.
+#'
+#' @md
 #' @noRd
 file_path <- function(working_directory, file_name) {
 

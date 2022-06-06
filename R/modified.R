@@ -6,9 +6,11 @@
 #' @param e A script environment or the file name of a script file.
 #' @param .directory A directory to use in the case where e is a character
 #'   variable, to be treated as a file path. The file path to use is then
-#'   constructed using \code{file.path(.directory,e)}
-#' @return POSIXct indicating modification time of the file when it was
-#'   sourced into \code{e} (within \code{scripts}).
+#'   constructed using `file.path(.directory, e)`
+#' @return POSIXct indicating modification time of the file when it was sourced
+#'   into `e` (within `scripts`).
+#'
+#' @md
 #' @noRd
 modified <- function(e, .directory=NULL)
 {
@@ -29,6 +31,8 @@ modified <- function(e, .directory=NULL)
 #'
 #' @param e A script environment.
 #' @param value POSIXct indicating modification time.
+#'
+#' @md
 #' @noRd
 `modified<-` <- function(e, value)
 {

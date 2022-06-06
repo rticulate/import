@@ -1,8 +1,10 @@
 #' Convert a possible symbol to character.
 #'
-#' @param symbol A symbol or character (of length one)
-#' @return character
+#' @param symbol A `symbol` or `character` (of length one).
 #'
+#' @return A `character` representation of the input.
+#'
+#' @md
 #' @noRd
 symbol_as_character <- function(symbol)
 {

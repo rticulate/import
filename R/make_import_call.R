@@ -1,14 +1,15 @@
 #' Make an import call object.
 #'
-#' The import call constructed by this function can be evaluated with
-#' \code{eval} to perform the actual import.
+#' The import call constructed by this function can be evaluated with `eval` to
+#' perform the actual import.
 #'
-#' @param params list of parameters to substitute in the call.
-#' @param exports_only logical indicating whether only exported objects are
+#' @param params A list of parameters to substitute in the call.
+#' @param exports_only A logical indicating whether only exported objects are
 #'   allowed.
 #'
 #' @return A call object.
 #'
+#' @md
 #' @noRd
 make_import_call <- function(params, exports_only)
 {

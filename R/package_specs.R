@@ -1,24 +1,24 @@
 #' Package Specifications
 #'
-#' Decompse package specification into name and a list
-#' for \code{checkVersion} in \code{loadNamespace}.
+#' Decompose package specification into a name and a list for `checkVersion` in
+#' `loadNamespace`.
 #'
-#' @param pkg character: name og package, optionally with a
-#'   version requirement in parentheses (as in Depends/Imports
-#'   fields in package DESCRIPTION files).
+#' @param pkg A `character` with the name of the  package, optionally with a
+#'   version requirement in parentheses (as in Depends/Imports fields in package
+#'   DESCRIPTION files).
 #'
-#' @return list with \code{name} and \code{version_check}, the
-#'   latter which can be passed to \code{loadNamespace}.
+#' @return A `list` with `name` and `version_check`, the latter which can be
+#'   passed to `loadNamespace`.
 #'
-#' @noRd
-#'
-#' @details One can specify the package version using the
-#'   operators > < >= <= == !=.
+#' @details One can specify the package version using the operators `>`, `<`,
+#'   `>=`, `<=`, `==`, and `!=`.
 #'
 #' @examples
-#'
 #' package_specs("magrittr (>= 1.0.1)")
 #' package_specs("magrittr(1.5)")
+#'
+#' @md
+#' @noRd
 package_specs <- function(pkg)
 {
   if (!is.character(pkg) || length(pkg) != 1L)

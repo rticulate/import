@@ -6,7 +6,7 @@
 [![CRAN
 status](https://www.r-pkg.org/badges/version/import)](https://CRAN.R-project.org/package=import)
 [![CRAN status
-shields](https://img.shields.io/badge/Git-1.3.0.9003-success)](https://github.com/rticulate/import)
+shields](https://img.shields.io/badge/Git-1.3.0.9004-success)](https://github.com/rticulate/import)
 [![R build
 status](https://github.com/rticulate/import/workflows/R-CMD-check/badge.svg)](https://github.com/rticulate/import/actions)
 <!-- badges: end -->

@@ -2,6 +2,7 @@
 #'
 #' This is used to redirect documentation requests on imported names.
 #'
+#' @md
 #' @noRd
 import_aliases <- new.env()
 

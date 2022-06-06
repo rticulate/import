@@ -1,18 +1,18 @@
 #' Detect bad recursion in function call
 #'
-#' Examines the stack trace that is passed as an argument to determine
-#' if import::*() has been called recursively in a way that is not
-#' allowed (i.e. bad).
+#' Examines the stack trace that is passed as an argument to determine if
+#' `import::*()` has been called recursively in a way that is not allowed (i.e.
+#' bad).
 #'
-#' Any recursive use of import::*() within a module that is itself being
-#' imported should only be done with import::here(). Never with
-#' import::from() or import::into()
+#' Any recursive use of `import::*()` within a module that is itself being
+#' imported should only be done with `import::here()`, never with
+#' `import::from()` or `import::into()`.
 #'
-#' A bad recursion is a recursion in which the
+#' @param stack_trace A list object containing the value of a `.traceback()` call.
 #'
-#' @param stack_trace A list object containing the value of a \code{.traceback()} call
 #' @return logical indicating whether a bad recursion call was detected
 #'
+#' @md
 #' @noRd
 detect_bad_recursion <- function(stack_trace) {
 

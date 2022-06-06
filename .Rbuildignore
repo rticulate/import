@@ -1,6 +1,7 @@
 ^.*\.Rproj$
 ^\.Rproj\.user$
 ^README\.md
+^README\.Rmd
 ^cran-comments\.md$
 ^import\.svg
 ^import\.png

@@ -4,6 +4,7 @@
 #' @param stage A character representing the stage
 #' @return Badge code appropriate for inclusion in .Rd file
 #'
+#' @md
 #' @noRd
 badge <- function(stage)
 {

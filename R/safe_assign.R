@@ -1,14 +1,16 @@
 #' Safe Assignment
 #'
 #' Wrapper for \code{assign} which will not allow assigning a name to a
-#' different value in the given environment.
+#' different value in the given environment. See [`base::assign()`] for
+#' information about the role of each parameter.
 #'
-#' @param x A variable name. See \link[base]{\code{assign}}.
-#' @param value The value. See \link[base]{\code{assign}}.
-#' @param pos Where to do assignment. See \link[base]{\code{assign}}.
-#' @param envir The environment. See \link[base]{\code{assign}}.
-#' @param inherits Should the enclosing environment be inspected? See \code{\link[base]{assign}}.
+#' @param x A variable name.
+#' @param value The value.
+#' @param pos Where to do assignment.
+#' @param envir The environment.
+#' @param inherits Should the enclosing environment be inspected?
 #'
+#' @md
 #' @noRd
 safe_assign <- function(x, value, pos = -1, envir = as.environment(pos), inherits = FALSE)
 {
