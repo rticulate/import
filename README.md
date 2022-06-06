@@ -98,8 +98,9 @@ parameter to `TRUE`. You can still override this in exceptional cases,
 but you seldom need to.
 
 These and other examples are discussed in more detail in the [Importing
-from Packages](articles/import.html#importing-from-packages) section of
-the package vignette.
+from
+Packages](https://import.rticulate.org/articles/import.html#importing-from-packages)
+section of the package vignette.
 
 ### Importing Functions from “Module” Scripts
 
@@ -123,7 +124,7 @@ import::from(sequence_module.R, fib=fibonacci, .except="square")
 
 These and other examples are discussed in more detail in the [Importing
 from
-Modules](articles/import.html#importing-functions-from-module-scripts)
+Modules](https://import.rticulate.org/articles/import.html#importing-functions-from-module-scripts)
 section of the package vignette.
 
 ### Choosing where import looks for packages or modules
@@ -189,11 +190,12 @@ import::from(module_name, foo, bar, .character_only=TRUE)
 ```
 
 The `.character_only` parameter is covered in more detail in the
-[Advanced Usage](articles/import.html#advanced-usage) section of the
-package vignette, which also describes how you can import from module
-scripts stored online with the help of the `pins` package, or achieve
-python-like imports with the help of `{}` notation for environments in
-the `.into` parameter.
+[Advanced
+Usage](https://import.rticulate.org/articles/import.html#advanced-usage)
+section of the package vignette, which also describes how you can import
+from module scripts stored online with the help of the `pins` package,
+or achieve python-like imports with the help of `{}` notation for
+environments in the `.into` parameter.
 
 # Contributing
 

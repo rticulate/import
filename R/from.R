@@ -50,10 +50,10 @@
 #' @param .from The package from which to import.
 #' @param ... Names or name-value pairs specifying objects to import.
 #'   If arguments are named, then the imported object will have this new name.
-#' @param .into The name of the search path entry, either as a character string
-#'   or as a symbol containing a string. Enclosing the value in curly
-#'   brackets causes the parameter to be treated as an actual
-#'   environment value, rather than the name of an environment. Using
+#' @param .into The environment into which the imported objects should be
+#'   assigned. If the value is of mode `character`, it is treated as referring
+#'   to a named environment on the search path. If it is of mode `environment`
+#'   the objects are assigned directly to that environment. Using
 #'   \code{.into={environment()}} causes imports to be made into the current
 #'   environment; \code{.into=""} is an equivalent shorthand value.
 #' @param .library character specifying the library to use when importing from
