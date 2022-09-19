@@ -37,7 +37,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">import</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.3.0.9003</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.3.0.9004</span>
       </span>
     </div>
 
@@ -85,7 +85,7 @@
 <p>The typical way of using functionality exposed by a package in R scripts is to load (and attach) the entire package with <code><a href="https://rdrr.io/r/base/library.html" class="external-link">library()</a></code> (or <code><a href="https://rdrr.io/r/base/library.html" class="external-link">require()</a></code>). This can have the <strong>undesirable effect of masking objects</strong> in the user’s search path and can also make it difficult and <strong>confusing to identify</strong> what functionality comes from which package when using several <code>library</code> statements.</p>
 <p>The <code>import</code> package provides a simple alternative, allowing the user specify in a concise way exactly which objects. For example, the <code>Hmisc</code> package exposes over four hundred functions. Instead of exposing all of those functions, someone who only needs access to, say the <code>impute()</code> and the <code>nomiss()</code> functions, can import those functions only:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu">import</span><span class="fu">::</span><span class="fu"><a href="reference/importfunctions.html">from</a></span><span class="op">(</span><span class="va">Hmisc</span>, <span class="va">impute</span>, <span class="va">nomiss</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu">import</span><span class="fu">::</span><span class="fu"><a href="reference/importfunctions.html">from</a></span><span class="op">(</span><span class="va">Hmisc</span>, <span class="va">impute</span>, <span class="va">nomiss</span><span class="op">)</span></span></code></pre></div>
 <p>For more on the motivation behind the package, see <a href="https://import.rticulate.org/articles/import.html" class="external-link">vignette(“import”)</a></p>
 </div>
 <div class="section level2">
@@ -93,10 +93,10 @@
 </h2>
 <p>To install <code>import</code> from CRAN:</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"import"</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"import"</span><span class="op">)</span></span></code></pre></div>
 <p>You can also install the development version of <code>import</code> from GitHub using <code>devtools</code>:</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu">devtools</span><span class="fu">::</span><span class="fu">install_github</span><span class="op">(</span><span class="st">"rticulate/import"</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu">devtools</span><span class="fu">::</span><span class="fu">install_github</span><span class="op">(</span><span class="st">"rticulate/import"</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="usage">Usage<a class="anchor" aria-label="anchor" href="#usage"></a>
@@ -106,31 +106,31 @@
 </h3>
 <p>The most basic use case is to import a few functions from package (here the <code>psych</code> package):</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu">import</span><span class="fu">::</span><span class="fu"><a href="reference/importfunctions.html">from</a></span><span class="op">(</span><span class="va">psych</span>, <span class="va">geometric.mean</span>, <span class="va">harmonic.mean</span><span class="op">)</span>
-<span class="fu">geometric.mean</span><span class="op">(</span><span class="va">trees</span><span class="op">$</span><span class="va">Volume</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu">import</span><span class="fu">::</span><span class="fu"><a href="reference/importfunctions.html">from</a></span><span class="op">(</span><span class="va">psych</span>, <span class="va">geometric.mean</span>, <span class="va">harmonic.mean</span><span class="op">)</span></span>
+<span><span class="fu">geometric.mean</span><span class="op">(</span><span class="va">trees</span><span class="op">$</span><span class="va">Volume</span><span class="op">)</span></span></code></pre></div>
 <p>If one of the function names conflicts with an existing function (such as <code>filter</code> from the <code>dplyr</code> package) it is simple to rename it:</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu">import</span><span class="fu">::</span><span class="fu"><a href="reference/importfunctions.html">from</a></span><span class="op">(</span><span class="va">dplyr</span>, <span class="va">select</span>, <span class="va">arrange</span>, keep_when <span class="op">=</span> <span class="va">filter</span><span class="op">)</span>
-<span class="fu">keep_when</span><span class="op">(</span><span class="va">mtcars</span>, <span class="va">hp</span><span class="op">&gt;</span><span class="fl">250</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu">import</span><span class="fu">::</span><span class="fu"><a href="reference/importfunctions.html">from</a></span><span class="op">(</span><span class="va">dplyr</span>, <span class="va">select</span>, <span class="va">arrange</span>, keep_when <span class="op">=</span> <span class="va">filter</span><span class="op">)</span></span>
+<span><span class="fu">keep_when</span><span class="op">(</span><span class="va">mtcars</span>, <span class="va">hp</span><span class="op">&gt;</span><span class="fl">250</span><span class="op">)</span></span></code></pre></div>
 <p>Use <code>.all=TRUE</code> to import all functions from a package. If you want to rename one of them, you can still do that:</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu">import</span><span class="fu">::</span><span class="fu"><a href="reference/importfunctions.html">from</a></span><span class="op">(</span><span class="va">dplyr</span>, keep_when <span class="op">=</span> <span class="va">filter</span>, .all<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu">import</span><span class="fu">::</span><span class="fu"><a href="reference/importfunctions.html">from</a></span><span class="op">(</span><span class="va">dplyr</span>, keep_when <span class="op">=</span> <span class="va">filter</span>, .all<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
 <p>To omit a function from the import, use <code>.except</code> (which takes a character vector):</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu">import</span><span class="fu">::</span><span class="fu"><a href="reference/importfunctions.html">from</a></span><span class="op">(</span><span class="va">dplyr</span>, .except<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"filter"</span>, <span class="st">"lag"</span><span class="op">)</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu">import</span><span class="fu">::</span><span class="fu"><a href="reference/importfunctions.html">from</a></span><span class="op">(</span><span class="va">dplyr</span>, .except<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"filter"</span>, <span class="st">"lag"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <p>Note that <code>import</code> tries to be smart about this and assumes that if you are using the <code>.except</code> parameter, you probably want to import everything you are <em>not</em> explicitly omitting, and sets the <code>.all</code> parameter to <code>TRUE</code>. You can still override this in exceptional cases, but you seldom need to.</p>
-<p>These and other examples are discussed in more detail in the <a href="articles/import.html#importing-from-packages">Importing from Packages</a> section of the package vignette.</p>
+<p>These and other examples are discussed in more detail in the <a href="https://import.rticulate.org/articles/import.html#importing-from-packages" class="external-link">Importing from Packages</a> section of the package vignette.</p>
 </div>
 <div class="section level3">
 <h3 id="importing-functions-from-module-scripts">Importing Functions from “Module” Scripts<a class="anchor" aria-label="anchor" href="#importing-functions-from-module-scripts"></a>
 </h3>
 <p>The <code>import</code> package allows R files to be used as “modules” from which functions are loaded. For example, the file <a href="https://raw.githubusercontent.com/rticulate/import/master/man/examples/sequence_module.R" class="external-link">sequence_module.R</a> contains several functions calculating terms of mathematical sequences. It is possible to import from such files, just as one imports from packages:</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu">import</span><span class="fu">::</span><span class="fu"><a href="reference/importfunctions.html">from</a></span><span class="op">(</span><span class="va">sequence_module.R</span>, <span class="va">fibonacci</span>, <span class="va">square</span>, <span class="va">triangular</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu">import</span><span class="fu">::</span><span class="fu"><a href="reference/importfunctions.html">from</a></span><span class="op">(</span><span class="va">sequence_module.R</span>, <span class="va">fibonacci</span>, <span class="va">square</span>, <span class="va">triangular</span><span class="op">)</span></span></code></pre></div>
 <p>Renaming, as well as the <code>.all</code> and <code>.except</code> parameters, work in the same way as for packages:</p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu">import</span><span class="fu">::</span><span class="fu"><a href="reference/importfunctions.html">from</a></span><span class="op">(</span><span class="va">sequence_module.R</span>, fib<span class="op">=</span><span class="va">fibonacci</span>, .except<span class="op">=</span><span class="st">"square"</span><span class="op">)</span></code></pre></div>
-<p>These and other examples are discussed in more detail in the <a href="articles/import.html#importing-functions-from-module-scripts">Importing from Modules</a> section of the package vignette.</p>
+<code class="sourceCode R"><span><span class="fu">import</span><span class="fu">::</span><span class="fu"><a href="reference/importfunctions.html">from</a></span><span class="op">(</span><span class="va">sequence_module.R</span>, fib<span class="op">=</span><span class="va">fibonacci</span>, .except<span class="op">=</span><span class="st">"square"</span><span class="op">)</span></span></code></pre></div>
+<p>These and other examples are discussed in more detail in the <a href="https://import.rticulate.org/articles/import.html#importing-functions-from-module-scripts" class="external-link">Importing from Modules</a> section of the package vignette.</p>
 </div>
 <div class="section level3">
 <h3 id="choosing-where-import-looks-for-packages-or-modules">Choosing where import looks for packages or modules<a class="anchor" aria-label="anchor" href="#choosing-where-import-looks-for-packages-or-modules"></a>
@@ -144,12 +144,12 @@
 </h3>
 <p>By default, imported objects are placed in a separate entity in the search path called “imports”. One can also specify which names to use in the search path and use several to group imports:</p>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu">import</span><span class="fu">::</span><span class="fu"><a href="reference/importfunctions.html">from</a></span><span class="op">(</span><span class="va">magrittr</span>, <span class="st">"%&gt;%"</span>, <span class="st">"%$%"</span>, .into <span class="op">=</span> <span class="st">"operators"</span><span class="op">)</span> 
-<span class="fu">import</span><span class="fu">::</span><span class="fu"><a href="reference/importfunctions.html">from</a></span><span class="op">(</span><span class="va">dplyr</span>, <span class="va">arrange</span>, .into <span class="op">=</span> <span class="st">"datatools"</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu">import</span><span class="fu">::</span><span class="fu"><a href="reference/importfunctions.html">from</a></span><span class="op">(</span><span class="va">magrittr</span>, <span class="st">"%&gt;%"</span>, <span class="st">"%$%"</span>, .into <span class="op">=</span> <span class="st">"operators"</span><span class="op">)</span> </span>
+<span><span class="fu">import</span><span class="fu">::</span><span class="fu"><a href="reference/importfunctions.html">from</a></span><span class="op">(</span><span class="va">dplyr</span>, <span class="va">arrange</span>, .into <span class="op">=</span> <span class="st">"datatools"</span><span class="op">)</span></span></code></pre></div>
 <p>If using custom search path entities actively, one might prefer the alternative syntax (which does the same but reverses the argument order):</p>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu">import</span><span class="fu">::</span><span class="fu"><a href="reference/importfunctions.html">into</a></span><span class="op">(</span><span class="st">"operators"</span>, <span class="st">"%&gt;%"</span>, <span class="st">"%$%"</span>, .from <span class="op">=</span> <span class="va">magrittr</span><span class="op">)</span>
-<span class="fu">import</span><span class="fu">::</span><span class="fu"><a href="reference/importfunctions.html">into</a></span><span class="op">(</span><span class="st">"datatools"</span>, <span class="va">arrange</span>, .from <span class="op">=</span> <span class="va">dplyr</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu">import</span><span class="fu">::</span><span class="fu"><a href="reference/importfunctions.html">into</a></span><span class="op">(</span><span class="st">"operators"</span>, <span class="st">"%&gt;%"</span>, <span class="st">"%$%"</span>, .from <span class="op">=</span> <span class="va">magrittr</span><span class="op">)</span></span>
+<span><span class="fu">import</span><span class="fu">::</span><span class="fu"><a href="reference/importfunctions.html">into</a></span><span class="op">(</span><span class="st">"datatools"</span>, <span class="va">arrange</span>, .from <span class="op">=</span> <span class="va">dplyr</span><span class="op">)</span></span></code></pre></div>
 <p>If it is desired to place imported objects in the current environment, use <code><a href="reference/importfunctions.html">import::here()</a></code>:</p>
 </div>
 <div class="section level3">
@@ -157,14 +157,14 @@
 </h3>
 <p>The <code>import</code> package is designed to be simple to use for basic cases, so it uses symbolic evaluation to allow the names of packages, modules and functions to be entered without quotes (except for operators, such as <code>"%&gt;%"</code> which must be quoted). However, this means that it calling a variable containing the name of a module, or a vector of functions to import, will not work. For this use case, you can use the <code>.character_only</code> parameter:</p>
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">module_name</span> <span class="op">&lt;-</span> <span class="st">"../utils/my_module.R"</span>
-
-<span class="co"># Will not work (import will look for a package called "module_name")</span>
-<span class="fu">import</span><span class="fu">::</span><span class="fu"><a href="reference/importfunctions.html">from</a></span><span class="op">(</span><span class="va">module_name</span>, <span class="va">foo</span>, <span class="va">bar</span><span class="op">)</span>
-
-<span class="co"># This will correctly import the foo() and bar() functions from "../utils/my_module.R"</span>
-<span class="fu">import</span><span class="fu">::</span><span class="fu"><a href="reference/importfunctions.html">from</a></span><span class="op">(</span><span class="va">module_name</span>, <span class="va">foo</span>, <span class="va">bar</span>, .character_only<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span></code></pre></div>
-<p>The <code>.character_only</code> parameter is covered in more detail in the <a href="articles/import.html#advanced-usage">Advanced Usage</a> section of the package vignette, which also describes how you can import from module scripts stored online with the help of the <code>pins</code> package, or achieve python-like imports with the help of <code><a href="https://rdrr.io/r/base/Paren.html" class="external-link">{}</a></code> notation for environments in the <code>.into</code> parameter.</p>
+<code class="sourceCode R"><span><span class="va">module_name</span> <span class="op">&lt;-</span> <span class="st">"../utils/my_module.R"</span></span>
+<span></span>
+<span><span class="co"># Will not work (import will look for a package called "module_name")</span></span>
+<span><span class="fu">import</span><span class="fu">::</span><span class="fu"><a href="reference/importfunctions.html">from</a></span><span class="op">(</span><span class="va">module_name</span>, <span class="va">foo</span>, <span class="va">bar</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># This will correctly import the foo() and bar() functions from "../utils/my_module.R"</span></span>
+<span><span class="fu">import</span><span class="fu">::</span><span class="fu"><a href="reference/importfunctions.html">from</a></span><span class="op">(</span><span class="va">module_name</span>, <span class="va">foo</span>, <span class="va">bar</span>, .character_only<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
+<p>The <code>.character_only</code> parameter is covered in more detail in the <a href="https://import.rticulate.org/articles/import.html#advanced-usage" class="external-link">Advanced Usage</a> section of the package vignette, which also describes how you can import from module scripts stored online with the help of the <code>pins</code> package, or achieve python-like imports with the help of <code><a href="https://rdrr.io/r/base/Paren.html" class="external-link">{}</a></code> notation for environments in the <code>.into</code> parameter.</p>
 </div>
 </div>
 </div>
@@ -234,7 +234,7 @@
 <h2 data-toc-skip>Dev status</h2>
 <ul class="list-unstyled">
 <li><a href="https://CRAN.R-project.org/package=import" class="external-link"><img src="https://www.r-pkg.org/badges/version/import" alt="CRAN status"></a></li>
-<li><a href="https://github.com/rticulate/import" class="external-link"><img src="https://img.shields.io/badge/Git-1.3.0.9003-success" alt="CRAN status shields"></a></li>
+<li><a href="https://github.com/rticulate/import" class="external-link"><img src="https://img.shields.io/badge/Git-1.3.0.9004-success" alt="CRAN status shields"></a></li>
 <li><a href="https://github.com/rticulate/import/actions" class="external-link"><img src="https://github.com/rticulate/import/workflows/R-CMD-check/badge.svg" alt="R build status"></a></li>
 </ul>
 </div>
@@ -250,7 +250,7 @@
 
 <div class="pkgdown">
   <p></p>
-<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.</p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.</p>
 </div>
 
       </footer>
