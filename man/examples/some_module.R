@@ -4,12 +4,12 @@
 
 ## This is also not recommended, because it is not clear wether recursively
 ## imported functions should be available after the module is imported
-#import::here(qplot, .from = ggplot2)
+#import::from(ggplot2, qplot)
 
 ## This is the recommended way to recursively import functions on which
 ## module functions depend. The qplot function will be available to
 ## module functions, but will not itself be available after import
-import::here(qplot, .from = ggplot2)
+import::here(ggplot2, qplot)
 
 ## Note this operator overload is not something you want to `source`!
 `+` <- function(e1, e2)
