@@ -11,6 +11,9 @@ Version 1.3.0.9xxx
   `import::from()`. While this is intended to be a bug fix, it is possible that
   it affects usage in situations where specificity about the library path is
   important.
+  
+* Fixes a regression introduced in 1.3.0 that prevented importing multiple
+  scripts into the same environment in some situations.
 
 
 Version 1.3.0
