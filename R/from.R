@@ -183,7 +183,13 @@ from <- function(.from, ..., .into = "imports",
 
       # Source the file into the new environment.
       packages_before <- .packages()
-      suppress_output(sys.source(file_path(.directory, .from), scripts[[.from]], chdir = .chdir))
+      tryCatch(
+        expr = suppress_output(sys.source(file_path(.directory, .from), scripts[[.from]], chdir = .chdir)),
+        error = function(cnd) {
+          rm(list = .from, envir = scripts)
+          stop("Failed to import ", .from, " due to the following error:\n", cnd$message, call. = FALSE)
+        }
+      )
 
       # If sourcing the script loaded new packages, raise error
       packages_after <- .packages()
