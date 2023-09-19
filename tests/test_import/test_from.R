@@ -289,6 +289,17 @@ test_that("Imports from specific version work",{
 
 ## .chdir parameter is tested in a separate file (test_param_chdir.R)
 
+test_that("Script errors are caught and allow manual retry", {
+  expect_error ( foo() )
+  expect_true  ( is.na(Sys.getenv("SOMECONFIG", NA)) )
+  expect_error ( import::from(module_script_error.R, foo) )
+  expect_error ( foo() )
+  Sys.setenv   ( "SOMECONFIG"="any" )
+  expect_silent( import::from(module_script_error.R, foo) )
+  expect_equal ( foo(), "foo" )
+  Sys.unsetenv ( "SOMECONFIG" )
+  cleanup_environment()
+})
 
 ## Tests end
 
