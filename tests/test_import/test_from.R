@@ -36,6 +36,16 @@ test_that("Imports from modules work", {
   cleanup_environment()
 })
 
+test_that("Subsequent imports from modules work", {
+  expect_error ( fun1() )
+  expect_error ( fun7() )
+  expect_silent( import::from(module_base.R, .all=TRUE) )
+  expect_silent( import::from(module_subsequent.R, .all=TRUE) )
+  expect_equal ( fun1(), "fun1" )
+  expect_equal ( fun7(), "fun7" )
+  cleanup_environment()
+})
+
 test_that("Passing values as characters works", {
   char_package   <- "knitr"
   char_functions <- c("normal_print","knit_print")
