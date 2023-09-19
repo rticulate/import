@@ -225,7 +225,7 @@ from <- function(.from, ..., .into = "imports",
   # (excluding internal variable __last_modified__)
   # Take care not to lose the names of any manually specified parameters
   if (.all) {
-    all_objects <- setdiff(all_objects, "__last_modified__")
+    all_objects <- setdiff(all_objects, c("__last_modified__", ".packageName"))
     names(all_objects) <- all_objects
     symbols <- c(symbols,all_objects)
     symbols <- symbols[!duplicated(symbols)]
