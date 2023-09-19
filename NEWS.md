@@ -14,6 +14,8 @@ Version 1.3.0.9xxx
   
 * Fixes a regression introduced in 1.3.0 that prevented importing multiple
   scripts into the same environment in some situations.
+  
+* Errors that occur while importing modules are now handled more effectively.
 
 
 Version 1.3.0
