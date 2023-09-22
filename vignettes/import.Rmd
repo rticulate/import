@@ -5,8 +5,8 @@ output:
     toc: true
 vignette: >
   %\VignetteIndexEntry{The import package}
-  \usepackage[utf8]{inputenc}
   %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
 editor_options: 
   chunk_output_type: console
 ---

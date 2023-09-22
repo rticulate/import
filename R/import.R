@@ -24,4 +24,4 @@
 #'   * [https://github.com/rticulate/import/issues](https://github.com/rticulate/import/issues)
 #'
 #' @md
-NULL
+"_PACKAGE"

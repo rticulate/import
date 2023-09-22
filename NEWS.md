@@ -1,5 +1,5 @@
 
-Version 1.3.0.9xxx
+Version 1.3.1
 =============
 
 * The `import` package will now by default use the full current set of library
@@ -12,10 +12,19 @@ Version 1.3.0.9xxx
   it affects usage in situations where specificity about the library path is
   important.
   
-* Fixes a regression introduced in 1.3.0 that prevented importing multiple
-  scripts into the same environment in some situations.
+* The two aforementioned changes had to be implemented jointly, because the bug
+  that is addressed by the second change was masking a bug that then needed to 
+  be fixed by the second change. A detailed analysis of this can be found in 
+  issue [#56](https://github.com/rticulate/import/issues/56) on GitHub.
+  
+* A regression introduced in 1.3.0, that prevented importing multiple
+  scripts into the same environment in some situations, has now been fixed.
   
 * Errors that occur while importing modules are now handled more effectively.
+
+* An issue with package documentation, correctly documenting  `"_PACKAGE"` to
+  ensure a `-package` alias is added.
+
 
 
 Version 1.3.0

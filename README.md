@@ -6,7 +6,7 @@
 [![CRAN
 status](https://www.r-pkg.org/badges/version/import)](https://CRAN.R-project.org/package=import)
 [![CRAN status
-shields](https://img.shields.io/badge/Git-1.3.0.9004-success)](https://github.com/rticulate/import)
+shields](https://img.shields.io/badge/Git-1.3.1-success)](https://github.com/rticulate/import)
 [![R build
 status](https://github.com/rticulate/import/workflows/R-CMD-check/badge.svg)](https://github.com/rticulate/import/actions)
 <!-- badges: end -->
@@ -206,27 +206,27 @@ feature?), demand (how many people seem to need a new feature?), and
 last, but not least, by whether a feature can be implemented without
 breaking backwards compatibility.
 
--   Created and authored by [@smbache](https://github.com/smbache)
--   Currently maintained by [@torfason](https://github.com/torfason)
--   Code contributions by [@awong234](https://github.com/awong234),
-    [@brshallo](https://github.com/brshallo),
-    [@flying-sheep](https://github.com/flying-sheep),
-    [@hutch3232](https://github.com/hutch3232),
-    [@J-Moravec](https://github.com/J-Moravec),
-    [@klmr](https://github.com/klmr),
-    [@mschilli87](https://github.com/mschilli87)
+- Created and authored by [@smbache](https://github.com/smbache)
+- Currently maintained by [@torfason](https://github.com/torfason)
+- Code contributions by [@awong234](https://github.com/awong234),
+  [@brshallo](https://github.com/brshallo),
+  [@flying-sheep](https://github.com/flying-sheep),
+  [@hutch3232](https://github.com/hutch3232),
+  [@J-Moravec](https://github.com/J-Moravec),
+  [@klmr](https://github.com/klmr),
+  [@mschilli87](https://github.com/mschilli87)
 
 *(Did we forget to add you? If so, please let us know!)*
 
 # See also:
 
--   Some of the use cases for `import` can now be handled directly in
-    base R using the new `exclude` and `include.only` arguments of
-    `library()` and `require()`
--   For an interesting but slightly different idea of Python-like
-    modules for R, see the [modules](https://github.com/klmr/modules)
-    package by [@klmr](https://github.com/klmr).
--   Another approach, focused on treating the use of functions with
-    naming conflicts as explicit errors is the
-    [conflicted](https://github.com/r-lib/conflicted) package by
-    [@hadley](https://github.com/hadley).
+- Some of the use cases for `import` can now be handled directly in base
+  R using the new `exclude` and `include.only` arguments of `library()`
+  and `require()`
+- For an interesting but slightly different idea of Python-like modules
+  for R, see the [modules](https://github.com/klmr/modules) package by
+  [@klmr](https://github.com/klmr).
+- Another approach, focused on treating the use of functions with naming
+  conflicts as explicit errors is the
+  [conflicted](https://github.com/r-lib/conflicted) package by
+  [@hadley](https://github.com/hadley).
