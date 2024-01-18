@@ -29,6 +29,7 @@ test_that("S3 methods are registered", {
   expect_silent( import::from("module_S3.R", "test_fun", .S3=TRUE) )
   expect_identical( test_fun(1), structure("numeric", class="test_class") )
   expect_identical( test_fun("1"), structure("character", class="test_class") )
+  expect_identical( test_fun(data.frame()), structure("data.frame", class="test_class"))
   expect_output( print(test_fun(1)), "numeric" )
   expect_output( print(test_fun("OK")), "character" )
   cleanup_environment()

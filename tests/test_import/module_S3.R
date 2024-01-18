@@ -16,3 +16,8 @@ test_fun.numeric <- function(x){
 print.test_class <- function(x){
   print(as.character(x))
 }
+
+# a method for class with dot in name
+test_fun.data.frame = function(x){
+    structure("data.frame", class = "test_class")
+    }
