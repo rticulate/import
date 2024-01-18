@@ -29,7 +29,7 @@ register_s3_method <- function(x, env){
 
   parts <- unlist(strsplit(x, split=".", fixed=TRUE))
   generic <- parts[1]
-  class <- paste(parts[-1], sep=".")
+  class <- paste0(parts[-1], collapse=".")
 
   registerS3method(generic, class, method, env)
 
