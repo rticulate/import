@@ -204,7 +204,8 @@ feature can be implemented without breaking backwards compatibility.
 * Some of the use cases for `import` can now be handled directly in base R using the
   new `exclude` and `include.only` arguments of `library()` and `require()`
 * For an interesting but slightly different idea of Python-like modules for R, see the 
-  [modules](https://github.com/klmr/modules) package by [@klmr](https://github.com/klmr).
+  [box](https://klmr.me/box/) package by [@klmr](https://github.com/klmr) (previously 
+  called [modules](https://github.com/klmr/modules)).
 * Another approach, focused on treating the use of functions with naming conflicts as
   explicit errors is the [conflicted](https://github.com/r-lib/conflicted) 
   package by [@hadley](https://github.com/hadley).

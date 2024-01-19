@@ -6,7 +6,7 @@
 [![CRAN
 status](https://www.r-pkg.org/badges/version/import)](https://CRAN.R-project.org/package=import)
 [![CRAN status
-shields](https://img.shields.io/badge/Git-1.3.1-success)](https://github.com/rticulate/import)
+shields](https://img.shields.io/badge/Git-1.3.2-success)](https://github.com/rticulate/import)
 [![R build
 status](https://github.com/rticulate/import/workflows/R-CMD-check/badge.svg)](https://github.com/rticulate/import/actions)
 <!-- badges: end -->
@@ -224,8 +224,9 @@ breaking backwards compatibility.
   R using the new `exclude` and `include.only` arguments of `library()`
   and `require()`
 - For an interesting but slightly different idea of Python-like modules
-  for R, see the [modules](https://github.com/klmr/modules) package by
-  [@klmr](https://github.com/klmr).
+  for R, see the [box](https://klmr.me/box/) package by
+  [@klmr](https://github.com/klmr) (previously called
+  [modules](https://github.com/klmr/modules)).
 - Another approach, focused on treating the use of functions with naming
   conflicts as explicit errors is the
   [conflicted](https://github.com/r-lib/conflicted) package by
