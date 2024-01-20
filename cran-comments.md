@@ -1,12 +1,8 @@
 ## General
 
-Version 1.3.1 is a bug fix release with the following fixes:
+Version 1.3.2 is a bug fix release with the following fixes:
 
-* Use full set of library paths (`.libPaths()`)
-* Update `loadNamespace()`/`getNamespaceExports()` 
-* Fix 1.3.0 regression preventing multiple imports
-* Improved handling of errors in importing modules
-* Add `-package` alias is to docs
+* Fix an issue in the way method names are constructed for S3 imports
 
 More info in `NEWS.md`
 
@@ -47,7 +43,7 @@ These notes are not reproducible locally or on all platforms, and seem not to af
 
 ## revdepcheck results
 
-We checked 12 reverse dependencies (11 from CRAN + 1 from Bioconductor), comparing R CMD check results across CRAN and dev versions of this package.
+We checked 13 reverse dependencies (12 from CRAN + 1 from Bioconductor), comparing R CMD check results across CRAN and dev versions of this package.
 
  * We saw 0 new problems
  * We failed to check 0 packages

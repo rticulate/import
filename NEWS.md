@@ -1,4 +1,12 @@
 
+Version 1.3.2
+=============
+
+* This is a minor bugfix release addressing an issue in the way method names 
+  were constructed for S3 imports.
+
+
+
 Version 1.3.1
 =============
 
