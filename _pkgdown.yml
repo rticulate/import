@@ -1,1 +1,2 @@
-# pkgdown config goes here ...
+template:
+  bootstrap: 5
