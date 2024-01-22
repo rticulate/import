@@ -1,5 +1,5 @@
 
-<img src="https://import.rticulate.org/articles/import.png" align="right" alt="" width="120" />
+# import <a href="https://import.rticulate.org"><img src="man/figures/logo.png" align="right" height="138" /></a>
 
 <!-- badges: start -->
 
