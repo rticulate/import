@@ -196,7 +196,8 @@ feature can be implemented without breaking backwards compatibility.
   [@hutch3232](https://github.com/hutch3232),
   [@J-Moravec](https://github.com/J-Moravec), 
   [@klmr](https://github.com/klmr),
-  [@mschilli87](https://github.com/mschilli87)
+  [@mschilli87](https://github.com/mschilli87),
+  [@olivroy](https://github.com/olivroy)
   
 *(Did we forget to add you? If so, please let us know!)*
 
