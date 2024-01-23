@@ -1,5 +1,5 @@
 
-<img src="https://import.rticulate.org/articles/import.png" align="right" alt="" width="120" />
+# import <a href="https://import.rticulate.org"><img src="man/figures/logo.png" align="right" height="138" /></a>
 
 <!-- badges: start -->
 
@@ -214,7 +214,8 @@ breaking backwards compatibility.
   [@hutch3232](https://github.com/hutch3232),
   [@J-Moravec](https://github.com/J-Moravec),
   [@klmr](https://github.com/klmr),
-  [@mschilli87](https://github.com/mschilli87)
+  [@mschilli87](https://github.com/mschilli87),
+  [@olivroy](https://github.com/olivroy)
 
 *(Did we forget to add you? If so, please let us know!)*
 

@@ -10,7 +10,6 @@ vignette: >
 editor_options: 
   chunk_output_type: console
 ---
-<img src="import.png" align="right" alt="" width="120" />
 
 * This version: May, 2022
 * Latest version at: https://import.rticulate.org/articles/import.html
