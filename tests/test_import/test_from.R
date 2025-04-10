@@ -36,6 +36,14 @@ test_that("Imports from modules work", {
   cleanup_environment()
 })
 
+test_that("Conflicting imports throw error containing conflicting name", {
+    expect_error ( fun1() )
+    expect_silent( import::from(module_base.R, fun1) )
+    expect_error( import::from(module_hidden_objects.R, fun1) )
+    expect_error( import::from(module_hidden_objects.R, fun1), ".*fun1.*" )
+    cleanup_environment()
+})
+
 test_that("Subsequent imports from modules work", {
   expect_error ( fun1() )
   expect_error ( fun7() )
