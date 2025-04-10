@@ -16,7 +16,8 @@ safe_assign <- function(x, value, pos = -1, envir = as.environment(pos), inherit
 {
   if (x %in% ls(envir, all.names = TRUE) &&
      !identical(environment(envir[[x]]), environment(value)))
-    stop("Cannot assign name to different value in the given environment. Name already in use.",
+      stop(sprintf("Cannot assign name `%s` to different value in the given environment. Name already in use.",
+                   x),
          call. = FALSE)
 
   assign(x, value, pos, envir, inherits)
