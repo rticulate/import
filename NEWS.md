@@ -1,4 +1,10 @@
 
+Version 1.3.2.900x
+=============
+
+* Minor bugfixes
+
+
 Version 1.3.2
 =============
 

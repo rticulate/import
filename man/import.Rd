@@ -2,8 +2,8 @@
 % Please edit documentation in R/import.R
 \docType{package}
 \name{import}
-\alias{import}
 \alias{import-package}
+\alias{import}
 \title{An Import Mechanism for R}
 \description{
 This is an alternative mechanism for importing objects from
