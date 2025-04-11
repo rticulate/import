@@ -44,16 +44,21 @@ For more on the motivation behind the package, see
 
 ## Installation
 
-To install `import` from CRAN:
+Install the release version of `import` from CRAN using `pak` or
+`install.packages()`:
 
 ``` r
+pak::pak("import")
+  # or
 install.packages("import")
 ```
 
-You can also install the development version of `import` from GitHub
-using `devtools`:
+Install the development version of `import` from GitHub using `pak` or
+`devtools`:
 
 ``` r
+pak::pak("rticulater/import")
+  # or
 devtools::install_github("rticulate/import")
 ```
 
@@ -216,6 +221,7 @@ breaking backwards compatibility.
   [@klmr](https://github.com/klmr),
   [@mschilli87](https://github.com/mschilli87),
   [@olivroy](https://github.com/olivroy)
+  [@aramirezreyes](https://github.com/aramirezreyes)
 
 *(Did we forget to add you? If so, please let us know!)*
 
