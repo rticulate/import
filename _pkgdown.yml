@@ -1,2 +1,7 @@
+url: https://import.rticulate.org/
+
 template:
   bootstrap: 5
+
+development:
+  mode: auto
