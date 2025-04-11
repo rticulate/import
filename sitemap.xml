@@ -1,13 +1,13 @@
 <urlset xmlns = 'http://www.sitemaps.org/schemas/sitemap/0.9'>
-<url><loc>https://import.rticulate.org/404.html</loc></url>
-<url><loc>https://import.rticulate.org/LICENSE-text.html</loc></url>
-<url><loc>https://import.rticulate.org/articles/import.html</loc></url>
-<url><loc>https://import.rticulate.org/articles/index.html</loc></url>
-<url><loc>https://import.rticulate.org/authors.html</loc></url>
-<url><loc>https://import.rticulate.org/index.html</loc></url>
-<url><loc>https://import.rticulate.org/news/index.html</loc></url>
-<url><loc>https://import.rticulate.org/reference/import.html</loc></url>
-<url><loc>https://import.rticulate.org/reference/importfunctions.html</loc></url>
-<url><loc>https://import.rticulate.org/reference/index.html</loc></url>
+<url><loc>/404.html</loc></url>
+<url><loc>/LICENSE-text.html</loc></url>
+<url><loc>/articles/import.html</loc></url>
+<url><loc>/articles/index.html</loc></url>
+<url><loc>/authors.html</loc></url>
+<url><loc>/index.html</loc></url>
+<url><loc>/news/index.html</loc></url>
+<url><loc>/reference/import.html</loc></url>
+<url><loc>/reference/importfunctions.html</loc></url>
+<url><loc>/reference/index.html</loc></url>
 </urlset>
 
