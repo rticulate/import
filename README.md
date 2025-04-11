@@ -42,7 +42,7 @@ import::from(Hmisc, impute, nomiss)
 For more on the motivation behind the package, see
 [vignette(“import”)](https://import.rticulate.org/articles/import.html)
 
-## Installation
+## Installation and Documentation
 
 Install the release version of `import` from CRAN using `pak` or
 `install.packages()`:
@@ -53,6 +53,10 @@ pak::pak("import")
 install.packages("import")
 ```
 
+Documentation for the release version is available on:
+
+- <https://import.rticulate.org/>
+
 Install the development version of `import` from GitHub using `pak` or
 `devtools`:
 
@@ -61,6 +65,10 @@ pak::pak("rticulate/import")
   # or
 devtools::install_github("rticulate/import")
 ```
+
+Documentation for the development version is available on:
+
+- <https://import.rticulate.org/dev/>
 
 ## Usage
 
