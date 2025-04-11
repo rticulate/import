@@ -57,7 +57,7 @@ Install the development version of `import` from GitHub using `pak` or
 `devtools`:
 
 ``` r
-pak::pak("rticulater/import")
+pak::pak("rticulate/import")
   # or
 devtools::install_github("rticulate/import")
 ```
