@@ -2,7 +2,7 @@
 output: github_document
 ---
 
-# import <a href="https://import.rticulate.org"><img src="man/figures/logo.png" align="right" height="138" /></a>
+# import <a href="https://rticulate.github.io/import"><img src="man/figures/logo.png" align="right" height="138" /></a>
 
 <!-- badges: start -->
 [![CRAN status](https://www.r-pkg.org/badges/version/import)](https://CRAN.R-project.org/package=import)
@@ -14,8 +14,8 @@ output: github_document
 
 The import package is intended to simplify the way in which functions from
 external packages or modules are made available for use in R scripts. Learn more
-on the [package website](https://import.rticulate.org/), by reading
-[`vignette("import")`](https://import.rticulate.org/articles/import.html), or
+on the [package website](https://rticulate.github.io/import/), by reading
+[`vignette("import")`](https://rticulate.github.io/import/articles/import.html), or
 using the help (`?import::from`).
 
 ## Introduction
@@ -37,7 +37,7 @@ import::from(Hmisc, impute, nomiss)
 ```
 
 For more on the motivation behind the package, see 
-[vignette("import")](https://import.rticulate.org/articles/import.html)
+[vignette("import")](https://rticulate.github.io/import/articles/import.html)
 
 
 ## Installation and Documentation
@@ -109,7 +109,7 @@ _not_ explicitly omitting, and sets the `.all` parameter to `TRUE`. You can
 still override this in exceptional cases, but you seldom need to.
 
 These and other examples are discussed in more detail in the 
-[Importing from Packages](https://import.rticulate.org/articles/import.html#importing-from-packages)
+[Importing from Packages](https://rticulate.github.io/import/articles/import.html#importing-from-packages)
 section of the package vignette.
 
 ### Importing Functions from "Module" Scripts
@@ -132,7 +132,7 @@ import::from(sequence_module.R, fib=fibonacci, .except="square")
 ```
 
 These and other examples are discussed in more detail in the 
-[Importing from Modules](https://import.rticulate.org/articles/import.html#importing-functions-from-module-scripts) 
+[Importing from Modules](https://rticulate.github.io/import/articles/import.html#importing-functions-from-module-scripts) 
 section of the package vignette.
 
 ### Choosing where import looks for packages or modules
@@ -194,7 +194,7 @@ import::from(module_name, foo, bar, .character_only=TRUE)
 ```
 
 The `.character_only` parameter is covered in more detail in the 
-[Advanced Usage](https://import.rticulate.org/articles/import.html#advanced-usage) 
+[Advanced Usage](https://rticulate.github.io/import/articles/import.html#advanced-usage) 
 section of the package vignette, which also describes how you can import from
 module scripts stored online with the help of the `pins` package, or achieve
 python-like imports with the help of `{}` notation for environments in the

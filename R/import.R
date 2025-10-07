@@ -19,7 +19,7 @@
 #'   [`here`].
 #'
 #'   Helpful links:
-#'   * [https://import.rticulate.org](https://import.rticulate.org)
+#'   * [https://rticulate.github.io/import](https://rticulate.github.io/import)
 #'   * [https://github.com/rticulate/import](https://github.com/rticulate/import)
 #'   * [https://github.com/rticulate/import/issues](https://github.com/rticulate/import/issues)
 #'
