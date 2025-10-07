@@ -198,7 +198,7 @@ test_that("Imports from libraries NOT defined in .libPaths work", {
   if (!file.exists("packageToTest_0.1.0.tar.gz")) {
     system("R CMD build packageToTest")
   }
-  install.packages("packageToTest_0.1.0.tar.gz",
+  utils::install.packages("packageToTest_0.1.0.tar.gz",
     lib = tmp_install_dir,
     repos = NULL,
     type = "source",
