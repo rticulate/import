@@ -18,7 +18,7 @@ Description: Alternative mechanism for importing objects from packages
     Furthermore the imported objects are not placed in the current environment.
 License: MIT + file LICENSE
 ByteCompile: TRUE
-URL: https://import.rticulate.org/, https://github.com/rticulate/import
+URL: https://rticulate.github.io/import/, https://github.com/rticulate/import
 BugReports: https://github.com/rticulate/import/issues
 Suggests:
     knitr,

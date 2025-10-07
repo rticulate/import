@@ -12,8 +12,8 @@ editor_options:
 ---
 
 * This version: May, 2022
-* Latest version at: https://import.rticulate.org/articles/import.html
-* A briefer intro at: https://import.rticulate.org/
+* Latest version at: https://rticulate.github.io/import/articles/import.html
+* A briefer intro at: https://rticulate.github.io/import/
 
 # Introduction
 

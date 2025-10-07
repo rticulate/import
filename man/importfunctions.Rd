@@ -152,7 +152,7 @@ import::into("imports:parallel", makeCluster, parLapply, .from = parallel)
 \seealso{
 Helpful links:
 \itemize{
-\item \url{https://import.rticulate.org}
+\item \url{https://rticulate.github.io/import}
 \item \url{https://github.com/rticulate/import}
 \item \url{https://github.com/rticulate/import/issues}
 }
