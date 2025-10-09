@@ -1,20 +1,18 @@
 ## General
 
-Version 1.3.2 is a bug fix release with the following fixes:
+Version 1.3.3 is a bug fix release with the following fixes:
 
-* Fix an issue in the way method names are constructed for S3 imports
+* Add conflicting name in error message
+* Update docs to point to rticulate.github.io/import
 
 More info in `NEWS.md`
 
 
 ## Test environments
 
-* local Mac OS X (R 4.3.1)
+* local Mac OS X (R 4.5.1)
 * r-hub 
-  * (Windows Server 2022, R-devel, 64 bit)
-  * (Ubuntu Linux 20.04.1 LTS, R-release, GCC)
-  * (Fedora Linux, R-devel, clang, gfortran)
-* win-builder (devel R R-4.1.0 and release R-4.0.2)
+* win-builder
 * GitHub CE (macos, linux and windows)
 
 
@@ -24,7 +22,7 @@ There were no ERRORs or WARNINGs.
 
 On winbuilder, there were no NOTEs:
 
-On r-hub.io, some platforms raies one or the other of the following notes:
+On r-hub.io, some platforms raise one or the other of the following notes:
 
 +---
 ❯ checking for non-standard things in the check directory ... NOTE

@@ -1,8 +1,10 @@
 
-Version 1.3.2.900x
+Version 1.3.3
 =============
 
-* Minor bugfixes
+* Add conflicting name in error message
+* Update docs to point to rticulate.github.io/import
+
 
 
 Version 1.3.2

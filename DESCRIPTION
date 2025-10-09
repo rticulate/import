@@ -1,7 +1,7 @@
 Package: import
 Type: Package
 Title: An Import Mechanism for R
-Version: 1.3.2.9001
+Version: 1.3.3
 Authors@R:
     c(person(given = "Stefan Milton",
              family = "Bache",
@@ -27,5 +27,5 @@ Suggests:
     testthat
 Language: en-US
 VignetteBuilder: knitr
-RoxygenNote: 7.3.2
+RoxygenNote: 7.3.3
 Encoding: UTF-8
