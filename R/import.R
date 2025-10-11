@@ -19,9 +19,9 @@
 #'   [`here`].
 #'
 #'   Helpful links:
-#'   * [https://rticulate.github.io/import](https://rticulate.github.io/import)
-#'   * [https://github.com/rticulate/import](https://github.com/rticulate/import)
-#'   * [https://github.com/rticulate/import/issues](https://github.com/rticulate/import/issues)
+#'   * [https://rticulate.github.io/import/](https://rticulate.github.io/import/)
+#'   * [https://github.com/rticulate/import/](https://github.com/rticulate/import/)
+#'   * [https://github.com/rticulate/import/issues/](https://github.com/rticulate/import/issues/)
 #'
 #' @md
 "_PACKAGE"
