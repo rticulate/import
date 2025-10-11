@@ -27,7 +27,9 @@
 
 
 ## Remote/long-running checks (copy to terminal and run manually)
-# devtools::check_rhub()
+# #devtools::check_rhub()
+# rhub::rhub_doctor()
+# rhub::rhub_check()
 # devtools::check_win_devel()
 # revdepcheck::revdep_check(num_workers = 4)
 
