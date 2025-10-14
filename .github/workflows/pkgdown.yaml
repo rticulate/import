@@ -1,6 +1,6 @@
 on:
   push:
-    branches: [main, docs, x/docs]
+    branches: [main, dev, docs, x/docs]
 
 name: pkgdown
 

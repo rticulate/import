@@ -6,7 +6,7 @@
 [![CRAN
 status](https://www.r-pkg.org/badges/version/import)](https://CRAN.R-project.org/package=import)
 [![CRAN status
-shields](https://img.shields.io/badge/Git-1.3.3.9001-success)](https://github.com/rticulate/import)
+shields](https://img.shields.io/badge/Git-1.3.3.9002-success)](https://github.com/rticulate/import)
 [![R build
 status](https://github.com/rticulate/import/workflows/R-CMD-check/badge.svg)](https://github.com/rticulate/import/actions)
 <!-- badges: end -->
@@ -57,8 +57,7 @@ is available on:
 
 ### Development Versions
 
-Install the development version of `import` from GitHub using `pak` (or
-`devtools` if you prefer:
+Install the development version of `import` from GitHub using `pak`:
 
 ``` r
 # The main branch typically matches the CRAN release
@@ -66,10 +65,6 @@ pak::pak("rticulate/import")
 
 # New features are developed on the dev branch
 pak::pak("rticulate/import@dev")
-  
-# Or you can use devtools ...
-devtools::install_github("rticulate/import")
-devtools::install_github("rticulate/import@dev")
 ```
 
 Documentation for the development version is available on:
