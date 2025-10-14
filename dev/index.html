@@ -29,7 +29,7 @@
 
     <a class="navbar-brand me-2" href="index.html">import</a>
 
-    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">1.3.3.9002</small>
+    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">1.3.3.9001</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -74,6 +74,7 @@
 <p>The <code>import</code> package provides a simple alternative, allowing the user specify in a concise way exactly which objects. For example, the <code>Hmisc</code> package exposes over four hundred functions. Instead of exposing all of those functions, someone who only needs access to, say the <code>impute()</code> and the <code>nomiss()</code> functions, can import those functions only:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu">import</span><span class="fu">::</span><span class="fu"><a href="reference/importfunctions.html">from</a></span><span class="op">(</span><span class="va">Hmisc</span>, <span class="va">impute</span>, <span class="va">nomiss</span><span class="op">)</span></span></code></pre></div>
+<p>For more on the motivation behind the package, see <a href="https://rticulate.github.io/import/articles/import.html" class="external-link">vignette(“import”)</a></p>
 </div>
 <div class="section level2">
 <h2 id="installation-and-documentation">Installation and Documentation<a class="anchor" aria-label="anchor" href="#installation-and-documentation"></a>
@@ -83,25 +84,19 @@
 <code class="sourceCode R"><span><span class="fu">pak</span><span class="fu">::</span><span class="fu">pak</span><span class="op">(</span><span class="st">"import"</span><span class="op">)</span></span>
 <span>  <span class="co"># or</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"import"</span><span class="op">)</span></span></code></pre></div>
-<p>Documentation (for the main branch, which should match the CRAN release) is available on:</p>
+<p>Documentation for the release version is available on:</p>
 <ul>
-<li><a href="https://rticulate.github.io/import/" class="external-link uri">https://rticulate.github.io/import/</a></li>
+<li><a href="https://import.rticulate.org/" class="uri">https://import.rticulate.org/</a></li>
 </ul>
-<div class="section level3">
-<h3 id="development-versions">Development Versions<a class="anchor" aria-label="anchor" href="#development-versions"></a>
-</h3>
-<p>Install the development version of <code>import</code> from GitHub using <code>pak</code>:</p>
+<p>Install the development version of <code>import</code> from GitHub using <code>pak</code> or <code>devtools</code>:</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># The main branch typically matches the CRAN release</span></span>
-<span><span class="fu">pak</span><span class="fu">::</span><span class="fu">pak</span><span class="op">(</span><span class="st">"rticulate/import"</span><span class="op">)</span></span>
-<span></span>
-<span><span class="co"># New features are developed on the dev branch</span></span>
-<span><span class="fu">pak</span><span class="fu">::</span><span class="fu">pak</span><span class="op">(</span><span class="st">"rticulate/import@dev"</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu">pak</span><span class="fu">::</span><span class="fu">pak</span><span class="op">(</span><span class="st">"rticulate/import"</span><span class="op">)</span></span>
+<span>  <span class="co"># or</span></span>
+<span><span class="fu">devtools</span><span class="fu">::</span><span class="fu">install_github</span><span class="op">(</span><span class="st">"rticulate/import"</span><span class="op">)</span></span></code></pre></div>
 <p>Documentation for the development version is available on:</p>
 <ul>
-<li><a href="https://rticulate.github.io/import/dev/" class="external-link uri">https://rticulate.github.io/import/dev/</a></li>
+<li><a href="https://import.rticulate.org/dev/" class="uri">https://import.rticulate.org/dev/</a></li>
 </ul>
-</div>
 </div>
 <div class="section level2">
 <h2 id="usage">Usage<a class="anchor" aria-label="anchor" href="#usage"></a>
@@ -109,10 +104,9 @@
 <div class="section level3">
 <h3 id="importing-functions-from-r-packages">Importing functions from R packages<a class="anchor" aria-label="anchor" href="#importing-functions-from-r-packages"></a>
 </h3>
-<p>The most basic use case is to import a few functions from package (here the <code>psych</code> package). We start by using <code><a href="reference/importfunctions.html">import::what()</a></code> to list available functions.</p>
+<p>The most basic use case is to import a few functions from package (here the <code>psych</code> package):</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu">import</span><span class="fu">::</span><span class="fu"><a href="reference/importfunctions.html">what</a></span><span class="op">(</span><span class="va">psych</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="op">)</span></span>
-<span><span class="fu">import</span><span class="fu">::</span><span class="fu"><a href="reference/importfunctions.html">from</a></span><span class="op">(</span><span class="va">psych</span>, <span class="va">geometric.mean</span>, <span class="va">harmonic.mean</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="fu">import</span><span class="fu">::</span><span class="fu"><a href="reference/importfunctions.html">from</a></span><span class="op">(</span><span class="va">psych</span>, <span class="va">geometric.mean</span>, <span class="va">harmonic.mean</span><span class="op">)</span></span>
 <span><span class="fu">geometric.mean</span><span class="op">(</span><span class="va">trees</span><span class="op">$</span><span class="va">Volume</span><span class="op">)</span></span></code></pre></div>
 <p>If one of the function names conflicts with an existing function (such as <code>filter</code> from the <code>dplyr</code> package) it is simple to rename it:</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
@@ -130,10 +124,9 @@
 <div class="section level3">
 <h3 id="importing-functions-from-module-scripts">Importing Functions from “Module” Scripts<a class="anchor" aria-label="anchor" href="#importing-functions-from-module-scripts"></a>
 </h3>
-<p>The <code>import</code> package allows R files to be used as “modules” from which functions are loaded. For example, the file <a href="https://raw.githubusercontent.com/rticulate/import/master/man/examples/sequence_module.R" class="external-link">sequence_module.R</a> contains several functions calculating terms of mathematical sequences. It is possible to import from such files, just as one imports from packages. Again, we start by using <code><a href="reference/importfunctions.html">import::what()</a></code> to check what is available in the module:</p>
+<p>The <code>import</code> package allows R files to be used as “modules” from which functions are loaded. For example, the file <a href="https://raw.githubusercontent.com/rticulate/import/master/man/examples/sequence_module.R" class="external-link">sequence_module.R</a> contains several functions calculating terms of mathematical sequences. It is possible to import from such files, just as one imports from packages:</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu">import</span><span class="fu">::</span><span class="fu"><a href="reference/importfunctions.html">what</a></span><span class="op">(</span><span class="va">sequence_module.R</span><span class="op">)</span></span>
-<span><span class="fu">import</span><span class="fu">::</span><span class="fu"><a href="reference/importfunctions.html">from</a></span><span class="op">(</span><span class="va">sequence_module.R</span>, <span class="va">fibonacci</span>, <span class="va">square</span>, <span class="va">triangular</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu">import</span><span class="fu">::</span><span class="fu"><a href="reference/importfunctions.html">from</a></span><span class="op">(</span><span class="va">sequence_module.R</span>, <span class="va">fibonacci</span>, <span class="va">square</span>, <span class="va">triangular</span><span class="op">)</span></span></code></pre></div>
 <p>Renaming, as well as the <code>.all</code> and <code>.except</code> parameters, work in the same way as for packages:</p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu">import</span><span class="fu">::</span><span class="fu"><a href="reference/importfunctions.html">from</a></span><span class="op">(</span><span class="va">sequence_module.R</span>, fib<span class="op">=</span><span class="va">fibonacci</span>, .except<span class="op">=</span><span class="st">"square"</span><span class="op">)</span></span></code></pre></div>
@@ -238,7 +231,7 @@
 <h2 data-toc-skip>Dev status</h2>
 <ul class="list-unstyled">
 <li><a href="https://CRAN.R-project.org/package=import" class="external-link"><img src="https://www.r-pkg.org/badges/version/import" alt="CRAN status"></a></li>
-<li><a href="https://github.com/rticulate/import" class="external-link"><img src="https://img.shields.io/badge/Git-1.3.3.9002-success" alt="CRAN status shields"></a></li>
+<li><a href="https://github.com/rticulate/import" class="external-link"><img src="https://img.shields.io/badge/Git-1.3.3-success" alt="CRAN status shields"></a></li>
 <li><a href="https://github.com/rticulate/import/actions" class="external-link"><img src="https://github.com/rticulate/import/workflows/R-CMD-check/badge.svg" alt="R build status"></a></li>
 </ul>
 </div>
