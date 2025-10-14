@@ -36,9 +36,6 @@ import those functions only:
 import::from(Hmisc, impute, nomiss)
 ```
 
-For more on the motivation behind the package, see 
-[vignette("import")](https://rticulate.github.io/import/articles/import.html)
-
 
 ## Installation and Documentation
 
@@ -50,23 +47,32 @@ pak::pak("import")
   # or
 install.packages("import")
 ```
+Documentation (for the main branch, which should match the CRAN release)
+is available on:
 
-Documentation for the release version is available on:
+- https://rticulate.github.io/import/
 
-- https://import.rticulate.org/
 
-Install the development version of `import` from GitHub using `pak` or
-`devtools`:
+### Development Versions
+
+Install the development version of `import` from GitHub using `pak` (or
+`devtools` if you prefer:
 
 ```R
+# The main branch typically matches the CRAN release
 pak::pak("rticulate/import")
-  # or
+
+# New features are developed on the dev branch
+pak::pak("rticulate/import@dev")
+  
+# Or you can use devtools ...
 devtools::install_github("rticulate/import")
+devtools::install_github("rticulate/import@dev")
 ```
 
 Documentation for the development version is available on:
 
-- https://import.rticulate.org/dev/
+- https://rticulate.github.io/import/dev/
 
 
 ## Usage
@@ -74,9 +80,11 @@ Documentation for the development version is available on:
 ### Importing functions from R packages
 
 The most basic use case is to import a few functions from package (here the
-`psych` package):
+`psych` package). We start by using `import::what()` to list available 
+functions.
 
 ```R
+import::what(psych) |> head()
 import::from(psych, geometric.mean, harmonic.mean)
 geometric.mean(trees$Volume)
 ```
@@ -118,9 +126,11 @@ The `import` package allows R files to be used as "modules" from which functions
 are loaded. For example, the file
 [sequence_module.R](https://raw.githubusercontent.com/rticulate/import/master/man/examples/sequence_module.R) 
 contains several functions calculating terms of mathematical sequences. It is
-possible to import from such files, just as one imports from packages:
+possible to import from such files, just as one imports from packages. Again,
+we start by using `import::what()` to check what is available in the module:
 
 ```R
+import::what(sequence_module.R)
 import::from(sequence_module.R, fibonacci, square, triangular)
 ```
 

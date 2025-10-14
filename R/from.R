@@ -1,16 +1,23 @@
 #' Import Objects From a Package.
 #'
-#' The `import::from` and `import::into` functions provide an alternative way to
-#' import objects (e.g. functions) from packages. It is sometimes preferred over
-#' using `library` (or `require`) which will import all objects exported by the
-#' package. The benefit over `obj <- pkg::obj` is that the imported objects will
-#' (by default) be placed in a separate entry in the search path (which can be
-#' specified), rather in the global/current environment. Also, it is a more
-#' succinct way of importing several objects. Note that the two functions are
-#' symmetric, and usage is a matter of preference and whether specifying the
-#' `.into` argument is desired. The function `import::here` imports into the
-#' current environment.
+#' @description
+#' The `import::from()`, `import::into()`, and `import::here()` functions
+#' provide an alternative way to import objects (e.g. functions) from packages
+#' or modules (see below). It is sometimes preferred over using `library` (or
+#' `require`) which will import all objects exported by the package. The benefit
+#' over `obj <- pkg::obj` is that the imported objects will (by default) be
+#' placed in a separate entry in the search path (which can be specified),
+#' rather in the global/current environment. Also, it is a more succinct way of
+#' importing several objects.
 #'
+#' `import::from()` and `import::into()` are symmetric, and usage is a matter of
+#' preference and whether specifying the `.into` argument is desired.
+#' `import::here()` is a shorthand that always imports into the current
+#' environment, and `import::what()` provides a way to quickly list
+#' all objects in a package or module that are available for import by the other
+#' functions.
+#'
+#' @details
 #' The function arguments can be quoted or unquoted as with e.g. `library`. In
 #' any case, the character representation is used when unquoted arguments are
 #' provided (and not the value of objects with matching names). The period in
@@ -89,6 +96,8 @@
 #' @examples
 #' import::from(parallel, makeCluster, parLapply)
 #' import::into("imports:parallel", makeCluster, parLapply, .from = parallel)
+#' import::here(parallel, detectCores)
+#' import::what(parallel)
 #'
 #' @seealso
 #'   Helpful links:

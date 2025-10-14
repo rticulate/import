@@ -6,7 +6,7 @@
 [![CRAN
 status](https://www.r-pkg.org/badges/version/import)](https://CRAN.R-project.org/package=import)
 [![CRAN status
-shields](https://img.shields.io/badge/Git-1.3.3-success)](https://github.com/rticulate/import)
+shields](https://img.shields.io/badge/Git-1.3.3.9001-success)](https://github.com/rticulate/import)
 [![R build
 status](https://github.com/rticulate/import/workflows/R-CMD-check/badge.svg)](https://github.com/rticulate/import/actions)
 <!-- badges: end -->
@@ -39,9 +39,6 @@ and the `nomiss()` functions, can import those functions only:
 import::from(Hmisc, impute, nomiss)
 ```
 
-For more on the motivation behind the package, see
-[vignette(“import”)](https://rticulate.github.io/import/articles/import.html)
-
 ## Installation and Documentation
 
 Install the release version of `import` from CRAN using `pak` or
@@ -53,31 +50,42 @@ pak::pak("import")
 install.packages("import")
 ```
 
-Documentation for the release version is available on:
+Documentation (for the main branch, which should match the CRAN release)
+is available on:
 
-- <https://import.rticulate.org/>
+- <https://rticulate.github.io/import/>
 
-Install the development version of `import` from GitHub using `pak` or
-`devtools`:
+### Development Versions
+
+Install the development version of `import` from GitHub using `pak` (or
+`devtools` if you prefer:
 
 ``` r
+# The main branch typically matches the CRAN release
 pak::pak("rticulate/import")
-  # or
+
+# New features are developed on the dev branch
+pak::pak("rticulate/import@dev")
+  
+# Or you can use devtools ...
 devtools::install_github("rticulate/import")
+devtools::install_github("rticulate/import@dev")
 ```
 
 Documentation for the development version is available on:
 
-- <https://import.rticulate.org/dev/>
+- <https://rticulate.github.io/import/dev/>
 
 ## Usage
 
 ### Importing functions from R packages
 
 The most basic use case is to import a few functions from package (here
-the `psych` package):
+the `psych` package). We start by using `import::what()` to list
+available functions.
 
 ``` r
+import::what(psych) |> head()
 import::from(psych, geometric.mean, harmonic.mean)
 geometric.mean(trees$Volume)
 ```
@@ -122,9 +130,11 @@ functions are loaded. For example, the file
 [sequence_module.R](https://raw.githubusercontent.com/rticulate/import/master/man/examples/sequence_module.R)
 contains several functions calculating terms of mathematical sequences.
 It is possible to import from such files, just as one imports from
-packages:
+packages. Again, we start by using `import::what()` to check what is
+available in the module:
 
 ``` r
+import::what(sequence_module.R)
 import::from(sequence_module.R, fibonacci, square, triangular)
 ```
 
