@@ -207,6 +207,15 @@ test_that("Imports from libraries NOT defined in .libPaths work", {
   expect_true("packageToTest" %in% list.files(tmp_install_dir))
   expect_silent(import::from(.from = packageToTest, .library = tmp_install_dir, hello))
   expect_equal(hello(), "Hello, world!")
+
+  # We test import::what() from custom path here, to avoid installing the package twice
+  import::what(packageToTest, .library = tmp_install_dir) |>
+    expect_contains("hello")
+  import::what(.from = packageToTest, .library = tmp_install_dir) |>
+    expect_contains("hello")
+
+  # And then we clean up
+  cleanup_environment()
 })
 
 test_that("Functions named `get` in the calling environment do not mask base::get", {
