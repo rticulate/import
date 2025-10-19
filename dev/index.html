@@ -70,7 +70,7 @@
 <div class="section level2">
 <h2 id="introduction">Introduction<a class="anchor" aria-label="anchor" href="#introduction"></a>
 </h2>
-<p>The typical way of using functionality exposed by a package in R scripts is to load (and attach) the entire package with <code><a href="https://rdrr.io/r/base/library.html" class="external-link">library()</a></code> (or <code><a href="https://rdrr.io/r/base/library.html" class="external-link">require()</a></code>). This can have the <strong>undesirable effect of masking objects</strong> in the user’s search path and can also make it difficult and <strong>confusing to identify</strong> what functionality comes from which package when using several <code>library</code> statements.</p>
+<p>The typical way of using functionality exposed by a package in R scripts is to load (and attach) the entire package with <code><a href="https://rdrr.io/r/base/library.html" class="external-link">library()</a></code> (or <code><a href="https://rdrr.io/r/base/library.html" class="external-link">require()</a></code>). This can have the undesirable effect of masking objects in the user’s search path and can also make it difficult and confusing to identify what functionality comes from which package when using several <code>library</code> statements.</p>
 <p>The <code>import</code> package provides a simple alternative, allowing the user specify in a concise way exactly which objects. For example, the <code>Hmisc</code> package exposes over four hundred functions. Instead of exposing all of those functions, someone who only needs access to, say the <code>impute()</code> and the <code>nomiss()</code> functions, can import those functions only:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu">import</span><span class="fu">::</span><span class="fu"><a href="reference/importfunctions.html">from</a></span><span class="op">(</span><span class="va">Hmisc</span>, <span class="va">impute</span>, <span class="va">nomiss</span><span class="op">)</span></span></code></pre></div>
@@ -83,21 +83,21 @@
 <code class="sourceCode R"><span><span class="fu">pak</span><span class="fu">::</span><span class="fu">pak</span><span class="op">(</span><span class="st">"import"</span><span class="op">)</span></span>
 <span>  <span class="co"># or</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"import"</span><span class="op">)</span></span></code></pre></div>
-<p>Documentation (for the main branch, which should match the CRAN release) is available on:</p>
+<p>A documentation site is available on GitHub. For the <code>main</code> branch, which usually matches the CRAN release, the link is:</p>
 <ul>
 <li><a href="https://rticulate.github.io/import/" class="external-link uri">https://rticulate.github.io/import/</a></li>
 </ul>
 <div class="section level3">
-<h3 id="development-versions">Development Versions<a class="anchor" aria-label="anchor" href="#development-versions"></a>
+<h3 id="installing-from-github">Installing from GitHub<a class="anchor" aria-label="anchor" href="#installing-from-github"></a>
 </h3>
-<p>Install the development version of <code>import</code> from GitHub using <code>pak</code>:</p>
+<p>Install the either the <code>main</code> (release) or the <code>dev</code> (development) branch of <code>import</code> from GitHub using <code>pak</code>:</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># The main branch typically matches the CRAN release</span></span>
 <span><span class="fu">pak</span><span class="fu">::</span><span class="fu">pak</span><span class="op">(</span><span class="st">"rticulate/import"</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># New features are developed on the dev branch</span></span>
 <span><span class="fu">pak</span><span class="fu">::</span><span class="fu">pak</span><span class="op">(</span><span class="st">"rticulate/import@dev"</span><span class="op">)</span></span></code></pre></div>
-<p>Documentation for the development version is available on:</p>
+<p>Documentation for the <code>dev</code> branch is available on:</p>
 <ul>
 <li><a href="https://rticulate.github.io/import/dev/" class="external-link uri">https://rticulate.github.io/import/dev/</a></li>
 </ul>
@@ -109,7 +109,7 @@
 <div class="section level3">
 <h3 id="importing-functions-from-r-packages">Importing functions from R packages<a class="anchor" aria-label="anchor" href="#importing-functions-from-r-packages"></a>
 </h3>
-<p>The most basic use case is to import a few functions from package (here the <code>psych</code> package). We start by using <code><a href="reference/importfunctions.html">import::what()</a></code> to list available functions.</p>
+<p>The most basic use case is to import a few functions from package using <code><a href="reference/importfunctions.html">import::from()</a></code>. Here we import from the <code>psych</code> package. We start by using <code><a href="reference/importfunctions.html">import::what()</a></code> to list available functions.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu">import</span><span class="fu">::</span><span class="fu"><a href="reference/importfunctions.html">what</a></span><span class="op">(</span><span class="va">psych</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="fu">import</span><span class="fu">::</span><span class="fu"><a href="reference/importfunctions.html">from</a></span><span class="op">(</span><span class="va">psych</span>, <span class="va">geometric.mean</span>, <span class="va">harmonic.mean</span><span class="op">)</span></span>
