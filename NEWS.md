@@ -1,5 +1,5 @@
 
-Version 1.3.3.9001
+Version 1.3.4
 =============
 
 * New function, import::what(), which lists objects available for import from

@@ -1,9 +1,12 @@
 ## General
 
-Version 1.3.3 is a bug fix release with the following fixes:
+Version 1.3.4 adds `import::what()` to list available objects for import,
+and provides some documentation improvements:
 
-* When imports conflict, include name of the conflicting object in error message
-* Update docs to point to rticulate.github.io/import (old doc domain is defunct)
+* New function, import::what(), which lists objects available for import from
+  a given package or module.
+* Documentation links now point both to release and development documentation.
+* Other minor documentation improvements.
 
 More info in `NEWS.md`
 
