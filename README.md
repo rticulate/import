@@ -24,10 +24,10 @@ or using the help (`?import::from`).
 
 The typical way of using functionality exposed by a package in R scripts
 is to load (and attach) the entire package with `library()` (or
-`require()`). This can have the **undesirable effect of masking
-objects** in the user’s search path and can also make it difficult and
-**confusing to identify** what functionality comes from which package
-when using several `library` statements.
+`require()`). This can have the undesirable effect of masking objects in
+the user’s search path and can also make it difficult and confusing to
+identify what functionality comes from which package when using several
+`library` statements.
 
 The `import` package provides a simple alternative, allowing the user
 specify in a concise way exactly which objects. For example, the `Hmisc`
@@ -50,14 +50,15 @@ pak::pak("import")
 install.packages("import")
 ```
 
-Documentation (for the main branch, which should match the CRAN release)
-is available on:
+A documentation site is available on GitHub. For the `main` branch,
+which usually matches the CRAN release, the link is:
 
 - <https://rticulate.github.io/import/>
 
-### Development Versions
+### Installing from GitHub
 
-Install the development version of `import` from GitHub using `pak`:
+Install the either the `main` (release) or the `dev` (development)
+branch of `import` from GitHub using `pak`:
 
 ``` r
 # The main branch typically matches the CRAN release
@@ -67,7 +68,7 @@ pak::pak("rticulate/import")
 pak::pak("rticulate/import@dev")
 ```
 
-Documentation for the development version is available on:
+Documentation for the `dev` branch is available on:
 
 - <https://rticulate.github.io/import/dev/>
 
@@ -75,9 +76,9 @@ Documentation for the development version is available on:
 
 ### Importing functions from R packages
 
-The most basic use case is to import a few functions from package (here
-the `psych` package). We start by using `import::what()` to list
-available functions.
+The most basic use case is to import a few functions from package using
+`import::from()`. Here we import from the `psych` package. We start by
+using `import::what()` to list available functions.
 
 ``` r
 import::what(psych) |> head()

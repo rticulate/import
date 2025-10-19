@@ -22,8 +22,8 @@ using the help (`?import::from`).
 
 The typical way of using functionality exposed by a package in R scripts is to
 load (and attach) the entire package with `library()` (or `require()`). This can
-have the **undesirable effect of masking objects** in the user's search path and
-can also make it difficult and **confusing to identify** what functionality
+have the undesirable effect of masking objects in the user's search path and
+can also make it difficult and confusing to identify what functionality
 comes from which package when using several `library` statements.
 
 The `import` package provides a simple alternative, allowing the user specify in
@@ -36,7 +36,6 @@ import those functions only:
 import::from(Hmisc, impute, nomiss)
 ```
 
-
 ## Installation and Documentation
 
 Install the release version of `import` from CRAN using `pak` or
@@ -47,15 +46,17 @@ pak::pak("import")
   # or
 install.packages("import")
 ```
-Documentation (for the main branch, which should match the CRAN release)
-is available on:
+
+A documentation site is available on GitHub. For the `main` branch, which
+usually matches the CRAN release, the link is:
 
 - https://rticulate.github.io/import/
 
 
-### Development Versions
+### Installing from GitHub
 
-Install the development version of `import` from GitHub using `pak`:
+Install the either the `main` (release) or the `dev` (development) branch of
+`import` from GitHub using `pak`:
 
 ```R
 # The main branch typically matches the CRAN release
@@ -65,7 +66,7 @@ pak::pak("rticulate/import")
 pak::pak("rticulate/import@dev")
 ```
 
-Documentation for the development version is available on:
+Documentation for the `dev` branch is available on:
 
 - https://rticulate.github.io/import/dev/
 
@@ -74,9 +75,9 @@ Documentation for the development version is available on:
 
 ### Importing functions from R packages
 
-The most basic use case is to import a few functions from package (here the
-`psych` package). We start by using `import::what()` to list available 
-functions.
+The most basic use case is to import a few functions from package using
+`import::from()`. Here we import from the `psych` package. We start by using
+`import::what()` to list available functions.
 
 ```R
 import::what(psych) |> head()
@@ -114,6 +115,7 @@ still override this in exceptional cases, but you seldom need to.
 These and other examples are discussed in more detail in the 
 [Importing from Packages](https://rticulate.github.io/import/articles/import.html#importing-from-packages)
 section of the package vignette.
+
 
 ### Importing Functions from "Module" Scripts
 
