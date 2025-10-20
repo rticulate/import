@@ -3,7 +3,7 @@ pkgdown: 2.1.3
 pkgdown_sha: ~
 articles:
   import: import.html
-last_built: 2025-10-20T09:14Z
+last_built: 2025-10-20T12:26Z
 urls:
   reference: https://import.rticulate.org/reference
   article: https://import.rticulate.org/articles
